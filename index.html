@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Friendly textbooks and resources.">
+        <title>🏪 Baskit - Shopping List Project</title>
+        <link rel="stylesheet" href="../css/style.css">
+        <!-- <link rel="stylesheet" href="../css/stripe.css"> -->
+        <link rel="shortcut icon" href="data:,">
+        <script defer src="../js/app.js"></script>
+        <!-- <script defer src="../js/server.js"></script> -->
+    </head>
+    <body id="container">
+        <!-- HEADER -->
+        <header id="header">
+            <!-- NAV -->
+            <nav id="primaryNav"  aria-label="Primary navigation">
+                <div class="primaryNavLinks">
+                    <div>
+                        <img src="../img/logo-Photoroom.png" alt="logo" srcset="" class="logo">
+                        <a class="name" href="#hero">
+                            <span>Baskit</span>
+                        </a>
+                    </div>
+                    <div id="searchAlias">
+                        <form action="" id="primaryForm">
+                            <label for="search"></label>
+                            <select name="allSearch" id="all">
+                                    <option selected="selected" value="search-alias=aps">All</option>
+                                    <option value="search-alias=mobile-apps">Apps</option>
+                                    <option value="search-alias=baby">Baby</option>
+                                    <option value="search-alias=beauty">Beauty</option>
+                                    <option value="search-alias=books">Books</option>
+                                    <option value="search-alias=automotive">Car &amp; Motorbike</option>
+                                    <option value="search-alias=popular">CDs &amp; Vinyl</option>
+                                    <option value="search-alias=classical">Classical Music</option>
+                                    <option value="search-alias=computers">Computers</option>
+                                    <option value="search-alias=digital-music">Digital Music</option>
+                                    <option value="search-alias=diy">DIY &amp; Tools</option>
+                                    <option value="search-alias=dvd">DVD &amp; Blu-ray</option>
+                                    <option value="search-alias=electronics">Electronics</option>
+                                    <option value="search-alias=fashion">Fashion</option>
+                                    <option value="search-alias=outdoor">Garden</option>
+                                    <option value="search-alias=grocery">Grocery</option>
+                                    <option value="search-alias=handmade">Handmade</option>
+                                    <option value="search-alias=household">Household</option>
+                                    <option value="search-alias=industrial">Industrial</option>
+                                    <option value="search-alias=lighting">Lighting</option>
+                                    <option value="search-alias=fashion-luggage">Luggage</option>
+                                    <option value="search-alias=luxury">Luxury Stores</option>
+                                    <option value="search-alias=fashion-mens">Men</option>
+                                    <option value="search-alias=drugstore">Personal Care</option>
+                                    <option value="search-alias=pets">Pet Supplies</option>
+                                    <option value="search-alias=pc">PC</option>
+                                    <option value="search-alias=software">Software</option>
+                                    <option value="search-alias=sports">Sports</option>
+                                    <option value="search-alias=stationery">Stationery</option>
+                                    <option value="search-alias=toys">Toys &amp; Games</option>
+                                    <option value="search-alias=video-games">Video Games</option>
+                                    <option value="search-alias=fashion-women">Women</option>
+                            </select>
+                        </form>
+                        <form action="" class="searchForm">
+                            <label for="search"></label>
+                            <input type="search" name="search" id="searchInput" placeholder="Search"/>
+                            <button type="submit">&#128269;</button>
+                        </form>
+                    </div>
+                    <div class="basket">
+                        <span id="item-count">🛒 Basket</span>
+                        <span id="count-number">0</span>
+                    </div>
+                    <div><a class="signin" href="#">Sign in</a></div>
+                </div>
+            </nav>
+            <nav id="secondaryNav" aria-label="Secondary navigation">
+                <ul class="secondaryNavlinks">
+                    <li><a class="nav-item active" aria-current="page" href="default.html">All</a></li>
+                    <li><a class="nav-item" href="#grocery">Grocery</a></li>                    <!-- Food – groceries, snacks, drinks  -->
+                    <li><a class="nav-item" href="#household">Household</a></li>                <!-- Household Items – cleaning supplies, toiletries -->
+                    <li><a class="nav-item" href="#stationery">Stationery</a></li>              <!-- Stationery – pens, notebooks, office supplies -->
+                </ul>
+            </nav>
+        </header>
+
+        <!-- MAIN -->
+        <main id="main">
+            <!-- Combined Landing Page View -->
+            <section id="heroSection" aria-labelledby="hero-heading">
+                <div class="heroContainerTop animated-slider">
+                    <div class="slide active">
+                        <img srcset="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" />
+                        <div class="caption zoom-in">Explore Nature</div>
+                    </div>
+                    <div class="slide">
+                        <img srcset="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=800&q=80" />
+                        <div class="caption slide-left">City Lights</div>
+                    </div>
+                    <div class="slide">
+                        <img srcset="https://images.unsplash.com/photo-1496309732348-3627f3f040ee?auto=format&fit=crop&w=800&q=80" />
+                        <div class="caption fade-in">Into Space</div>
+                    </div>
+                </div>
+                <div id="list-container">
+                    <div>
+                        <div class="card">
+                            <div class="cardTag">
+                                <span>Featured</span>
+                            </div>
+                            <a class="featured" href="http://#"></a>
+                            <h3></h3>
+                            <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                        </div>
+                        <div class="cardWrapper">
+                            <div class="cardItem">
+                                <img src="../img/Baby_Pearl_Potatoes.png" alt="Baby Pearl Potatoes">
+                                <h3 class="cardHeading"><a href="#" class="cardLink">Baby Pearl Potatoes, 500g</a></h3>
+                                <p class="cardDescription">Tiny waxy yellow-skinned potatoes with a firm texture, ideal for boiling and roasting.</p>
+                                <p class="cardPrice">£<span>1.19</span></p>
+                                <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                            </div>
+                            <div class="cardItem">
+                                <img src="../img/Clarks_Men's_Wallabeeevo.png" alt="Clarks Men's Wallabeeevo">
+                                <h3 class="cardHeading"><a href="#" class="cardLink">Clarks Men's Wallabeeevo</a></h3>
+                                <p class="cardDescription">Finished with two suede logo fobs as a guarantee of authenticity.</p>
+                                <p class="cardPrice">£<span>93.98</span></p>
+                                <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                            </div>
+                            <div class="cardItem">
+                                <img src="../img/Letters_ from_a_Stoic_by_Lucius_Seneca.png" alt="Letters from a Stoic by Lucius Seneca">
+                                <h3 class="cardHeading"><a href="#" class="cardLink">Letters from a Stoic by Lucius Seneca</a></h3>
+                                <p class="cardDescription">Discover the power of Stoic philosophy and how it can help you live a more moral and fulfilling life.</p>
+                                <p class="cardPrice">£<span>22.37</span></p>
+                                <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="heroContainerMiddle">
+                        <h2></h2>
+                    </div>
+                    <template id="product-template">
+                        <div class="cardItem">
+                            <img src="" alt="">
+                            <h3 class="cardHeading"><a href="#" class="cardLink"></a></h3>
+                            <p class="cardDescription"></p>
+                            <p class="cardPrice">£<span></span></p>
+                            <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <section id="grocery" aria-labelledby="grocery-heading">
+                <div class="heroContainerTop animated-slider">
+                    <div class="slide active">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="" srcset="" />
+                        <div class="caption zoom-in">Explore Nature</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=800&q=80" alt="" srcset="" />
+                        <div class="caption slide-left">City Lights</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1496309732348-3627f3f040ee?auto=format&fit=crop&w=800&q=80" alt="" srcset="" />
+                        <div class="caption fade-in">Into Space</div>
+                    </div>
+                </div>
+                <div id="section-title">
+                    <h2 id="grocery-heading">Fresh Groceries</h2>
+                </div>
+                <div class="cardWrapper" id="grocery-container">
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                </div>
+                <div class="heroContainerTop animated-slider">
+                    <div class="slide active">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" />
+                        <div class="caption zoom-in">Explore Nature</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=800&q=80" />
+                        <div class="caption slide-left">City Lights</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1496309732348-3627f3f040ee?auto=format&fit=crop&w=800&q=80" />
+                        <div class="caption fade-in">Into Space</div>
+                    </div>
+                </div>
+
+                <div class="cardWrapper">
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="household" aria-labelledby="household-heading">
+                <div class="heroContainerTop"></div>
+                <div class="cardWrapper">
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                </div>
+                <div class="heroContainerMiddle"></div>
+                <div class="cardWrapper">
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="stationery" aria-labelledby="stationery-heading">
+                <div class="heroContainer"></div>
+            </section>
+
+            <!-- Shopping List Basket -->
+            <section id="shoppingBasket">
+                <div class="heroBasket">
+
+                </div>
+                <div class="basketCard">
+                    <div class="basketTitle">
+                        <h2>Shopping Basket</h2>
+                    </div>
+                    <hr>
+                    <div class="basketItem">
+                        <div class="basketImage">
+                            <img src="" alt="">
+                        </div>
+                        <div class="basketDescription">
+                            <div class="basket">
+                                <h3 class="basketHeading"></h3>
+                                <p class="basketDetails"></p>
+                            </div>
+                            <div class="basketPrice">
+                                <p class="priceDetails">£ <span>0</span></p>
+                            </div>
+                        </div>
+                        <div class="basketActionLinks">
+                            <button type="button" class="basketSubmit">-<span> 0 </span>+</button>
+                            <button type="button" class="basketDelete">Delete</button>
+                            <button type="button" class="basketSave">Save for later</button>
+                            <button type="button" class="basketShare">Share</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="basketTotal">
+                        <p class="basketSubtotal">Subtotal </p>
+                        <p class="basketItems">(<span>0</span> items):</p>
+                        <p class="basketPriceTotal">£ <span>0</span></p>
+                    </div>
+                </div>
+                <div class="basketSaved">
+                    <div class="basketSavedTitle">
+                        <h2>Shopping Basket</h2>
+                    </div>
+                    <hr>
+
+                </div>
+            </section>
+
+            <!-- Checkout -->
+            <section id="checkout">
+                <div class="product">
+                    <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />
+                    <div class="description">
+                        <h3>Stubborn Attachments</h3>
+                        <h5>$20.00</h5>
+                    </div>
+                </div>
+                <form action="/create-checkout-session" method="POST">
+                    <button type="submit" id="checkout-button">Checkout</button>
+                </form>
+            </section>
+
+            <section id="success">
+                <p>We appreciate your business! If you have any questions, please email: 
+                <a href="mailto:orders@example.com">orders@example.com</a>.
+                </p>
+            </section>
+
+            <section id="cancel">
+                <p>Forgot to add something to your cart? Shop around then come back to pay!</p>
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer id="footer">
+            <section class="footer-info">
+                <p class="trademark">&copy; <span id="year"></span> EOUS design</p>
+                <p class="about">About</p>
+                <p class="contact">Contact</p>
+                <p class="privacyPolicy">Privacy Policy</p>
+                <p class="termsOfUse">Terms of Use</p>
+                <p class="certified">SOC 2 Certified</p>
+            </section>
+        </footer>
+    </body>
+</html>
