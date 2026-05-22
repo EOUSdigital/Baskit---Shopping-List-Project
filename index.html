@@ -29,10 +29,6 @@
                             <div class="nav-left">
                                 <div id="nav-search-dropdown-card">
                                     <div class="nav-search-scope nav-sprite">
-                                        <div class="nav-search-facade" data-value="search-alias=aps">
-                                            <span id="nav-search-label-id" class="nav-search-label nav-progressive-content" style="width: auto;">All</span>
-                                            <i class="nav-icon"></i>
-                                        </div>
                                         <label id="searchDropdownDescription" for="searchDropdownBox" class="nav-progressive-attribute" style="display:none">Select the department you want to search in</label>
                                         <select aria-describedby="searchDropdownDescription" class="nav-search-dropdown searchSelect nav-progressive-attrubute nav-progressive-search-dropdown" data-nav-digest="azXfcqGJqTOHeFP7w9+E7314ff0=" data-nav-selected="0" id="searchDropdownBox" name="url" style="display: block; top: 2.5px;" tabindex="0" title="Search in">
                                             <option selected="selected" value="search-alias=aps">All</option>
@@ -71,7 +67,15 @@
                                     </div>
                                 </div>
                             </div>
-                        
+                            
+                            <div class="nav-fill">
+                                <div class="nav-search-field ">
+                                    <label for="twotabsearchtextbox" style="display: none;">Search Baskit</label>
+                                    <input type="text" id="twotabsearchtextbox" value="" name="field-keywords" autocomplete="off" placeholder="Search Baskit" class="nav-input nav-progressive-attribute" dir="auto" tabindex="0" aria-label="Search Baskit" role="searchbox" aria-autocomplete="list" aria-controls="sac-autocomplete-results-container" aria-expanded="false" aria-haspopup="grid" spellcheck="false">
+                                </div>
+                                <div id="nav-iss-attach"></div>
+                            </div>
+
                             <div class="nav-right">
                                 <div class="nav-search-submit nav-sprite">
                                     <span id="nav-search-submit-text" class="nav-search-submit-text nav-sprite nav-progressive-attribute" aria-label="Go">
@@ -79,8 +83,6 @@
                                     </span>
                                 </div>
                             </div>
-                            <!-- <input type="search" name="search" id="searchInput" placeholder="Search"/>
-                            <button type="submit">&#128269;</button> -->
                         </form>
                     </div>
                     <div class="basket">
@@ -89,18 +91,6 @@
                     </div>
                     <div><a class="signin" href="#">Sign in</a></div>
                 </div>
-
-
-                <!-- AMAZON FORM -->
-                <form id="nav-search-bar-form" accept-charset="utf-8" action="/s/ref=nb_sb_noss" class="nav-searchbar nav-progressive-attribute" method="GET" name="site-search" role="search">
-                    <div class="nav-fill">
-                        <div class="nav-search-field ">
-                            <label for="twotabsearchtextbox" style="display: none;">Search Amazon.co.uk</label>
-                            <input type="text" id="twotabsearchtextbox" value="" name="field-keywords" autocomplete="off" placeholder="Search Amazon.co.uk" class="nav-input nav-progressive-attribute" dir="auto" tabindex="0" aria-label="Search Amazon.co.uk" role="searchbox" aria-autocomplete="list" aria-controls="sac-autocomplete-results-container" aria-expanded="false" aria-haspopup="grid" spellcheck="false">
-                        </div>
-                        <div id="nav-iss-attach"></div>
-                    </div>
-                </form>
             </nav>
 
             <nav id="secondaryNav" aria-label="Secondary navigation">
@@ -126,22 +116,24 @@
 
             <!-- Shopping List Basket -->
             <section id="shoppingBasket">
-                <div class="heroBasket">
+                <div class="heroBasket">A slider with different information</div>
 
-                </div>
                 <div class="basketCard">
                     <div class="basketTitle">
                         <h2>Shopping Basket</h2>
                     </div>
                     <hr>
-                    <div class="basketItem">
-                        <div class="basketImage">
-                            <img src="" alt="">
-                        </div>
-                        <div class="basketDescription">
-                            <div class="basket">
-                                <h3 class="basketHeading"></h3>
-                                <p class="basketDetails"></p>
+                    <div class="basketContainer">
+                        <div class="basketItem">
+                            <div class="basketInput">
+                                <input type="checkbox" name="pencil" id="selectBasketItem" />
+                            </div>
+                            <div class="basketImage">
+                                <img srcset="https://images.unsplash.com/photo-1593435221502-c5d7bfc26cab?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                            </div>
+                            <div class="basketDescription">
+                                <h3 class="basketHeading">Pencil</h3>
+                                <p class="basketDetails">A tool used for writing or drawing, featuring a solid pigment core (usually graphite or charcoal) enclosed in a protective casing.</p>
                             </div>
                             <div class="basketPrice">
                                 <p class="priceDetails">£ <span>0</span></p>
@@ -161,17 +153,18 @@
                         <p class="basketPriceTotal">£ <span>0</span></p>
                     </div>
                 </div>
-                <div class="basketSaved">
+
+                <!-- <div class="basketSaved">
                     <div class="basketSavedTitle">
                         <h2>Shopping Basket</h2>
                     </div>
                     <hr>
 
-                </div>
+                </div> -->
             </section>
 
             <!-- Checkout -->
-            <section id="checkout">
+            <!-- <section id="checkout">
                 <div>
                     <div class="product">
                         <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />
@@ -194,7 +187,7 @@
                 <div id="cancel">
                     <p>Forgot to add something to your cart? Shop around then come back to pay!</p>
                 </div>
-            </section>
+            </section> -->
 
             <!-- Slider Animation -->
             <template id="slider-animation">
