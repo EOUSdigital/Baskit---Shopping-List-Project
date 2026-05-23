@@ -14,13 +14,14 @@
     <body id="container">
         <!-- HEADER -->
         <header id="header">
+            <div class="page-inner">
             <!-- NAV -->
             <nav id="primaryNav"  aria-label="Primary navigation">
                 <div class="primaryNavLinks">
-                    <div>
-                        <img src="../img/logo-Photoroom.png" alt="logo" srcset="" class="logo">
-                        <a class="name" href="#hero">
-                            <span>Baskit</span>
+                    <div class="logoName">
+                        <a class="brand" href="#hero">
+                            <img src="../images/logo-Photoroom.png" alt="Baskit logo" class="logo">
+                            <span class="name">Baskit</span>
                         </a>
                     </div>
 
@@ -101,134 +102,143 @@
                     <li><a class="nav-item" href="#stationery">Stationery</a></li>              <!-- Stationery – pens, notebooks, office supplies -->
                 </ul>
             </nav>
+            </div>
         </header>
 
         <!-- MAIN -->
         <main id="main">
-            <!-- Combined Landing Page View -->
-            <section id="allProducts" aria-labelledby="allProducts-heading"></section>
+            <div class="page-inner">
+                <!-- Combined Landing Page View -->
+                <section id="allProducts" aria-labelledby="allProducts-heading"><div class="page-inner"></div></section>
 
-            <section id="grocery" aria-labelledby="grocery-heading"></section>
+                <section id="grocery" aria-labelledby="grocery-heading"><div class="page-inner"></div></section>
 
-            <section id="household" aria-labelledby="household-heading"></section>
+                <section id="household" aria-labelledby="household-heading"><div class="page-inner"></div></section>
 
-            <section id="stationery" aria-labelledby="stationery-heading"></section>
+                <section id="stationery" aria-labelledby="stationery-heading"><div class="page-inner"></div></section>
 
-            <!-- Shopping List Basket -->
-            <section id="shoppingBasket">
-                <div class="heroBasket">A slider with different information</div>
+                <!-- Shopping List Basket -->
+                <section id="shoppingBasket">
+                    <div class="page-inner">
+                        <div class="heroBasket">A small slider with different information.</div>
 
-                <div class="basketCard">
-                    <div class="basketTitle">
-                        <h2>Shopping Basket</h2>
+                        <div class="basketTitle">
+                            <h2>Shopping Basket</h2>
+                        </div>
+                        <div class="basketSavedTotal">
+                            <p class="basketSavedSubtotal">Subtotal </p>
+                            <p class="basketSavedItems">(<span>0</span> items):</p>
+                            <p class="basketSavedPriceTotal">£ <span>0</span></p>
+                        </div>
                     </div>
-                    <hr>
-                    <div class="basketContainer">
-                        <div class="basketItem">
-                            <div class="basketInput">
-                                <input type="checkbox" name="pencil" id="selectBasketItem" />
+                </section>
+
+                <section id="savedItems">
+                    <div class="page-inner">
+                        <div class="basketSavedItems">
+                            <div class="basketSavedTitle">
+                                <h2>Your Items</h2>
                             </div>
-                            <div class="basketImage">
-                                <img srcset="https://images.unsplash.com/photo-1593435221502-c5d7bfc26cab?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                            </div>
-                            <div class="basketDescription">
-                                <h3 class="basketHeading">Pencil</h3>
-                                <p class="basketDetails">A tool used for writing or drawing, featuring a solid pigment core (usually graphite or charcoal) enclosed in a protective casing.</p>
-                            </div>
-                            <div class="basketPrice">
-                                <p class="priceDetails">£ <span>0</span></p>
+                            <div class="basketSavedTotal">
+                                <p class="basketSavedSubtotal">Subtotal </p>
+                                <p class="basketSavedItems">(<span>0</span> items):</p>
+                                <p class="basketSavedPriceTotal">£ <span>0</span></p>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <!-- Checkout -->
+                <!-- <section id="checkout">
+                    <div>
+                        <div class="product">
+                            <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />
+                            <div class="description">
+                                <h3>Stubborn Attachments</h3>
+                                <h5>$20.00</h5>
+                            </div>
+                        </div>
+                        <form action="/create-checkout-session" method="POST">
+                            <button type="submit" id="checkout-button">Checkout</button>
+                        </form>
+                    </div>
+                    
+                    <div id="success">
+                        <p>We appreciate your business! If you have any questions, please email: 
+                            <a href="mailto:orders@example.com">orders@example.com</a>.
+                        </p>
+                    </div>
+                    
+                    <div id="cancel">
+                        <p>Forgot to add something to your cart? Shop around then come back to pay!</p>
+                    </div>
+                </section> -->
+
+                <!-- Slider Animation -->
+                <template id="slider-animation">
+                    <div class="animated-slider">
+                        <div class="slide active">
+                            <img srcset="" />
+                            <div class="caption zoom-in">Explore</div>
+                        </div>
+                        <div class="slide">
+                            <img srcset="" />
+                            <div class="caption slide-left">Lights</div>
+                        </div>
+                        <div class="slide">
+                            <img srcset="" />
+                            <div class="caption fade-in">Space</div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Card Wrapper -->
+                <template id="product-template">
+                    <div class="cardItem">
+                        <img src="" alt="">
+                        <h3 class="cardHeading"><a href="#" class="cardLink"></a></h3>
+                        <p class="cardDescription"></p>
+                        <p class="cardPrice">£<span></span></p>
+                        <button class="cardSubmit" type="button">Add to basket</button>
+                    </div>
+                </template>
+
+                <!-- Saved Item Basket -->
+                <template id="basket-template">
+                    <div class="basketCard">
+                        <div class="basketItem">
+                            <input type="checkbox" class="selectItem" aria-label="Select item to delete or save for later" />
+                            <img src="" alt="">
+                            <h3 class="basketProductHeading"></h3>
+                            <p class="basketProductDescription"></p>
+                            <p class="priceProductDetails">£ <span>0.00</span></p>
+                        </div>
+
                         <div class="basketActionLinks">
-                            <button type="button" class="basketSubmit">-<span> 0 </span>+</button>
+                            <button type="button" class="basketProductDecrease" aria-label="Decrease quantity">-</button>
+                            <span class="basketProductQuantity" aria-live="polite">1</span>
+                            <button type="button" class="basketIncrease" aria-label="Increase quantity">+</button>
                             <button type="button" class="basketDelete">Delete</button>
                             <button type="button" class="basketSave">Save for later</button>
                             <button type="button" class="basketShare">Share</button>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="basketTotal">
-                        <p class="basketSubtotal">Subtotal </p>
-                        <p class="basketItems">(<span>0</span> items):</p>
-                        <p class="basketPriceTotal">£ <span>0</span></p>
-                    </div>
-                </div>
-
-                <!-- <div class="basketSaved">
-                    <div class="basketSavedTitle">
-                        <h2>Shopping Basket</h2>
-                    </div>
-                    <hr>
-
-                </div> -->
-            </section>
-
-            <!-- Checkout -->
-            <!-- <section id="checkout">
-                <div>
-                    <div class="product">
-                        <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />
-                        <div class="description">
-                            <h3>Stubborn Attachments</h3>
-                            <h5>$20.00</h5>
-                        </div>
-                    </div>
-                    <form action="/create-checkout-session" method="POST">
-                        <button type="submit" id="checkout-button">Checkout</button>
-                    </form>
-                </div>
-                
-                <div id="success">
-                    <p>We appreciate your business! If you have any questions, please email: 
-                        <a href="mailto:orders@example.com">orders@example.com</a>.
-                    </p>
-                </div>
-                
-                <div id="cancel">
-                    <p>Forgot to add something to your cart? Shop around then come back to pay!</p>
-                </div>
-            </section> -->
-
-            <!-- Slider Animation -->
-            <template id="slider-animation">
-                <div class="animated-slider">
-                    <div class="slide active">
-                        <img srcset="" />
-                        <div class="caption zoom-in">Explore</div>
-                    </div>
-                    <div class="slide">
-                        <img srcset="" />
-                        <div class="caption slide-left">Lights</div>
-                    </div>
-                    <div class="slide">
-                        <img srcset="" />
-                        <div class="caption fade-in">Space</div>
-                    </div>
-                </div>
-            </template>
-
-            <!-- Card Wrapper -->
-            <template id="product-template">
-                <div class="cardItem">
-                    <img src="" alt="">
-                    <h3 class="cardHeading"><a href="#" class="cardLink"></a></h3>
-                    <p class="cardDescription"></p>
-                    <p class="cardPrice">£<span></span></p>
-                    <button class="cardSubmit" type="button" data-testid="add-to-cart">Add to basket</button>
-                </div>
-            </template>
+                    </div>    
+                </template>
+            </div>
         </main>
 
         <!-- FOOTER -->
         <footer id="footer">
-            <section class="footer-info">
-                <p class="trademark">&copy; <span id="year"></span> EOUS design</p>
-                <p class="about">About</p>
-                <p class="contact">Contact</p>
-                <p class="privacyPolicy">Privacy Policy</p>
-                <p class="termsOfUse">Terms of Use</p>
-                <p class="certified">SOC 2 Certified</p>
-            </section>
+            <div class="page-inner">
+                <section class="footer-info">
+                    <p class="trademark">&copy; <span id="year"></span> EOUS design</p>
+                    <p class="about">About</p>
+                    <p class="contact">Contact</p>
+                    <p class="privacyPolicy">Privacy Policy</p>
+                    <p class="termsOfUse">Terms of Use</p>
+                    <p class="certified">SOC 2 Certified</p>
+                </section>
+            </div>
         </footer>
     </body>
 </html>
