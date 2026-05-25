@@ -15,138 +15,203 @@
         <!-- HEADER -->
         <header id="header">
             <div class="page-inner">
-            <!-- NAV -->
-            <nav id="primaryNav"  aria-label="Primary navigation">
-                <div class="primaryNavLinks">
-                    <div class="logoName">
-                        <a class="brand" href="#hero">
-                            <img src="../images/logo-Photoroom.png" alt="Baskit logo" class="logo">
-                            <span class="name">Baskit</span>
-                        </a>
-                    </div>
+                <!-- Primary Navigation -->
+                <nav id="primaryNav" aria-label="Primary navigation">
+                    <ul class="primaryNavLinks">
+                        <!-- Logo -->
+                        <li class="logoName">
+                            <a class="brand" href="#hero">
+                                <img src="../images/logo-Photoroom.png" alt="Baskit logo" class="logo">
+                                <span class="name">Baskit</span>
+                            </a>
+                        </li>
 
-                    <div id="searchAlias">
-                        <form id="nav-search-bar-form" accept-charset="utf-8" action="/s/ref=nb_sb_noss" class="nav-searchbar nav-progressive-attribute" method="GET" name="site-search" role="search">
-                            <div class="nav-left">
-                                <div id="nav-search-dropdown-card">
-                                    <div class="nav-search-scope nav-sprite">
-                                        <label id="searchDropdownDescription" for="searchDropdownBox" class="nav-progressive-attribute" style="display:none">Select the department you want to search in</label>
-                                        <select aria-describedby="searchDropdownDescription" class="nav-search-dropdown searchSelect nav-progressive-attrubute nav-progressive-search-dropdown" data-nav-digest="azXfcqGJqTOHeFP7w9+E7314ff0=" data-nav-selected="0" id="searchDropdownBox" name="url" style="display: block; top: 2.5px;" tabindex="0" title="Search in">
-                                            <option selected="selected" value="search-alias=aps">All</option>
-                                            <option value="search-alias=mobile-apps">Apps</option>
-                                            <option value="search-alias=baby">Baby</option>
-                                            <option value="search-alias=beauty">Beauty</option>
-                                            <option value="search-alias=books">Books</option>
-                                            <option value="search-alias=automotive">Car &amp; Motorbike</option>
-                                            <option value="search-alias=popular">CDs &amp; Vinyl</option>
-                                            <option value="search-alias=classical">Classical Music</option>
-                                            <option value="search-alias=computers">Computers</option>
-                                            <option value="search-alias=digital-music">Digital Music</option>
-                                            <option value="search-alias=diy">DIY &amp; Tools</option>
-                                            <option value="search-alias=dvd">DVD &amp; Blu-ray</option>
-                                            <option value="search-alias=electronics">Electronics</option>
-                                            <option value="search-alias=fashion">Fashion</option>
-                                            <option value="search-alias=outdoor">Garden</option>
-                                            <option value="search-alias=grocery">Grocery</option>
-                                            <option value="search-alias=handmade">Handmade</option>
-                                            <option value="search-alias=household">Household</option>
-                                            <option value="search-alias=industrial">Industrial</option>
-                                            <option value="search-alias=lighting">Lighting</option>
-                                            <option value="search-alias=fashion-luggage">Luggage</option>
-                                            <option value="search-alias=luxury">Luxury Stores</option>
-                                            <option value="search-alias=fashion-mens">Men</option>
-                                            <option value="search-alias=drugstore">Personal Care</option>
-                                            <option value="search-alias=pets">Pet Supplies</option>
-                                            <option value="search-alias=pc">PC</option>
-                                            <option value="search-alias=software">Software</option>
-                                            <option value="search-alias=sports">Sports</option>
-                                            <option value="search-alias=stationery">Stationery</option>
-                                            <option value="search-alias=toys">Toys &amp; Games</option>
-                                            <option value="search-alias=video-games">Video Games</option>
-                                            <option value="search-alias=fashion-women">Women</option>
-                                        </select>
-                                    </div>
+                        <!-- Search Form (Expanded to fill space via CSS flex) -->
+                        <li class="search-container">
+                            <form id="search-form" action="/search" class="nav-searchbar" method="GET" role="search">
+                                <div class="nav-left">
+                                    <select id="search-category" name="category" aria-label="Select category" class="nav-search-dropdown">
+                                        <option value="all" selected>All</option>
+                                        <option value="grocery">Grocery</option>
+                                        <option value="household">Household</option>
+                                        <option value="stationery">Stationery</option>
+                                    </select>
                                 </div>
-                            </div>
-                            
-                            <div class="nav-fill">
-                                <div class="nav-search-field ">
-                                    <label for="twotabsearchtextbox" style="display: none;">Search Baskit</label>
-                                    <input type="text" id="twotabsearchtextbox" value="" name="field-keywords" autocomplete="off" placeholder="Search Baskit" class="nav-input nav-progressive-attribute" dir="auto" tabindex="0" aria-label="Search Baskit" role="searchbox" aria-autocomplete="list" aria-controls="sac-autocomplete-results-container" aria-expanded="false" aria-haspopup="grid" spellcheck="false">
+                                <div class="nav-fill">
+                                    <input type="search" id="search-input" name="q" placeholder="Search Baskit" autocomplete="off" required>
                                 </div>
-                                <div id="nav-iss-attach"></div>
-                            </div>
+                                <div class="nav-right">
+                                    <button type="submit" id="search-submit">Go</button>
+                                </div>
+                            </form>
+                        </li>
 
-                            <div class="nav-right">
-                                <div class="nav-search-submit nav-sprite">
-                                    <span id="nav-search-submit-text" class="nav-search-submit-text nav-sprite nav-progressive-attribute" aria-label="Go">
-                                        <input id="nav-search-submit-button" type="submit" class="nav-input nav-progressive-attribute" value="Go" tabindex="0">
-                                    </span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="basket">
-                        <span id="item-count">🛒 Basket</span>
-                        <span id="count-number">0</span>
-                    </div>
-                    <div><a class="signin" href="#">Sign in</a></div>
-                </div>
-            </nav>
+                        <!-- Shopping Basket (Wrapped cleanly for accessibility) -->
+                        <li>
+                            <a class="basket" href="#cart" aria-label="Shopping basket, 0 items">
+                                <span id="item-count" aria-hidden="true">🛒 Basket</span>
+                                <span id="count-number" class="badge">0</span>
+                            </a>
+                        </li>
 
-            <nav id="secondaryNav" aria-label="Secondary navigation">
-                <ul class="secondaryNavLinks">
-                    <li><a class="nav-item active" aria-current="page" href="default.html">All</a></li>
-                    <li><a class="nav-item" href="#grocery">Grocery</a></li>                    <!-- Food – groceries, snacks, drinks  -->
-                    <li><a class="nav-item" href="#household">Household</a></li>                <!-- Household Items – cleaning supplies, toiletries -->
-                    <li><a class="nav-item" href="#stationery">Stationery</a></li>              <!-- Stationery – pens, notebooks, office supplies -->
-                </ul>
-            </nav>
+                        <!-- User Account Link -->
+                        <li>
+                            <a class="signin" href="#">Sign in</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Secondary Navigation -->
+                <nav id="secondaryNav" aria-label="Secondary navigation">
+                    <ul class="secondaryNavLinks">
+                        <li><a class="nav-item active" aria-current="page" href="default.html">All</a></li>
+                        <li><a class="nav-item" href="#grocery">Grocery</a></li>
+                        <li><a class="nav-item" href="#household">Household</a></li>
+                        <li><a class="nav-item" href="#stationery">Stationery</a></li>
+                    </ul>
+                </nav>
+
             </div>
         </header>
 
+
         <!-- MAIN -->
         <main id="main">
+            <!-- Single main layout wrapper for structural alignment -->
             <div class="page-inner">
-                <!-- Combined Landing Page View -->
-                <section id="allProducts" aria-labelledby="allProducts-heading"><div class="page-inner"></div></section>
+                
+                <!-- Landing Page Section -->
+                <section id="allProducts" aria-labelledby="allProducts-heading">
+                    <!-- The target placeholder for the slider -->
+                    <div class="slider-placeholder"></div>
+                    <h2 id="allProducts-heading" class="sr-only">All Products</h2>
+                    <!-- Dynamic JavaScript Product Grid injection point -->
+                    <div class="products-grid"></div>
+                </section>
 
-                <section id="grocery" aria-labelledby="grocery-heading"><div class="page-inner"></div></section>
+                <!-- Grocery Page Section -->
+                <section id="grocery" aria-labelledby="grocery-heading">
+                    <!-- The target placeholder for the slider -->
+                    <div class="slider-placeholder"></div>
+                    <h2 id="grocery-heading" class="sr-only">Grocery</h2>
+                    <div class="products-grid"></div>
+                </section>
 
-                <section id="household" aria-labelledby="household-heading"><div class="page-inner"></div></section>
+                <!-- Household Page Section -->
+                <section id="household" aria-labelledby="household-heading">
+                    <!-- The target placeholder for the slider -->
+                    <div class="slider-placeholder"></div>
+                    <h2 id="household-heading" class="sr-only">Household</h2>
+                    <div class="products-grid"></div>
+                </section>
 
-                <section id="stationery" aria-labelledby="stationery-heading"><div class="page-inner"></div></section>
+                <!-- Stationery Page Section -->
+                <section id="stationery" aria-labelledby="stationery-heading">
+                    <!-- The target placeholder for the slider -->
+                    <div class="slider-placeholder"></div>
+                    <h2 id="stationery-heading" class="sr-only">Stationery</h2>
+                    <div class="products-grid"></div>
+                </section>
 
-                <!-- Shopping List Basket -->
-                <section id="shoppingBasket">
-                    <div class="page-inner">
-                        <div class="heroBasket">A small slider with different information.</div>
+                <!-- Shopping List Basket Section -->
+                <section id="shoppingBasket" aria-labelledby="basket-heading">
+                    <div class="heroBasket">A small slider with different information.</div>
 
-                        <div class="basketTitle">
-                            <h2>Shopping Basket</h2>
-                        </div>
-                        <div class="basketSavedTotal">
-                            <p class="basketSavedSubtotal">Subtotal </p>
-                            <p class="basketSavedItems">(<span>0</span> items):</p>
-                            <p class="basketSavedPriceTotal">£ <span>0</span></p>
-                        </div>
+                    <div class="basketTitle">
+                        <h2 id="basket-heading" class="basketTitleH2">Shopping Basket</h2>
+                    </div>
+                    
+                    <!-- Dynamic JavaScript Basket List Injection Point -->
+                    <div id="basket-items-container"></div>
+
+                    <div class="basketSavedTotal">
+                        <p class="basketSavedSubtotal">Subtotal</p>
+                        <p class="basketSavedItems">(<span id="total-items-count">0</span> items):</p>
+                        <p class="basketSavedPriceTotal">£<span id="total-price-value">0.00</span></p>
                     </div>
                 </section>
 
-                <section id="savedItems">
-                    <div class="page-inner">
-                        <div class="basketSavedItems">
-                            <div class="basketSavedTitle">
-                                <h2>Your Items</h2>
-                            </div>
-                            <div class="basketSavedTotal">
-                                <p class="basketSavedSubtotal">Subtotal </p>
-                                <p class="basketSavedItems">(<span>0</span> items):</p>
-                                <p class="basketSavedPriceTotal">£ <span>0</span></p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+            </div>
+        </main>
+
+        <!-- ================= TEMPLATES (Kept isolated outside layout wrapper) ================= -->
+
+        <!-- Slider Animation Template -->
+        <template id="slider-animation">
+            <div class="animated-slider">
+                <div class="slide active">
+                    <img src="" alt="Promo Slider Image 1" />
+                    <div class="caption zoom-in">Explore</div>
+                </div>
+                <div class="slide">
+                    <img src="" alt="Promo Slider Image 2" />
+                    <div class="caption slide-left">Lights</div>
+                </div>
+                <div class="slide">
+                    <img src="" alt="Promo Slider Image 3" />
+                    <div class="caption fade-in">Space</div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Card Wrapper Template -->
+        <template id="product-template">
+            <div class="cardItem">
+                <img src="" alt="" class="product-img">
+                <h3 class="cardHeading"></h3>
+                <p class="cardDescription"></p>
+                <p class="cardPrice">£<span>0.00</span></p>
+                <button class="cardSubmit" type="button">Add to basket</button>
+            </div>
+        </template>
+
+        <!-- Basket Item Template -->
+        <template id="basket-template">
+            <div class="basketCard">
+                <div class="basketItem">
+                    <input type="checkbox" class="selectItem" aria-label="Select item to delete or save for later" />
+                    <img src="" alt="" class="basket-item-img">
+                    <h3 class="basketProductHeading"></h3>
+                    <p class="basketProductDescription"></p>
+                    <p class="priceProductDetails">£<span>0.00</span></p>
+                </div>
+
+                <div class="basketActionLinks">
+                    <button type="button" class="basketProductDecrease" aria-label="Decrease quantity">-</button>
+                    <span class="basketProductQuantity" aria-live="polite">1</span>
+                    <button type="button" class="basketIncrease" aria-label="Increase quantity">+</button>
+                    <button type="button" class="basketDelete">Delete</button>
+                    <button type="button" class="basketSave">Save for later</button>
+                    <button type="button" class="basketShare">Share</button>
+                </div>
+            </div>    
+        </template>
+
+
+        <!-- FOOTER -->
+        <footer id="footer">
+            <div class="page-inner">
+                <!-- Semantic Navigation Utility List -->
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <ul class="footer-links">
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Use</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Legal Metadata, Compliance & Copyright Context Blocks -->
+                <div class="footer-meta">
+                    <ul class="footer-meta-list">
+                        <li><a href="/trademark" class="trademark"> &copy; <span id="year"></span> EOUS design</a></li>
+                        <li><a href="/compliance" class="compliance"><small>SOC 2 Certified</small></a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
 
                 <!-- Checkout -->
                 <!-- <section id="checkout">
@@ -173,72 +238,3 @@
                         <p>Forgot to add something to your cart? Shop around then come back to pay!</p>
                     </div>
                 </section> -->
-
-                <!-- Slider Animation -->
-                <template id="slider-animation">
-                    <div class="animated-slider">
-                        <div class="slide active">
-                            <img srcset="" />
-                            <div class="caption zoom-in">Explore</div>
-                        </div>
-                        <div class="slide">
-                            <img srcset="" />
-                            <div class="caption slide-left">Lights</div>
-                        </div>
-                        <div class="slide">
-                            <img srcset="" />
-                            <div class="caption fade-in">Space</div>
-                        </div>
-                    </div>
-                </template>
-
-                <!-- Card Wrapper -->
-                <template id="product-template">
-                    <div class="cardItem">
-                        <img src="" alt="">
-                        <h3 class="cardHeading"><a href="#" class="cardLink"></a></h3>
-                        <p class="cardDescription"></p>
-                        <p class="cardPrice">£<span></span></p>
-                        <button class="cardSubmit" type="button">Add to basket</button>
-                    </div>
-                </template>
-
-                <!-- Saved Item Basket -->
-                <template id="basket-template">
-                    <div class="basketCard">
-                        <div class="basketItem">
-                            <input type="checkbox" class="selectItem" aria-label="Select item to delete or save for later" />
-                            <img src="" alt="">
-                            <h3 class="basketProductHeading"></h3>
-                            <p class="basketProductDescription"></p>
-                            <p class="priceProductDetails">£ <span>0.00</span></p>
-                        </div>
-
-                        <div class="basketActionLinks">
-                            <button type="button" class="basketProductDecrease" aria-label="Decrease quantity">-</button>
-                            <span class="basketProductQuantity" aria-live="polite">1</span>
-                            <button type="button" class="basketIncrease" aria-label="Increase quantity">+</button>
-                            <button type="button" class="basketDelete">Delete</button>
-                            <button type="button" class="basketSave">Save for later</button>
-                            <button type="button" class="basketShare">Share</button>
-                        </div>
-                    </div>    
-                </template>
-            </div>
-        </main>
-
-        <!-- FOOTER -->
-        <footer id="footer">
-            <div class="page-inner">
-                <section class="footer-info">
-                    <p class="trademark">&copy; <span id="year"></span> EOUS design</p>
-                    <p class="about">About</p>
-                    <p class="contact">Contact</p>
-                    <p class="privacyPolicy">Privacy Policy</p>
-                    <p class="termsOfUse">Terms of Use</p>
-                    <p class="certified">SOC 2 Certified</p>
-                </section>
-            </div>
-        </footer>
-    </body>
-</html>
