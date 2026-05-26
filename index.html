@@ -6,10 +6,8 @@
         <meta name="description" content="Friendly textbooks and resources.">
         <title>🏪 Baskit - Shopping List Project</title>
         <link rel="stylesheet" href="../css/style.css">
-        <!-- <link rel="stylesheet" href="../css/stripe.css"> -->
         <link rel="shortcut icon" href="data:,">
         <script defer src="../js/app.js"></script>
-        <!-- <script defer src="../js/server.js"></script> -->
     </head>
     <body id="container">
         <!-- HEADER -->
@@ -17,12 +15,12 @@
             <div class="page-inner">
                 <!-- Primary Navigation -->
                 <nav id="primaryNav" aria-label="Primary navigation">
-                    <ul class="primaryNavLinks">
+                    <ul class="primary-nav-links">
                         <!-- Logo -->
-                        <li class="logoName">
-                            <a class="brand" href="#hero">
-                                <img src="../images/logo-Photoroom.png" alt="Baskit logo" class="logo">
-                                <span class="name">Baskit</span>
+                        <li class="logo-name">
+                            <a class="brand-name" href="#hero">
+                                <img src="../images/logo-Photoroom.png" alt="Baskit logo" class="logo-img">
+                                <span class="brand-name-span">Baskit</span>
                             </a>
                         </li>
 
@@ -48,26 +46,26 @@
 
                         <!-- Shopping Basket (Wrapped cleanly for accessibility) -->
                         <li>
-                            <a class="basket" href="#cart" aria-label="Shopping basket, 0 items">
-                                <span id="item-count" aria-hidden="true">🛒 Basket</span>
-                                <span id="count-number" class="badge">0</span>
+                            <a class="nav-basket" href="#cart" aria-label="Shopping basket, 0 items">
+                                <span id="nav-item-count" aria-hidden="true">🛒 Basket</span>
+                                <span id="nav-count-number" class="badge">0</span>
                             </a>
                         </li>
 
                         <!-- User Account Link -->
                         <li>
-                            <a class="signin" href="#">Sign in</a>
+                            <a class="nav-signin" href="#">Sign in</a>
                         </li>
                     </ul>
                 </nav>
 
                 <!-- Secondary Navigation -->
-                <nav id="secondaryNav" aria-label="Secondary navigation">
-                    <ul class="secondaryNavLinks">
-                        <li><a class="nav-item active" aria-current="page" href="default.html">All</a></li>
-                        <li><a class="nav-item" href="#grocery">Grocery</a></li>
-                        <li><a class="nav-item" href="#household">Household</a></li>
-                        <li><a class="nav-item" href="#stationery">Stationery</a></li>
+                <nav id="secondary-nav" aria-label="Secondary navigation">
+                    <ul class="secondary-nav-links">
+                        <li><a class="nav-links-item active" aria-current="page" href="default.html">All</a></li>
+                        <li><a class="nav-links-item" href="#grocery">Grocery</a></li>
+                        <li><a class="nav-links-item" href="#household">Household</a></li>
+                        <li><a class="nav-links-item" href="#stationery">Stationery</a></li>
                     </ul>
                 </nav>
 
@@ -81,10 +79,10 @@
             <div class="page-inner">
                 
                 <!-- Landing Page Section -->
-                <section id="allProducts" aria-labelledby="allProducts-heading">
+                <section id="all-products" aria-labelledby="all-products-heading">
                     <!-- The target placeholder for the slider -->
                     <div class="slider-placeholder"></div>
-                    <h2 id="allProducts-heading" class="sr-only">All Products</h2>
+                    <h2 id="all-products-heading" class="sr-only">All Products</h2>
                     <!-- Dynamic JavaScript Product Grid injection point -->
                     <div class="products-grid"></div>
                 </section>
@@ -114,20 +112,20 @@
                 </section>
 
                 <!-- Shopping List Basket Section -->
-                <section id="shoppingBasket" aria-labelledby="basket-heading">
-                    <div class="heroBasket">A small slider with different information.</div>
+                <section id="shopping-basket" aria-labelledby="basket-heading">
+                    <div class="shopping-basket-slider">A small slider with different information.</div>
 
-                    <div class="basketTitle">
-                        <h2 id="basket-heading" class="basketTitleH2">Shopping Basket</h2>
+                    <div class="shopping-basket-title">
+                        <h2 id="shopping-basket-heading" class="shopping-basket-heading">Shopping Basket</h2>
                     </div>
                     
                     <!-- Dynamic JavaScript Basket List Injection Point -->
                     <div id="basket-items-container"></div>
 
-                    <div class="basketSavedTotal">
-                        <p class="basketSavedSubtotal">Subtotal</p>
-                        <p class="basketSavedItems">(<span id="total-items-count">0</span> items):</p>
-                        <p class="basketSavedPriceTotal">£<span id="total-price-value">0.00</span></p>
+                    <div class="shopping-basket-total">
+                        <p class="shopping-basket-subtotal">Subtotal</p>
+                        <p class="shopping-basket-items">(<span id="total-items-count">0</span> items):</p>
+                        <p class="shopping-basket-price">£<span id="total-price-value">0.00</span></p>
                     </div>
                 </section>
 
@@ -156,33 +154,32 @@
 
         <!-- Card Wrapper Template -->
         <template id="product-template">
-            <div class="cardItem">
-                <img src="" alt="" class="product-img">
-                <h3 class="cardHeading"></h3>
-                <p class="cardDescription"></p>
-                <p class="cardPrice">£<span>0.00</span></p>
-                <button class="cardSubmit" type="button">Add to basket</button>
+            <div class="product-card-item">
+                <img src="" alt="" class="product-card-img">
+                <p class="product-card-description"></p>
+                <p class="product-card-price">£<span>0.00</span></p>
+                <p class="product-card-id"></p>
+                <button class="product-card-button" type="button">Add to basket</button>
             </div>
         </template>
 
         <!-- Basket Item Template -->
         <template id="basket-template">
-            <div class="basketCard">
-                <div class="basketItem">
-                    <input type="checkbox" class="selectItem" aria-label="Select item to delete or save for later" />
-                    <img src="" alt="" class="basket-item-img">
-                    <h3 class="basketProductHeading"></h3>
-                    <p class="basketProductDescription"></p>
-                    <p class="priceProductDetails">£<span>0.00</span></p>
+            <div class="basket-card">
+                <div class="basket-card-item">
+                    <input type="checkbox" class="basket-card-select-item" aria-label="Select item to delete or save for later" />
+                    <img src="" alt="" class="basket-card-img">
+                    <h3 class="basket-card-heading"></h3>
+                    <p class="basket-card-description"></p>
+                    <p class="basket-card-price">£<span>0.00</span></p>
                 </div>
 
-                <div class="basketActionLinks">
-                    <button type="button" class="basketProductDecrease" aria-label="Decrease quantity">-</button>
-                    <span class="basketProductQuantity" aria-live="polite">1</span>
-                    <button type="button" class="basketIncrease" aria-label="Increase quantity">+</button>
-                    <button type="button" class="basketDelete">Delete</button>
-                    <button type="button" class="basketSave">Save for later</button>
-                    <button type="button" class="basketShare">Share</button>
+                <div class="basket-action-links">
+                    <button type="button" class="basket-action-decrease" aria-label="Decrease quantity">-</button>
+                    <span class="basket-action-product-quantity" aria-live="polite">1</span>
+                    <button type="button" class="basket-action-increase" aria-label="Increase quantity">+</button>
+                    <button type="button" class="basket-action-delete">Delete</button>
+                    <button type="button" class="basket-action-share">Share</button>
                 </div>
             </div>    
         </template>
@@ -212,29 +209,3 @@
         </footer>
     </body>
 </html>
-
-                <!-- Checkout -->
-                <!-- <section id="checkout">
-                    <div>
-                        <div class="product">
-                            <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />
-                            <div class="description">
-                                <h3>Stubborn Attachments</h3>
-                                <h5>$20.00</h5>
-                            </div>
-                        </div>
-                        <form action="/create-checkout-session" method="POST">
-                            <button type="submit" id="checkout-button">Checkout</button>
-                        </form>
-                    </div>
-                    
-                    <div id="success">
-                        <p>We appreciate your business! If you have any questions, please email: 
-                            <a href="mailto:orders@example.com">orders@example.com</a>.
-                        </p>
-                    </div>
-                    
-                    <div id="cancel">
-                        <p>Forgot to add something to your cart? Shop around then come back to pay!</p>
-                    </div>
-                </section> -->
