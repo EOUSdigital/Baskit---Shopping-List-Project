@@ -176,8 +176,15 @@ a {
 
 /* === NAVIGATION === */
 
-#primaryNav,
-#secondaryNav {
+#primary-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    width: 100%;
+}
+
+#secondary-nav {
     width: 100%;
 }
 
@@ -185,37 +192,116 @@ a {
     display: flex;
     align-items: center;
     gap: var(--spacing-lg);
+    
+    flex: 1 1 auto;
+    width: 100%;
 }
 
-#searchAlias {
+.search-container {
+    flex: 1 1 auto;
+    /* max-width: 45rem; */
+    margin-inline: var(--spacing-md);
+}
+
+/* The main wrapper of the form */
+
+.nav-searchbar {
     display: flex;
     align-items: center;
-    flex: 1 1 auto;
-    min-width: 0;
-    gap: var(--spacing-sm);
+    width: 100%;
+    height: var(--input-height);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
 }
 
-#nav-search-dropdown-card, .nav-search-field {
+/* Focus state for accessibility - highlights the whole search bar wrapper */
+.nav-searchbar:focus-within {
+    box-shadow: var(--focus-ring);
+    border-color: var(--color-primary);
+}
+
+/* Left Side: The Dropdown wrapper */
+.nav-left {
     flex: 0 0 auto;
+    height: 100%;
 }
 
-.searchForm {
+.nav-search-dropdown {
+    height: 100%;
+    padding: 0 var(--spacing-sm);
+    background-color: var(--color-background);
+    color: var(--color-text-secondary);
+    border: none;
+    border-right: 1px solid var(--color-border);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    outline: none;
+}
+
+/* Middle Side: The Input field wrapper */
+.nav-fill {
     display: flex;
     flex: 1 1 auto;
-    min-width: 0;
-    width: 100%;
+    height: 100%;
 }
 
-.searchForm input[type="search"] {
-    flex: 1 1 auto;
-    min-height: 0;
+#search-input {
     width: 100%;
+    height: 100%;
+    padding: 0 var(--spacing-md);
+    border: none;
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    outline: none;
 }
 
-.nav-basket,
+/* Right Side: The Submit Button wrapper */
+.nav-right {
+    flex: 0 0 auto;
+    height: 100%;
+}
+
+#search-submit {
+    height: 100%;
+    padding: 0 var(--spacing-lg);
+    background-color: var(--color-warning);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+#search-submit:hover {
+    filter: brightness(0.9);
+}
+
+/* Keep the text sizes uniform inside your form components */
+.nav-search-dropdown,
+#search-input,
+#search-submit {
+    font-family: inherit;
+}
+
+/* === SIGN IN === */
+
 .signin {
     flex: 0 0 auto;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-lg);
+    transition: background var(--transition-fast), color var(--transition-fast);
 }
+
+.signin:hover {
+    background: var(--color-primary);
+    color: var(--color-surface);
+}
+
+/* SECONDARY NAV */
 
 .secondary-nav-links {
     display: flex;
@@ -227,34 +313,16 @@ a {
 }
 
 
-/* === SIGN IN === */
-
-.signin {
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-primary);
-    padding: var(--spacing-xs);
-    border-radius: var(--radius-lg);
-}
-
-.signin:hover {
-    background: var(--color-primary);
-    color: var(--color-surface);
-    transition: var(--transition-fast);
-}
-
-
 /* -----===== BODY =====----- */
 
 /* -=-=-= General Settings =-=-=- */
 
-#header,
-#main,
-#footer {
-    width: 100%;
-}
-
 #main .page-inner > section {
     margin-bottom: var(--spacing-2xl);
+}
+
+.hidden {
+    display: none;
 }
 
 /* -=-=-= Animated Slider =-=-=- */
@@ -349,18 +417,7 @@ a {
 }
 
 
-
-
-
-/* === Grid === */
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    justify-content: center;
-    gap: var(--spacing-xl);
-}
-
+/* === Card === */
 
 .product-card-item {
     position: relative;
@@ -372,7 +429,6 @@ a {
     padding: var(--spacing-xl);
 
     width: 100%;
-    max-width: 18rem;
     height: 25rem;
 
     background: var(--color-surface);
@@ -395,30 +451,29 @@ a {
 
 /* BASKET */
 
-
-
-
-/* SAVED ITEMS */
-
 .basket-card-item {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin: 1rem;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    border: 0.1rem solid var(--color-border);
     gap: 2rem;
+}
+
+.basket-details {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
 }
 
 .basketImage img {
     width: 5rem;
-    height: auto;
-}
-
-.basketTotal {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 1rem;
-    gap: 1rem;
+    height: 5rem;
+    object-fit: contain;
+    border-radius: var(--radius-md);
 }
 
 
@@ -451,5 +506,4 @@ a {
 @media only screen and (min-width: 48rem) {
     
 }
-
 
