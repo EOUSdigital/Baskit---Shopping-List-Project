@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Friendly textbooks and resources.">
+        <title>🏪 Baskit - Shopping List Project</title>
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="shortcut icon" href="data:,">
+        <script defer src="../js/app.js"></script>
+    </head>
+    <body id="container">
+        <!-- HEADER -->
+        <header id="header">
+            <div class="page-inner">
+                <!-- Primary Navigation -->
+                <nav id="primary-nav" aria-label="Primary navigation">
+                    <ul class="primary-nav-links">
+                        <!-- Logo -->
+                        <li class="logo-name">
+                            <a class="brand-name" href="#hero">
+                                <img src="../images/logo-Photoroom.png" alt="Baskit logo" class="logo-img">
+                                <span class="brand-name-span">Baskit</span>
+                            </a>
+                        </li>
+
+                        <!-- Search Form (Expanded to fill space via CSS flex) -->
+                        <li class="search-container">
+                            <form id="search-form" action="/search" class="nav-searchbar" method="GET" role="search">
+                                <div class="nav-left">
+                                    <select id="search-category" name="category" aria-label="Select category" class="nav-search-dropdown">
+                                        <option value="all" selected>All</option>
+                                        <option value="grocery">Grocery</option>
+                                        <option value="household">Household</option>
+                                        <option value="stationery">Stationery</option>
+                                    </select>
+                                </div>
+                                <div class="nav-fill">
+                                    <input type="search" id="search-input" name="q" placeholder="Search Baskit" autocomplete="off" required>
+                                </div>
+                                <div class="nav-right">
+                                    <button type="submit" id="search-submit">Go</button>
+                                </div>
+                            </form>
+                        </li>
+
+                        <!-- Shopping Basket (Wrapped cleanly for accessibility) -->
+                        <li>
+                            <a class="nav-basket" href="#cart" aria-label="Shopping basket, 0 items">
+                                <span id="nav-item-count" aria-hidden="true">🛒 Basket</span>
+                                <span id="nav-count-number" class="badge">0</span>
+                            </a>
+                        </li>
+
+                        <!-- User Account Link -->
+                        <li>
+                            <a class="nav-signin" href="#">Sign in</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Secondary Navigation -->
+                <nav id="secondary-nav" aria-label="Secondary navigation">
+                    <ul class="secondary-nav-links">
+                        <li><a class="nav-links-item active" aria-current="page" href="#all-products">All</a></li>
+                        <li><a class="nav-links-item" href="#grocery">Grocery</a></li>
+                        <li><a class="nav-links-item" href="#household">Household</a></li>
+                        <li><a class="nav-links-item" href="#stationery">Stationery</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+        </header>
+
+
+        <!-- MAIN -->
+        <main id="main">
+            <!-- Single main layout wrapper for structural alignment -->
+            <div class="page-inner">
+                
+                <!-- Landing Page Section -->
+                <section id="all-products" aria-labelledby="all-products-heading">
+                    <!-- The target placeholder for the slider -->
+                    <div class="slider-placeholder"></div>
+                    <h2 id="all-products-heading" class="sr-only">All Products</h2>
+                    <!-- Dynamic JavaScript Product Grid injection point -->
+                    <div class="all-products-grid"></div>
+                </section>
+
+                <!-- Grocery Page Section -->
+                <section id="grocery" aria-labelledby="grocery-heading" class="hidden">
+                    <!-- The target placeholder for the slider -->
+                    <div class="slider-placeholder"></div>
+                    <h2 id="grocery-heading" class="sr-only">Grocery</h2>
+                    <div class="grocery-grid"></div>
+                </section>
+
+                <!-- Household Page Section -->
+                <section id="household" aria-labelledby="household-heading" class="hidden">
+                    <!-- The target placeholder for the slider -->
+                    <div class="slider-placeholder"></div>
+                    <h2 id="household-heading" class="sr-only">Household</h2>
+                    <div class="household-grid"></div>
+                </section>
+
+                <!-- Stationery Page Section -->
+                <section id="stationery" aria-labelledby="stationery-heading" class="hidden">
+                    <!-- The target placeholder for the slider -->
+                    <div class="slider-placeholder"></div>
+                    <h2 id="stationery-heading" class="sr-only">Stationery</h2>
+                    <div class="stationery-grid"></div>
+                </section>
+
+                <!-- Shopping List Basket Section -->
+                <section id="shopping-basket" aria-labelledby="basket-heading">
+                    <div class="shopping-basket-slider">A small slider with different information.</div>
+
+                    <div class="shopping-basket-title">
+                        <h2 id="shopping-basket-heading" class="shopping-basket-heading">Shopping Basket</h2>
+                    </div>
+                    
+                    <!-- Dynamic JavaScript Basket List Injection Point -->
+                    <div id="basket-items-container"></div>
+
+                    <div class="shopping-basket-total">
+                        <p class="shopping-basket-subtotal">Subtotal</p>
+                        <p class="shopping-basket-items">(<span id="total-items-count">0</span> items):</p>
+                        <p class="shopping-basket-price">£<span id="total-price-value">0.00</span></p>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- ================= TEMPLATES (Kept isolated outside layout wrapper) ================= -->
+
+        <!-- Slider Animation Template -->
+        <template id="slider-animation">
+            <div class="animated-slider">
+                <div class="slide active">
+                    <img src="" alt="Promo Slider Image 1" />
+                    <div class="caption zoom-in">Explore</div>
+                </div>
+                <div class="slide">
+                    <img src="" alt="Promo Slider Image 2" />
+                    <div class="caption slide-left">Lights</div>
+                </div>
+                <div class="slide">
+                    <img src="" alt="Promo Slider Image 3" />
+                    <div class="caption fade-in">Space</div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Card Wrapper Template -->
+        <template id="product-template">
+            <div class="product-card-item">
+                <img src="" alt="" class="product-card-img" />
+                <p class="product-card-description"></p>
+                <p class="product-card-price">£<span>0.00</span></p>
+                <p class="product-card-id"></p>
+                <button class="product-card-button" type="button">Add to basket</button>
+            </div>
+        </template>
+
+        <!-- Basket Item Template -->
+        <template id="basket-template">
+            <div class="basket-card">
+                <div class="basket-card-item">
+                    <input type="checkbox" class="basket-card-select-item" aria-label="Select item to delete or save for later" />
+                    <img src="" alt="" class="basket-card-img" />
+                    <h3 class="basket-card-heading"></h3>
+                    <p class="basket-card-description"></p>
+                    <p class="basket-card-price">£<span>0.00</span></p>
+                </div>
+
+                <div class="basket-action-links">
+                    <button type="button" class="basket-action-decrease" aria-label="Decrease quantity">-</button>
+                    <span class="basket-action-product-quantity" aria-live="polite">1</span>
+                    <button type="button" class="basket-action-increase" aria-label="Increase quantity">+</button>
+                    <button type="button" class="basket-action-delete">Delete</button>
+                    <button type="button" class="basket-action-share">Share</button>
+                </div>
+            </div>    
+        </template>
+
+
+        <!-- FOOTER -->
+        <footer id="footer">
+            <div class="page-inner">
+                <!-- Semantic Navigation Utility List -->
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <ul class="footer-links">
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Use</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Legal Metadata, Compliance & Copyright Context Blocks -->
+                <div class="footer-meta">
+                    <ul class="footer-meta-list">
+                        <li><a href="/trademark" class="trademark"> &copy; <span id="year"></span> EOUS design</a></li>
+                        <li><a href="/compliance" class="compliance"><small>SOC 2 Certified</small></a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
