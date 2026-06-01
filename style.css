@@ -155,14 +155,14 @@ a {
     z-index: 1000;
 
     width: 100%;
-    margin: 0 auto var(--spacing-lg);
+    margin: 0 auto var(--spacing-xs);
     padding: var(--spacing-md);
     background-color: var(--color-surface);
 
     box-shadow: var(--shadow-md);
 }
 
-/* === LOGO === */
+/* -=-=-= LOGO =-=-=- */
 
 .logo-img {
     width: 1.6rem;
@@ -174,7 +174,7 @@ a {
     font-weight: var(--font-weight-bold);
 }
 
-/* === NAVIGATION === */
+/* -=-=-= NAVIGATION =-=-=- */
 
 #primary-nav {
     display: flex;
@@ -194,17 +194,16 @@ a {
     gap: var(--spacing-lg);
     
     flex: 1 1 auto;
-    width: 100%;
+    width: 100%; 
+    margin-bottom: var(--spacing-md);
 }
 
 .search-container {
     flex: 1 1 auto;
-    /* max-width: 45rem; */
     margin-inline: var(--spacing-md);
 }
 
 /* The main wrapper of the form */
-
 .nav-searchbar {
     display: flex;
     align-items: center;
@@ -301,21 +300,21 @@ a {
     color: var(--color-surface);
 }
 
-/* SECONDARY NAV */
+/* -=-=-= SECONDARY NAV =-=-=- */
 
 .secondary-nav-links {
     display: flex;
     justify-content: space-evenly; 
     align-items: center;
     
-    margin: var(--spacing-lg);
+    margin-bottom: var(--spacing-xs);
     list-style: none;
 }
 
 
 /* -----===== BODY =====----- */
 
-/* -=-=-= General Settings =-=-=- */
+/* -=-=-= MAIN - General Settings =-=-=- */
 
 #main .page-inner > section {
     margin-bottom: var(--spacing-2xl);
@@ -331,29 +330,32 @@ a {
     position: relative;
     width: 100%;
     max-width: var(--container-max);
-    margin-inline: auto;
+    margin: 0 auto var(--spacing-xl) auto;
     height: 25rem;
     overflow: hidden;
-    border-radius: 1rem;
-    box-shadow: 0 0 1.3rem rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
 }
 
 .slide {
     position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 1s ease;
+    z-index: 1;
+    transition: opacity var(--transition-slow);
 }
 
 .slide.active {
     opacity: 1;
-    z-index: 1;
+    z-index: 2;
 }
 
 .slide img {
     width: 100%;
     height: 100%;
+    /* This ensures the banner images perfectly stretch across the 25rem height container (.animated-slider) without squishing or altering aspect ratios. */
     object-fit: cover;
 }
 
@@ -362,70 +364,61 @@ a {
     bottom: 2rem;
     left: 2.5rem;
     color: white;
-    
     font-size: var(--font-size-3xl);
     font-weight: var(--font-weight-bold);
+    
+    /* Text shield protection layer */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); 
+    
     opacity: 0;
+    z-index: 3;
 }
 
-/* Animation classes */
+/* Base keyframe attachments */
 
-.zoom-in {
-    animation: zoomIn 1s ease forwards;
-    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
-}
-
-.slide-left {
-    animation: slideLeft 1s ease forwards;
-}
-
-.fade-in {
-    animation: fadeIn 1s ease forwards;
-}
-
-/* Animated Slider - Keyframes */
+/* Keeping 'forwards' ensures the captions stay fully visible (opacity: 1) once their CSS keyframe cycle finishes. */
+/* animation: name duration timing-function delay iteration-count direction fill-mode; */
+.zoom-in { animation: zoomIn 1s ease forwards; }
+.slide-left { animation: slideLeft 1s ease forwards; }
+.fade-in { animation: fadeIn 1s ease forwards; }
 
 @keyframes zoomIn {
-    0% {
-        transform: scale(0.5);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes slideLeft {
-    0% {
-        transform: translateX(100px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
+    0% { transform: translateX(100px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
+/* -=-=-= Product Grid Layouts =-=-=- */
 
-/* === Card === */
+.product-grid {
+    display: grid;
+    /* Clean fluid layout: items never shrink smaller than 250px, and fill 1 empty fractional unit of space evenly */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-xl); /* Matches your spacing tokens for a clean whitespace gap */
+    width: 100%;
+    margin-top: var(--spacing-xl);
+}
+
+/* Ensure the layout wraps correctly when empty or loading dynamically */
+.product-grid:empty {
+    display: block;
+}
+
+/* -=-=-= Card Wrapper Template =-=-=- */
 
 .product-card-item {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
     padding: var(--spacing-xl);
 
     width: 100%;
@@ -439,7 +432,7 @@ a {
 }
 
 .product-card-item:hover {
-    transform: translateY(-1px);
+    transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
 }
 
@@ -447,9 +440,68 @@ a {
     width: 100%;
     height: 12rem; /* Give it a standard bounded height */
     object-fit: cover; /* Keeps image proportions from squishing */
+
+    border-radius: var(--radius-md); /* Added a subtle roundness to match your card */
+    margin-bottom: var(--spacing-md);
 }
 
-/* BASKET */
+.product-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    flex-grow: 1;
+    text-align: left;
+}
+
+.product-card-description {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-tight);
+
+    display: -webkit-box;           /* Activates legacy flexbox */
+    -webkit-box-orient: vertical;   /* Sets layout direction to vertical */  
+    overflow: hidden;               /* Hides the text beyond 2 lines */
+
+    /* Legacy prefixed property for current/older browsers */
+    -webkit-line-clamp: 2;          /* Limits text to exactly 2 lines */
+
+    /* Official standard property for modern/future engines */
+    line-clamp: 2;
+}
+
+.product-card-price {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-top: auto;
+}
+
+.product-card-button {
+    width: 100%;
+    height: var(--input-height);
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-sm);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    margin-top: var(--spacing-md);
+    transition: background-color var(--transition-fast);
+}
+
+.product-card-button:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.product-card-button:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+
+/*  -----===== BASKET =====----- */
 
 .basket-card-item {
     display: flex;
@@ -477,7 +529,7 @@ a {
 }
 
 
-/* FOOTER */
+/* -----===== FOOTER =====----- */
 
 #footer {
     box-shadow: inset 0 1px 0 0 var(--color-border);
@@ -489,7 +541,7 @@ a {
     justify-content: space-evenly;
     align-items: center;
 
-    margin: var(--spacing-lg);
+    margin: var(--spacing-md);
 }
 
 .footer-meta-list {
@@ -497,10 +549,10 @@ a {
     justify-content: space-evenly;
     align-items: center;
 
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
 }
 
-/* === Media Queries === */
+/* -----===== Media Queries =====----- */
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 48rem) {
