@@ -528,6 +528,13 @@ a {
     border-radius: var(--radius-md);
 }
 
+.product-card-heading, 
+.basket-card-heading {
+    display: inline; /* Keeps it on the same line if text wraps tightly */
+    margin: 0;       /* Strips out default browser vertical spacing */
+    font-size: 1rem; /* Forces it to stay small and fit your spacing budget */
+}
+
 
 /* -----===== FOOTER =====----- */
 
