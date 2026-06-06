@@ -1,71 +1,71 @@
 "use strict";           // Forces the browser to run your code strictly, throwing errors for bad practices.
 
-// HEADER
+// ==========================================
+// 1. HEADER & NAVIGATION SYSTEM
+// ==========================================
 
-
-
-// This grabs all your category navigation links
+//  Grabs all HTML elements with the class 'nav-links-item' (the menu buttons)
 const navLinks = document.querySelectorAll('.nav-links-item');
+//  Grabs all <section> elements living inside your <main> container
 const sections = document.querySelectorAll('main section');
 
-// Loops through every navigation link button one by one
+//  Loops through every navigation link button one by one
 navLinks.forEach(link => {
-    // Adds an event listener that waits for the user to click that link
     link.addEventListener('click', (event) => {
-        // Prevents the default browser action (stops the page from jumping or reloading)
+        //  Prevents the default browser action (stops the page from jumping or reloading)
         event.preventDefault();
 
-        //  Step A: Loops through all 4 store sections and adds the 'hidden' class to conceal them
+        //  Step 1: Loops through all store sections and adds the 'hidden' class to conceal them.
         sections.forEach(section => {
             section.classList.add('hidden');
         });
         
-        // Step B: Find the target section ID from the clicked link's href attribute (e.g., "#grocery") and saves it
-        // (e.g., if href is "#grocery", targetId becomes "#grocery")
-        // This grabs the "#grocery" or "#household" from the link
+        // Step 2: Find the target section ID from the clicked link's href attribute (e.g., "#grocery")
         const targetSectionId = link.getAttribute('href'); 
-        
-        // Step C: Open the chosen curtain (find that section and remove 'hidden'). Uses that ID to find the matching section element in your HTML.
         const targetSection = document.querySelector(targetSectionId);
-        //  If it successfully finds that section, it removes 'hidden' to make it visible
+        
+        // Step 3: Open the chosen section and trigger its slider engine dynamically!
         if (targetSection) {
             targetSection.classList.remove('hidden');
+            
+            // ADDED: Initialize the promo slider for this tab if it isn't running yet!
+            renderPromoSlider(targetSection);
         }
-        
     });
 });
 
 
-// Animated Slider
+// ==========================================
+// 2. ANIMATED SLIDER ENGINE
+// ==========================================
 
-// Run all initialization logic safely inside a self-contained layout function. Defines the function meant to build and rotate a promotional image slider.
-function renderPromoSlider() {
-    // Tries to find the active section container using 'categoryName'
-    const activeSection = document.getElementById(categoryName) || document.getElementById('all-products');
+function renderPromoSlider(sectionElement) {
+    // Safety check: If no section element was provided to the function, exit out early.
+    if (!sectionElement) return;
 
-    // Finds the product grid container inside the active section.
-    const gridContainer = activeSection.querySelector('.product-grid');
-
-    // Grabs the slider blueprint from the HTML <template> tag.
+    // Target the slider placeholder element specifically, NOT the product grid.
+    const placeholder = sectionElement.querySelector('.slider-placeholder');
     const template = document.getElementById('animated-slider-template');
 
     // Structural guard safety check: if either container or template is missing, stop running completely.
-    if (!gridContainer || !template) return;
+    if (!placeholder || !template) return;
 
-    // 1. Clear out placeholder text content & grab a clean template copy. Erases everything inside the gridContainer to make it empty.
-    gridContainer.innerHTML = '';
-    // Creates a fresh, digital clone of the slider template blueprint.
+    // ADDED SAFEGUARD: If a slider is already rendered inside this section, stop here!
+    // This prevents duplicate intervals from stacking up if a user clicks the same link twice.
+    if (placeholder.querySelector('.animated-slider')) return;
+
+    // Clear out placeholder text content & grab a clean template copy.
+    placeholder.innerHTML = '';
     const templateClone = template.content.cloneNode(true);
 
-    // 2. Inject the clean slider clone node directly into the gridContainer page layout.
-    gridContainer.appendChild(templateClone);
+    // Inject the clean slider clone node directly into the page layout placeholder.
+    placeholder.appendChild(templateClone);
 
-    // 3. Select target slide items ONLY after they are living inside the live DOM canvas. Finds all individual slides inside the slider just created.
-    const slides = gridContainer.querySelectorAll('.slide');
-    // Starts the counter at index 0 (the first slide).
+    // Select target slide items inside this specific placeholder canvas.
+    const slides = placeholder.querySelectorAll('.slide');
     let current = 0;
 
-    // Internal navigation logic engine
+    // Internal navigation logic engine. Takes an index number and activates that specific slide image.
     function showSlide(index) {
         // Removes the 'active' visibility class from all slides
         slides.forEach((slide) => {
@@ -74,132 +74,52 @@ function renderPromoSlider() {
 
         // Grabs the specific slide matching our current index number.
         const currentSlide = slides[index];
-        // Guard clause in case the slide does not exist.
         if (!currentSlide) return;
 
-        // Makes the single active slide visible.
+        // Makes the single active slide visible. The modern CSS rules handle nested captions automatically!
         currentSlide.classList.add('active');
-
-        // Finds the text caption layer on the slide.
-        const caption = currentSlide.querySelector('.caption');
-        if (!caption) return;
-
-        // Extracts the CSS animation class (like 'zoom-in' or 'slide-left').
-        const animClass = caption.classList[1];
-        if (animClass) {
-            caption.classList.remove(animClass);
-            // Force reflow. Clean browser engine reflow trigger. Without it, the entry animations (zoom-in, slide-left, etc.) would only play once when the page first loads, remaining static on later loops.
-            void caption.offsetWidth;
-            // Re-triggers the animation from scratch
-            caption.classList.add(animClass);
-        }
     }
 
-    // Inner function: calculates the next slide number, wrapping back around to 0 at the end.
+    // Calculates the next slide number, wrapping back around to 0 at the end.
     function nextSlide() {
         current = (current + 1) % slides.length;
         showSlide(current);
     }
 
-    // Sets a repeating smoothly timer that fires the 'nextSlide' function every 7000 milliseconds (7 seconds) safely.
+    // Rotates smoothly every 7 seconds safely
     setInterval(nextSlide, 7000);
 }
 
-// Tells the browser: "As soon as the HTML structure finishes loading, run the slider function".
-document.addEventListener('DOMContentLoaded', renderPromoSlider);
+// ==========================================
+// 3. CORE INITIALIZATION & APP ROUTING
+// ==========================================
+
+// Fire slider engine once the landing page DOM nodes are loaded safely!
+document.addEventListener('DOMContentLoaded', () => {
+    // Find our main landing page section container (#all-products)
+    const initialSection = document.getElementById('all-products');
+    renderPromoSlider(initialSection);
+});
 
 // A placeholder function designed to load specific store views when called.
 function loadStoreSection(categoryName) {
-    // Calls the slider function.
-    renderPromoSlider();
+    const currentSection = document.getElementById(categoryName);
+    renderPromoSlider(currentSection);
 
     const heading = document.getElementById('all-products-heading');
     if (heading) {
-        // Changes heading text dynamically.
         heading.textContent = `${categoryName} Products`;
     }
 
-    // Triggers the product card grid renderer.
     renderPromoGrid(categoryName);
 }
 
+// ==========================================
+// 4. FOOTER COMPONENT
+// ==========================================
 
-
-//  Footer Year Date. Finds the <span> with ID 'year' in the footer and sets it to the current calendar year.
+// Finds the <span> with ID 'year' in the footer and sets it to the current calendar year.
 document.getElementById("year").textContent = new Date().getFullYear();
-
-
-
-
-
-
-
-targetSection.querySelector('.slider-placeholder');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
