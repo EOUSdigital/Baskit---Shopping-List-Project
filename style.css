@@ -378,9 +378,9 @@ a {
 
 /* Keeping 'forwards' ensures the captions stay fully visible (opacity: 1) once their CSS keyframe cycle finishes. */
 /* animation: name duration timing-function delay iteration-count direction fill-mode; */
-.zoom-in { animation: zoomIn 1s ease forwards; }
-.slide-left { animation: slideLeft 1s ease forwards; }
-.fade-in { animation: fadeIn 1s ease forwards; }
+.slide.active .zoom-in { animation: zoomIn 1s ease forwards; }
+.slide.active .slide-left { animation: slideLeft 1s ease forwards; }
+.slide.active .fade-in { animation: fadeIn 1s ease forwards; }
 
 @keyframes zoomIn {
     0% { transform: scale(0.5); opacity: 0; }
@@ -500,6 +500,9 @@ a {
     box-shadow: var(--focus-ring);
 }
 
+/*  -----===== MAIN SECTION LAYOUT =====----- */
+
+#all-products 
 
 /*  -----===== BASKET =====----- */
 
