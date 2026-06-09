@@ -331,10 +331,12 @@ a {
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto var(--spacing-xl) auto;
-    height: 25rem;
-    overflow: hidden;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
+    
+    height: 25rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 6;
 }
 
 .slide {
@@ -502,7 +504,13 @@ a {
 
 /*  -----===== MAIN SECTION LAYOUT =====----- */
 
-#all-products 
+#all-products {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: var(--container-max);
+    margin: 0 auto;
+}
 
 /*  -----===== BASKET =====----- */
 
