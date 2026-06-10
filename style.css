@@ -324,6 +324,24 @@ a {
     display: none;
 }
 
+/* -=-=-= Product Grid Layouts =-=-=- */
+
+.product-grid {
+    display: grid;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-3xl);
+    width: 100%;
+    
+    grid-template-columns: 1fr;
+    outline: 1px solid blue;
+}
+
+/* Ensure the layout wraps correctly when empty or loading dynamically */
+
+.product-grid:empty {
+    display: block;
+}
+
 /* -=-=-= Animated Slider =-=-=- */
 
 .animated-slider {
@@ -397,22 +415,6 @@ a {
 @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }
-}
-
-/* -=-=-= Product Grid Layouts =-=-=- */
-
-.product-grid {
-    display: grid;
-    /* Clean fluid layout: items never shrink smaller than 250px, and fill 1 empty fractional unit of space evenly */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-xl); /* Matches your spacing tokens for a clean whitespace gap */
-    width: 100%;
-    margin-top: var(--spacing-xl);
-}
-
-/* Ensure the layout wraps correctly when empty or loading dynamically */
-.product-grid:empty {
-    display: block;
 }
 
 /* -=-=-= Card Wrapper Template =-=-=- */
@@ -504,13 +506,49 @@ a {
 
 /*  -----===== MAIN SECTION LAYOUT =====----- */
 
+/*  -----===== All Products =====----- */
+
 #all-products {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: grid;
     max-width: var(--container-max);
     margin: 0 auto;
+    outline: 1px solid red;
 }
+
+#all-products-heading {
+    display: flex;
+}
+
+/*  -----===== All Products Unique Classes =====----- */
+
+.flash-deals {...}
+
+.mock-card {
+    background-color: #3b82f6; /* A bright blueprint blue */
+    color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    min-height: 350px; /* Gives the empty block physical height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.custom-solutions:first-child {
+    background-color: #0f7a52;
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.just-for-you {...}
+
+.essential-collection {...}
+
+.new-arrivals {...}
+
+.seasonal-content {...}
 
 /*  -----===== BASKET =====----- */
 
@@ -572,8 +610,20 @@ a {
 
 /* -----===== Media Queries =====----- */
 
+/* FIRST SETTINGS EXAMPLE */
+
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 48rem) {
-    
+@media only screen and (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* Snaps strictly to 2 columns */
+    }
 }
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr); /* Snaps strictly to 4 columns */
+    }
+}
+
 
