@@ -111,6 +111,7 @@
 
 html {
     height: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -142,8 +143,12 @@ a {
 }
 
 .page-inner {
-    width: min(100% - 2rem, var(--container-max));
+    /* width: min(100% - 2rem, var(--container-max)); */
+    width: 100%;
+    max-width: var(--container-max);
     margin-inline: auto;
+    padding-inline: var(--gutter, 2rem);
+    box-sizing: border-box;
 }
 
 
@@ -196,6 +201,7 @@ a {
     flex: 1 1 auto;
     width: 100%; 
     margin-bottom: var(--spacing-md);
+    flex-wrap: wrap
 }
 
 .search-container {
@@ -309,6 +315,9 @@ a {
     
     margin-bottom: var(--spacing-xs);
     list-style: none;
+
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
 }
 
 
@@ -321,7 +330,19 @@ a {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+#all-products, 
+#grocery, 
+#household, 
+#stationery, 
+#shopping-basket {
+    position: relative;
+    display: block; /* Removed display: grid to allow children 100% width freedom */
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto;
 }
 
 /* -=-=-= Product Grid Layouts =-=-=- */
@@ -351,10 +372,10 @@ a {
     margin: 0 auto var(--spacing-xl) auto;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
-    
-    height: 25rem;
     overflow: hidden;
+    
     aspect-ratio: 16 / 6;
+    max-height: 25rem;
 }
 
 .slide {
@@ -522,33 +543,30 @@ a {
 
 /*  -----===== All Products Unique Classes =====----- */
 
-.flash-deals {...}
-
-.mock-card {
-    background-color: #3b82f6; /* A bright blueprint blue */
-    color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    min-height: 350px; /* Gives the empty block physical height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+.flash-deals {
+    grid-template-columns: 1fr;
 }
 
-.custom-solutions:first-child {
+.custom-solutions .product-card-item:first-child {
     background-color: #0f7a52;
-    grid-column: span 2;
-    grid-row: span 2;
+    color: var(--color-surface);
 }
 
-.just-for-you {...}
+.just-for-you {
+    grid-template-columns: 1fr;
+}
 
-.essential-collection {...}
+.product-grid.essential-collection {
+    grid-template-columns: repeat(2, 1fr);
+}
 
-.new-arrivals {...}
+.new-arrivals {
+    grid-template-columns: 1fr;
+}
 
-.seasonal-content {...}
+.product-grid.seasonal-content {
+    grid-template-columns: repeat(3, 1fr);
+}
 
 /*  -----===== BASKET =====----- */
 
@@ -613,17 +631,29 @@ a {
 /* FIRST SETTINGS EXAMPLE */
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 48rem) { /* 48rem = 768px */
     .product-grid {
         grid-template-columns: repeat(2, 1fr); /* Snaps strictly to 2 columns */
+    }
+    
+    .custom-solutions .product-card-item:first-child {
+        grid-column: span 2;
+        grid-row: span 2;
+        height: 100%;
     }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 75rem) { /* 75rem = 1200px */
     .product-grid {
         grid-template-columns: repeat(4, 1fr); /* Snaps strictly to 4 columns */
     }
-}
 
+    .new-arrivals .ad-card {
+        background-color: var(--color-warning); /* Make it stand out visually */
+        grid-column: 4;     /* Lock it strictly into the 4th column track on the right */
+        grid-row: span 2;   /* Make it stretch downwards across 2 full rows */
+        height: 100%;       /* Force it to fill the entire expanded height boundary */
+    }
+}
 
