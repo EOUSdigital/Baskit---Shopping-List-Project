@@ -645,15 +645,29 @@ a {
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 75rem) { /* 75rem = 1200px */
+    
+    /* 1. Global rule: normal grids default to 4 columns */
     .product-grid {
-        grid-template-columns: repeat(4, 1fr); /* Snaps strictly to 4 columns */
+        grid-template-columns: repeat(4, 1fr); 
     }
 
+    /* 2. Specificity Overrides: Lock down your special section budgets */
+    .product-grid.essential-collection {
+        grid-template-columns: repeat(2, 1fr); /* Force 2 wide columns */
+    }
+
+    .product-grid.seasonal-content {
+        grid-template-columns: repeat(3, 1fr); /* Force 3 magazine-style columns */
+    }
+
+    /* 3. The Advertisement Layout Superpowers! */
     .new-arrivals .ad-card {
-        background-color: var(--color-warning); /* Make it stand out visually */
-        grid-column: 4;     /* Lock it strictly into the 4th column track on the right */
-        grid-row: span 2;   /* Make it stretch downwards across 2 full rows */
-        height: 100%;       /* Force it to fill the entire expanded height boundary */
+        grid-row: span 2;               /* Force card to drop downward across 2 full rows */
+        height: 100%;                   /* Stretch card to fill the expanded height track */
+        
+        /* Optional Visual Flair to make it look like an authentic promotional block */
+        background-color: #fffbeb;      /* Subtle warm background color shift */
+        border: 2px dashed var(--color-warning); /* Dashed amber border frame */
     }
 }
 
