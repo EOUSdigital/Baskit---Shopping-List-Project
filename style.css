@@ -543,29 +543,9 @@ a {
 
 /*  -----===== All Products Unique Classes =====----- */
 
-.flash-deals {
-    grid-template-columns: 1fr;
-}
-
 .custom-solutions .product-card-item:first-child {
     background-color: #0f7a52;
     color: var(--color-surface);
-}
-
-.just-for-you {
-    grid-template-columns: 1fr;
-}
-
-.product-grid.essential-collection {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.new-arrivals {
-    grid-template-columns: 1fr;
-}
-
-.product-grid.seasonal-content {
-    grid-template-columns: repeat(3, 1fr);
 }
 
 /*  -----===== BASKET =====----- */
@@ -633,9 +613,10 @@ a {
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 48rem) { /* 48rem = 768px */
     .product-grid {
-        grid-template-columns: repeat(2, 1fr); /* Snaps strictly to 2 columns */
+        grid-template-columns: repeat(2, 1fr); /* Standard grids scale cleanly to 2 columns */
     }
-    
+
+    /* Make the mosaic card take up 2x2 grid spaces on tablet viewports */
     .custom-solutions .product-card-item:first-child {
         grid-column: span 2;
         grid-row: span 2;
@@ -645,7 +626,6 @@ a {
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 75rem) { /* 75rem = 1200px */
-    
     /* 1. Global rule: normal grids default to 4 columns */
     .product-grid {
         grid-template-columns: repeat(4, 1fr); 
