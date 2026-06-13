@@ -136,7 +136,28 @@
                     <!-- The target placeholder for the slider -->
                     <div class="slider-placeholder"></div>
                     <h2 id="grocery-heading">Grocery</h2>
-                    <div class="product-grid"></div>
+                    <div class="product-grid grocery-content">
+                        <div class="product-card-item">Card 1</div>
+                        <div class="product-card-item">Card 2</div>
+                        <div class="product-card-item">Card 3</div>
+                        <div class="product-card-item">Card 4</div>
+                        <div class="product-card-item">Card 5</div>
+                        <div class="product-card-item">Card 6</div>
+                        <div class="product-card-item">Card 7</div>
+                        <div class="product-card-item">Card 8</div>
+                        <div class="product-card-item">Card 9</div>
+                        <div class="product-card-item">Card 10</div>
+                        <div class="product-card-item">Card 11</div>
+                        <div class="product-card-item">Card 12</div>
+                        <div class="product-card-item">Card 13</div>
+                        <div class="product-card-item">Card 14</div>
+                        <div class="product-card-item">Card 15</div>
+                        <div class="product-card-item">Card 16</div>
+                        <div class="product-card-item">Card 17</div>
+                        <div class="product-card-item">Card 18</div>
+                        <div class="product-card-item">Card 19</div>
+                        <div class="product-card-item">Card 20</div>
+                    </div>
                 </section>
 
                 <!-- Household Page Section -->
@@ -144,7 +165,28 @@
                     <!-- The target placeholder for the slider -->
                     <div class="slider-placeholder"></div>
                     <h2 id="household-heading">Household</h2>
-                    <div class="product-grid"></div>
+                    <div class="product-grid household-content">
+                        <div class="product-card-item">Card 1</div>
+                        <div class="product-card-item">Card 2</div>
+                        <div class="product-card-item">Card 3</div>
+                        <div class="product-card-item">Card 4</div>
+                        <div class="product-card-item">Card 5</div>
+                        <div class="product-card-item">Card 6</div>
+                        <div class="product-card-item">Card 7</div>
+                        <div class="product-card-item">Card 8</div>
+                        <div class="product-card-item">Card 9</div>
+                        <div class="product-card-item">Card 10</div>
+                        <div class="product-card-item">Card 11</div>
+                        <div class="product-card-item">Card 12</div>
+                        <div class="product-card-item">Card 13</div>
+                        <div class="product-card-item">Card 14</div>
+                        <div class="product-card-item">Card 15</div>
+                        <div class="product-card-item">Card 16</div>
+                        <div class="product-card-item">Card 17</div>
+                        <div class="product-card-item">Card 18</div>
+                        <div class="product-card-item">Card 19</div>
+                        <div class="product-card-item">Card 20</div>
+                    </div>
                 </section>
 
                 <!-- Stationery Page Section -->
@@ -152,8 +194,31 @@
                     <!-- The target placeholder for the slider -->
                     <div class="slider-placeholder"></div>
                     <h2 id="stationery-heading">Stationery</h2>
-                    <div class="product-grid"></div>
+                    <div class="product-grid stationery-content">
+                        <div class="product-card-item">Card 1</div>
+                        <div class="product-card-item">Card 2</div>
+                        <div class="product-card-item">Card 3</div>
+                        <div class="product-card-item">Card 4</div>
+                        <div class="product-card-item">Card 5</div>
+                        <div class="product-card-item">Card 6</div>
+                        <div class="product-card-item">Card 7</div>
+                        <div class="product-card-item">Card 8</div>
+                        <div class="product-card-item">Card 9</div>
+                        <div class="product-card-item">Card 10</div>
+                        <div class="product-card-item">Card 11</div>
+                        <div class="product-card-item">Card 12</div>
+                        <div class="product-card-item">Card 13</div>
+                        <div class="product-card-item">Card 14</div>
+                        <div class="product-card-item">Card 15</div>
+                        <div class="product-card-item">Card 16</div>
+                        <div class="product-card-item">Card 17</div>
+                        <div class="product-card-item">Card 18</div>
+                        <div class="product-card-item">Card 19</div>
+                        <div class="product-card-item">Card 20</div>
+                    </div>
                 </section>
+
+                <section id="product-details" aria-labelledby="product-details-heading" class="hidden"></section>
 
                 <!-- Shopping List Basket Section -->
                 <section id="shopping-basket" aria-labelledby="basket-heading" class="hidden">
@@ -207,7 +272,27 @@
                     <p class="product-card-price">£<span>0.00</span></p>
                 </div>
 
-                <button class="product-card-button" type="button">Add to basket</button>
+                <button class="product-card-button" type="button">View</button>
+            </div>
+        </template>
+
+        <template id="product-details-template">
+            <div class="product-details-view">
+                <button type="button" class="back-to-browsing-btn">← Back to Products</button>
+
+                <div class="details-split-layout">
+                    <div class="details-image-container">
+                        <img src="" alt="" class="details-large-img" />
+                    </div>
+                    
+                    <div class="details-text-container">
+                        <h1 class="details-title-heading"></h1>
+                        <p class="details-full-description"></p>
+                        <p class="details-large-price">£<span>0.00</span></p>
+                        
+                        <button class="details-add-to-basket-btn" type="button">Add to basket</button>
+                    </div>
+                </div>
             </div>
         </template>
 
