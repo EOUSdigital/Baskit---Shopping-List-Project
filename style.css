@@ -148,12 +148,6 @@ a {
     box-sizing: border-box;
 }
 
-/* Conceptual syntax snippet */
-.product-card-item {
-    grid-template-columns: repeat(2, minmax(5rem, 1fr));
-}
-
-
 /* -----===== HEADER =====---- */
 
 #header {
@@ -355,7 +349,8 @@ a {
     margin-bottom: var(--spacing-3xl);
     width: 100%;
     
-    grid-template-columns: 1fr;
+    /* Advanced layout flow concept */
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
     outline: 1px solid blue;
 }
 
@@ -609,36 +604,47 @@ a {
 
 /* -----===== Media Queries =====----- */
 
-/* FIRST SETTINGS EXAMPLE */
-
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 48rem) { /* 48rem = 768px */
     .product-grid {
-        grid-template-columns: repeat(2, 1fr); /* Standard grids scale cleanly to 2 columns */
+        grid-template-columns: repeat(2, minmax(18rem, 22rem)); /* Standard grids scale cleanly to 2 columns */
+
+        /* Centers the locked tracks on the page so empty space is split evenly on the sides */
+        justify-content: center;
     }
 
     /* Make the mosaic card take up 2x2 grid spaces on tablet viewports */
     .custom-solutions .product-card-item:first-child {
         grid-column: span 2;
-        grid-row: span 2;
-        height: 100%;
     }
 }
 
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 75rem) { /* 75rem = 1200px */
+/* Extra large devices (large laptops and desktops, 1280px and up) */
+@media only screen and (min-width: 80rem) { /* 80rem = 1280px */
     /* 1. Global rule: normal grids default to 4 columns */
     .product-grid {
-        grid-template-columns: repeat(4, 1fr); 
+        grid-template-columns: repeat(4, minmax(18rem, 22rem));
+
+        /* Centers the locked tracks on the page so empty space is split evenly on the sides */
+        justify-content: center;
+    }
+
+    /* DESKTOP VIEW: Apply the 2x2 Mosaic Superpowers ONLY here! */
+    .custom-solutions .product-card-item:first-child {
+        grid-column: span 2;
+        grid-row: span 2; /* Safe here because neighboring cards prop up the rows */
+        height: 100%;     /* Fills the full 52rem vertical grid track budget */
     }
 
     /* 2. Specificity Overrides: Lock down your special section budgets */
     .product-grid.essential-collection {
-        grid-template-columns: repeat(2, 1fr); /* Force 2 wide columns */
+        grid-template-columns: repeat(2, minmax(18rem, 1fr));  /* Force 2 wide columns */
+        justify-content: center;
     }
 
     .product-grid.seasonal-content {
-        grid-template-columns: repeat(3, 1fr); /* Force 3 magazine-style columns */
+        grid-template-columns: repeat(3, minmax(18rem, 1fr)); /* Force 3 magazine-style columns */
+        justify-content: center;
     }
 
     /* 3. The Advertisement Layout Superpowers! */
