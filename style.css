@@ -346,11 +346,13 @@ a {
 .product-grid {
     display: grid;
     gap: var(--spacing-xl);
+    grid-auto-flow: dense;
     margin-bottom: var(--spacing-3xl);
     width: 100%;
     
     /* Advanced layout flow concept */
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(0, 22rem));
+    justify-content: center;
     outline: 1px solid blue;
 }
 
@@ -613,10 +615,21 @@ a {
         justify-content: center;
     }
 
+    .product-grid.new-arrivals {
+        grid-auto-flow: dense;
+    }
+
     /* Make the mosaic card take up 2x2 grid spaces on tablet viewports */
     .custom-solutions .product-card-item:first-child {
         grid-column: span 2;
     }
+
+    .new-arrivals .product-card-item:nth-child(4) {
+        grid-column: span 2;
+    }
+
+    .product-grid.seasonal-content {
+
 }
 
 /* Extra large devices (large laptops and desktops, 1280px and up) */
