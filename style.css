@@ -157,7 +157,7 @@ a {
 
     width: 100%;
     margin: 0 auto var(--spacing-xs);
-    padding: var(--spacing-md);
+    padding: var(--spacing-md) 0;
     background-color: var(--color-surface);
 
     box-shadow: var(--shadow-md);
@@ -185,24 +185,28 @@ a {
     width: 100%;
 }
 
-#secondary-nav {
-    width: 100%;
-}
-
 .primary-nav-links {
     display: flex;
     align-items: center;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-xs);
     
     flex: 1 1 auto;
     width: 100%; 
     margin-bottom: var(--spacing-md);
-    flex-wrap: wrap
+    flex-wrap: wrap;
+}
+
+/* 1. Hide the requested items on mobile screens */
+.brand-name-span,
+.basket-text,
+#nav-count-number.badge {
+    display: none !important;
 }
 
 .search-container {
     flex: 1 1 auto;
-    margin-inline: var(--spacing-md);
+    min-width: 0;       /* CRITICAL: Allows flex items to shrink smaller than their text/content width */
+    margin-inline: var(--spacing-xxs);
 }
 
 /* The main wrapper of the form */
@@ -239,12 +243,14 @@ a {
     font-size: var(--font-size-sm);
     cursor: pointer;
     outline: none;
+    max-width: 4.5rem; /* Prevents dropdown from taking too much horizontal room */
 }
 
 /* Middle Side: The Input field wrapper */
 .nav-fill {
     display: flex;
     flex: 1 1 auto;
+    min-width: 0; /* Allows the input box itself to shrink safely */
     height: 100%;
 }
 
@@ -266,10 +272,11 @@ a {
 
 #search-submit {
     height: 100%;
-    padding: 0 var(--spacing-lg);
+    padding: 0 var(--spacing-md);
     background-color: var(--color-warning);
     color: var(--color-text-primary);
     font-weight: var(--font-weight-semibold);
+    font-size: 1.2rem;
     border: none;
     cursor: pointer;
     transition: background-color var(--transition-fast);
@@ -279,6 +286,10 @@ a {
     filter: brightness(0.9);
 }
 
+#search-submit svg {
+    vertical-align: middle;
+}
+
 /* Keep the text sizes uniform inside your form components */
 .nav-search-dropdown,
 #search-input,
@@ -286,30 +297,43 @@ a {
     font-family: inherit;
 }
 
+/* Style the Basket Badge as a floating indicator */
+.nav-basket {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    font-size: var(--font-size-lg); /* Makes the emoji slightly larger on mobile */
+}
+
 /* === SIGN IN === */
 
-.signin {
+.nav-signin {
     flex: 0 0 auto;
     font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-lg);
     color: var(--color-primary);
     padding: var(--spacing-xs);
     border-radius: var(--radius-lg);
     transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.signin:hover {
+.nav-signin:hover {
     background: var(--color-primary);
     color: var(--color-surface);
 }
 
 /* -=-=-= SECONDARY NAV =-=-=- */
 
+#secondary-nav {
+    width: 100%;
+}
+
 .secondary-nav-links {
     display: flex;
     justify-content: space-evenly; 
     align-items: center;
     
-    margin-bottom: var(--spacing-xs);
+    /* margin-bottom: var(--spacing-); */
     list-style: none;
 
     flex-wrap: wrap;
@@ -608,6 +632,54 @@ a {
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 48rem) { /* 48rem = 768px */
+
+    .primary-nav-links {
+        gap: var(--spacing-lg); /* Restore normal desktop spacing */
+    }
+
+    /* Bring hidden elements back to life beautifully */
+    .brand-name-span {
+        display: inline;
+    }
+
+    .basket-text {
+        display: inline;
+    }
+
+    #nav-count-number.badge {
+        display: inline-block !important;
+        background-color: var(--color-success);
+        color: var(--color-surface);
+        font-size: var(--font-size-sm);
+        padding: 0.2rem 0.6rem;
+        border-radius: var(--radius-full);
+        margin-left: var(--spacing-xxs);
+    }
+
+    /* Restore full desktop sizes for search inputs */
+    .search-container {
+        margin-inline: var(--spacing-md);
+    }
+
+    #search-input {
+        padding: 0 var(--spacing-md);
+        font-size: var(--font-size-base);
+    }
+
+    #search-submit {
+        padding: 0 var(--spacing-lg);
+    }
+
+    .nav-basket {
+        font-size: var(--font-size-xl);
+    }
+
+    .nav-signin {
+        font-size: var(--font-size-xl);
+        padding: var(--spacing-xs);
+    }
+
+    /* ====================================== Existing Mosaic Card Rules ============================================ */
     .product-grid {
         grid-template-columns: repeat(2, minmax(18rem, 22rem)); /* Standard grids scale cleanly to 2 columns */
 
@@ -624,12 +696,13 @@ a {
         grid-column: span 2;
     }
 
-    .new-arrivals .product-card-item:nth-child(4) {
+    .new-arrivals .product-card-item:nth-child(8) {
         grid-column: span 2;
     }
 
-    .product-grid.seasonal-content {
-
+    .seasonal-content .product-card-item:first-child {
+        grid-column: span 2;
+    }
 }
 
 /* Extra large devices (large laptops and desktops, 1280px and up) */
@@ -642,11 +715,23 @@ a {
         justify-content: center;
     }
 
+    /* CRITICAL FIX: Overrides tablet inheritance and forces standard row order on desktop */
+    .product-grid.new-arrivals {
+        grid-auto-flow: row;
+    }
+
     /* DESKTOP VIEW: Apply the 2x2 Mosaic Superpowers ONLY here! */
     .custom-solutions .product-card-item:first-child {
         grid-column: span 2;
         grid-row: span 2; /* Safe here because neighboring cards prop up the rows */
         height: 100%;     /* Fills the full 52rem vertical grid track budget */
+    }
+
+    /* New Arrivals Mosaic Card (Card 8) */
+    .new-arrivals .product-card-item:nth-child(8) {
+        grid-column: span 1;
+        grid-row: span 2;
+        height: 100%;
     }
 
     /* 2. Specificity Overrides: Lock down your special section budgets */
@@ -668,6 +753,10 @@ a {
         /* Optional Visual Flair to make it look like an authentic promotional block */
         background-color: #fffbeb;      /* Subtle warm background color shift */
         border: 2px dashed var(--color-warning); /* Dashed amber border frame */
+    }
+
+    .seasonal-content .product-card-item:first-child {
+        grid-column: span 1;
     }
 }
 
