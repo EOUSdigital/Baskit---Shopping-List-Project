@@ -39,7 +39,11 @@
                                     <input type="search" id="search-input" name="q" placeholder="Search Baskit" autocomplete="off" pattern=".*\S.*" required />
                                 </div>
                                 <div class="nav-right">
-                                    <button type="submit" id="search-submit">Go</button>
+                                    <button type="submit" id="search-submit">
+                                        <svg xmlns="http://w3.org" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             </form>
                         </li>
@@ -47,14 +51,15 @@
                         <!-- Shopping Basket (Wrapped cleanly for accessibility) -->
                         <li>
                             <a class="nav-basket" href="#cart" aria-label="Shopping basket, 0 items">
-                                <span id="nav-item-count" aria-hidden="true">🛒 Basket</span>
+                                <span class="basket-icon" aria-hidden="true">🛒</span>
+                                <span class="basket-text hide-on-mobile">Basket</span>
                                 <span id="nav-count-number" class="badge">0</span>
                             </a>
                         </li>
 
                         <!-- User Account Link -->
                         <li>
-                            <a class="nav-signin" href="#">Sign in</a>
+                            <a class="nav-signin" href="#">Account</a>
                         </li>
                     </ul>
                 </nav>
@@ -115,11 +120,11 @@
                         <div class="product-card-item">Card 1</div>
                         <div class="product-card-item">Card 2</div>
                         <div class="product-card-item">Card 3</div>
-                        <div class="product-card-item ad-card">Card 4 (Commercial Advertisement)</div>
+                        <div class="product-card-item">Card 4</div>
                         <div class="product-card-item">Card 5</div>
                         <div class="product-card-item">Card 6</div>
                         <div class="product-card-item">Card 7</div>
-                        <div class="product-card-item">Card 8</div>
+                        <div class="product-card-item ad-card">Card 8 (Commercial Advertisement)</div>
                         <div class="product-card-item">Card 9</div>
                         <div class="product-card-item">Card 10</div>
                         <div class="product-card-item">Card 11</div>
