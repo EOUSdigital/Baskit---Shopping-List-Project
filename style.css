@@ -171,8 +171,15 @@ a {
 }
 
 .brand-name-span {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
+}
+
+/* Hide the requested items on mobile screens */
+.brand-name-span,
+.basket-text,
+#nav-count-number.badge {
+    display: none;
 }
 
 /* -=-=-= NAVIGATION =-=-=- */
@@ -181,26 +188,19 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--spacing-md);
+    gap: var(--spacing-xs);
     width: 100%;
 }
 
 .primary-nav-links {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-xxs);
     
     flex: 1 1 auto;
     width: 100%; 
     margin-bottom: var(--spacing-md);
-    flex-wrap: wrap;
-}
-
-/* 1. Hide the requested items on mobile screens */
-.brand-name-span,
-.basket-text,
-#nav-count-number.badge {
-    display: none !important;
+    flex-wrap: nowrap;
 }
 
 .search-container {
@@ -257,7 +257,7 @@ a {
 #search-input {
     width: 100%;
     height: 100%;
-    padding: 0 var(--spacing-md);
+    padding: 0 var(--spacing-xs);
     border: none;
     font-size: var(--font-size-base);
     color: var(--color-text-primary);
@@ -310,7 +310,7 @@ a {
 .nav-signin {
     flex: 0 0 auto;
     font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
     color: var(--color-primary);
     padding: var(--spacing-xs);
     border-radius: var(--radius-lg);
@@ -637,15 +637,6 @@ a {
         gap: var(--spacing-lg); /* Restore normal desktop spacing */
     }
 
-    /* Bring hidden elements back to life beautifully */
-    .brand-name-span {
-        display: inline;
-    }
-
-    .basket-text {
-        display: inline;
-    }
-
     #nav-count-number.badge {
         display: inline-block !important;
         background-color: var(--color-success);
@@ -675,7 +666,7 @@ a {
     }
 
     .nav-signin {
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-lg);
         padding: var(--spacing-xs);
     }
 
@@ -707,6 +698,17 @@ a {
 
 /* Extra large devices (large laptops and desktops, 1280px and up) */
 @media only screen and (min-width: 80rem) { /* 80rem = 1280px */
+    /* Bring hidden elements back to life beautifully */
+    .brand-name-span {
+        display: inline;
+        font-size: var(--font-size-3xl);
+    }
+    
+    .basket-text {
+        display: inline;
+        font-size: var(--font-size-lg);
+    }
+
     /* 1. Global rule: normal grids default to 4 columns */
     .product-grid {
         grid-template-columns: repeat(4, minmax(18rem, 22rem));
