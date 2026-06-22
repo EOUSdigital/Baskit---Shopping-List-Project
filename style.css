@@ -110,8 +110,8 @@
     margin: 0;
     padding: 0;
     
-    /* Temporarily developer code. This shows the true size of every element.  */
-    /* outline: 1px solid red;        */
+    /* Temporarily developer code. This shows the true size of every element. Should be removed before going into production. */
+    /* outline: 1px solid red; */
 }
 
 html {
@@ -208,8 +208,8 @@ a {
 
 /* Hide the requested items on mobile screens */
 .brand-name-span,
-.basket-text,
-#nav-count-number.badge {
+.basket-nav-label,
+#cart-total-items.basket-nav-counter {
     display: none;
 }
 
@@ -327,7 +327,7 @@ a {
 }
 
 /* Style the Basket Badge as a floating indicator */
-.nav-basket {
+.basket-nav-trigger {
     position: relative;
     display: inline-block;
     text-decoration: none;
@@ -373,7 +373,7 @@ a {
 #stationery, 
 #shopping-basket {
     position: relative;
-    display: block; /* Removed display: grid to allow children 100% width freedom */
+    display: block;         /* Removed display: grid to allow children 100% width freedom */
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto;
@@ -384,13 +384,15 @@ a {
 .product-grid {
     display: grid;
     gap: var(--spacing-xl);
-    grid-auto-flow: dense;
     margin-bottom: var(--spacing-3xl);
+    grid-auto-flow: dense;
     width: 100%;
     
     /* Advanced layout flow concept */
-    grid-template-columns: repeat(auto-fit, minmax(0, 22rem));
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
     justify-content: center;
+
+    /* Temporarily developer code. This shows the true size of the element. Should be removed before going into production. */
     outline: 1px solid blue;
 }
 
@@ -406,6 +408,8 @@ a {
     display: grid;
     max-width: var(--container-max);
     margin: 0 auto;
+
+    /* Temporarily developer code. This shows the true size of the element. Should be removed before going into production. */
     outline: 1px solid red;
 }
 
@@ -598,35 +602,126 @@ a {
 
 /*  -----===== BASKET =====----- */
 
-.basket-card-item {
+.basket-card {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Mobile first: stack details over buttons */
+    gap: var(--spacing-md);
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
     background: var(--color-surface);
-    border-radius: var(--radius-lg);
+
     border: 0.1rem solid var(--color-border);
-    gap: 2rem;
+    border-radius: var(--radius-lg);
 }
 
-.basket-details {
+/* --- Left Side: Product Identifier Group --- */
+.basket-card-item {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
 }
 
-.basketImage img {
+/* FIX: Connects directly to your HTML image class */
+.basket-card-img {
     width: 5rem;
     height: 5rem;
-    object-fit: contain;
+    object-fit: cover; /* Changed from contain to cover so your thumbnails fill space elegantly */
     border-radius: var(--radius-md);
+    flex-shrink: 0; /* Prevents the image from being squeezed by text space budgeting */
+}
+
+/* FIX: Forces text nodes to arrange downward, maximizing horizontal spacing boundaries */
+.basket-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    flex-grow: 1;
+}
+
+.basket-card-heading {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.basket-card-description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+
+    /* Prevent massive description text from breaking your layout structure */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 1; 
+    line-clamp: 1;
+}
+
+.basket-card-price {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+/* --- Right Side: Action Control Items --- */
+.basket-action-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--spacing-sm);
+}
+
+.basket-quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background-color: var(--color-background);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xs);
+}
+
+.basket-quantity-controls button {
+    background: none;
+    border: none;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    font-weight: var(--font-weight-bold);
+}
+
+.basket-utility-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.basket-utility-buttons button {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+}
+
+.basket-utility-buttons .basket-action-delete {
+    color: var(--color-error);  /* Alerts user to clear intent */
 }
 
 .product-card-heading, 
 .basket-card-heading {
-    display: inline; /* Keeps it on the same line if text wraps tightly */
-    font-size: 1rem; /* Forces it to stay small and fit your spacing budget */
+    /* Keep them as standard block elements so they play perfectly with Flexbox */
+    display: block; 
+    
+    /* Use your pre-defined design tokens instead of hardcoded numbers */
+    font-size: var(--font-size-base); 
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+
+    /* CRITICAL: Tighten the line height so wrapped text doesn't create huge gaps */
+    line-height: var(--line-height-tight); 
+    
+    /* Strip browser default margins to protect your spacing budget */
+    margin: 0; 
 }
 
 /* ==========================================================================
@@ -665,7 +760,7 @@ a {
         gap: var(--spacing-lg); /* Restore normal desktop spacing */
     }
 
-    #nav-count-number.badge {
+    #cart-total-items.basket-nav-counter {
         display: inline-block !important;
         background-color: var(--color-success);
         color: var(--color-surface);
@@ -689,8 +784,49 @@ a {
         padding: 0 var(--spacing-lg);
     }
 
-    .nav-basket {
-        font-size: var(--font-size-xl);
+    .basket-nav-trigger {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);             /* Keeps the icon, word, and badge closely unified */
+        color: var(--color-text-primary);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--radius-md);
+        text-decoration: none;
+        transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .basket-nav-trigger:hover {
+        color: var(--color-primary);
+        background-color: var(--color-background);
+    }
+
+    .basket-nav-img {
+        width: 1.5rem;
+        height: 1.5rem;
+        object-fit: contain;
+    }
+
+    .basket-nav-label {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+    }
+
+    .basket-nav-counter {
+        color: var(--color-surface);            /* White/Contrast text color */
+        background-color: var(--color-primary); /* High-intent accent color */
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-bold);
+
+        /* Creates a perfectly balanced pill-shape badge */
+        min-width: 1.75rem;
+        height: 1.75rem;
+        padding-inline: 0.35rem;
+        border-radius: var(--radius-xl);
+
+        /* Vertically centers the text inside the badge perfectly */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .nav-signin {
@@ -722,6 +858,19 @@ a {
     .seasonal-content .product-card-item:first-child {
         grid-column: span 2;
     }
+
+    /* Basket Card */
+    .basket-card {
+        flex-direction: row; /* Transforms into a modern, unified horizontal row */
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .basket-action-links {
+        border-top: none;
+        padding-top: 0;
+        justify-content: flex-end;
+    }
 }
 
 /* Extra large devices (large laptops and desktops, 1280px and up) */
@@ -732,7 +881,7 @@ a {
         font-size: var(--font-size-3xl);
     }
     
-    .basket-text {
+    .basket-nav-label {
         display: inline;
         font-size: var(--font-size-lg);
     }
@@ -757,13 +906,6 @@ a {
         height: 100%;     /* Fills the full 52rem vertical grid track budget */
     }
 
-    /* New Arrivals Mosaic Card (Card 8) */
-    .new-arrivals .product-card-item:nth-child(8) {
-        grid-column: span 1;
-        grid-row: span 2;
-        height: 100%;
-    }
-
     /* 2. Specificity Overrides: Lock down your special section budgets */
     .product-grid.essential-collection {
         grid-template-columns: repeat(2, minmax(18rem, 1fr));  /* Force 2 wide columns */
@@ -777,6 +919,7 @@ a {
 
     /* 3. The Advertisement Layout Superpowers! */
     .new-arrivals .ad-card {
+        grid-column: span 1;
         grid-row: span 2;               /* Force card to drop downward across 2 full rows */
         height: 100%;                   /* Stretch card to fill the expanded height track */
         
@@ -793,4 +936,7 @@ a {
         padding: var(--spacing-xl); /* Luxurious desktop spacing */
     }
 }
+
+
+
 
