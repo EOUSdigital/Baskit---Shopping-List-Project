@@ -213,6 +213,17 @@ a {
     display: none;
 }
 
+#cart-total-items.basket-nav-counter {
+    /* display: inline; */              /* The code does not function properly if I let this line on. Will push the item number below basket, creating a second line. */
+    background-color: var(--color-success);
+    color: var(--color-surface);
+    font-size: var(--font-size-xxs);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-full);
+    margin-left: var(--spacing-xs);
+    vertical-align: middle;
+}
+
 /* -----===== SIGN IN =====----- */
 
 .nav-signin {
@@ -417,12 +428,48 @@ a {
     display: flex;
 }
 
-/*  -----===== All Products Unique Class =====----- */
+/*  -----===== All Products - Unique Classes =====----- */
 
 .custom-solutions .product-card-item:first-child {
     background-color: #0f7a52;
     color: var(--color-surface);
 }
+
+/*  -----===== Shopping Basket =====----- */
+
+#shopping-basket {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+
+
+    outline: 1px solid #0f7a52;
+}
+
+/* Header Title Style */
+.shopping-basket-title {
+    border-bottom: 0.1rem solid var(--color-text-secondary);
+    padding-bottom: var(--spacing-sm);
+}
+
+.shopping-basket-heading {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.shopping-basket-total {
+    background-color: var(--color-surface-variant);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 0.1rem solid var(--color-border);
+
+
+    font-size: var(--font-size-base); 
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
 
 /* ==========================================================================
                                 Template
@@ -544,13 +591,6 @@ a {
     gap: var(--spacing-xs);
     flex-grow: 1;
     text-align: left;
-}
-
-.product-card-heading {
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    line-height: var(--line-height-tight);
 }
 
 .product-card-description {
@@ -707,20 +747,20 @@ a {
     color: var(--color-error);  /* Alerts user to clear intent */
 }
 
-.product-card-heading, 
+.product-card-heading,
 .basket-card-heading {
     /* Keep them as standard block elements so they play perfectly with Flexbox */
     display: block; 
     
     /* Use your pre-defined design tokens instead of hardcoded numbers */
     font-size: var(--font-size-base); 
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
 
     /* CRITICAL: Tighten the line height so wrapped text doesn't create huge gaps */
     line-height: var(--line-height-tight); 
     
-    /* Strip browser default margins to protect your spacing budget */
+    /* Strip browser default margins to protect the spacing budget */
     margin: 0; 
 }
 
