@@ -16,7 +16,7 @@
                 <!-- Primary Navigation -->
                 <nav id="primary-nav" aria-label="Primary navigation">
                     <ul class="primary-nav-links">
-                        <!-- Logo -->
+                        <!-- Logo & Name -->
                         <li class="logo-name">
                             <a class="brand-name" href="#all-products">
                                 <img src="../images/logo-Photoroom.png" alt="Baskit logo" class="logo-img">
@@ -38,9 +38,10 @@
                                 <div class="nav-fill">
                                     <input type="search" id="search-input" name="q" placeholder="Search Baskit" autocomplete="off" pattern=".*\S.*" required />
                                 </div>
+
                                 <div class="nav-right">
                                     <button type="submit" id="search-submit">
-                                        <svg xmlns="http://w3.org" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                         </svg>
                                     </button>
@@ -49,11 +50,12 @@
                         </li>
 
                         <!-- Shopping Basket (Wrapped cleanly for accessibility) -->
-                        <li>
-                            <a class="nav-basket" href="#cart" aria-label="Shopping basket, 0 items">
+                        <li class="basket-header-node">
+                            <a class="basket-nav-trigger" href="#shopping-basket" aria-label="View shopping basket">
+
                                 <span class="basket-icon" aria-hidden="true">🛒</span>
-                                <span class="basket-text hide-on-mobile">Basket</span>
-                                <span id="nav-count-number" class="badge">0</span>
+                                <span class="basket-nav-label hide-on-mobile">Basket</span>
+                                <span id="cart-total-items" class="basket-nav-counter" aria-live="polite">0</span>
                             </a>
                         </li>
 
@@ -90,8 +92,31 @@
                     <h2 id="all-products-heading">All Products</h2>
                     <!-- Dynamic JavaScript Product Grid injection point -->
                     <div class="product-grid flash-deals">
-                        <div class="product-card-item">Card 1</div>
-                        <div class="product-card-item">Card 2</div>
+                        <!-- <div class="product-card-item">Card 1</div> -->
+                        <div class="product-card-item">
+                            <img src="https://picsum.photos/id/24/300/200" alt="Product Image" class="product-card-img" />
+
+                            <div class="product-card-info">
+                                <h3 class="product-card-heading">Friendly Textbook Title</h3>
+                                <p class="product-card-description">A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.</p>
+                                <p class="product-card-price">£<span>14.99</span></p>
+                            </div>
+
+                            <button class="product-card-button" type="button">Quick View</button>
+                        </div>
+
+                        <!-- <div class="product-card-item">Card 2</div> -->
+                        <div class="product-card-item">
+                            <img src="https://picsum.photos/id/48/300/200" alt="Product Image" class="product-card-img" />
+
+                            <div class="product-card-info">
+                                <h3 class="product-card-heading">Another Great Resource</h3>
+                                <p class="product-card-description">Short description here.</p>
+                                <p class="product-card-price">£<span>9.99</span></p>
+                            </div>
+
+                            <button class="product-card-button" type="button">Quick View</button>
+                        </div>
                         <div class="product-card-item">Card 3</div>
                         <div class="product-card-item">Card 4</div>
                     </div>
@@ -228,11 +253,11 @@
                 <!-- Shopping List Basket Section -->
                 <section id="shopping-basket" aria-labelledby="basket-heading" class="hidden">
                     <div class="shopping-basket-title">
-                        <h2 id="shopping-basket-heading" class="shopping-basket-heading">Shopping Basket</h2>
+                        <h2 class="shopping-basket-heading">Shopping Basket</h2>
                     </div>
                     
                     <!-- Dynamic JavaScript Basket List Injection Point -->
-                    <div id="basket-items-container"></div>
+                    <div id="dynamic-basket-container"></div>
 
                     <div class="shopping-basket-total">
                         <p class="shopping-basket-subtotal">Subtotal</p>
@@ -246,27 +271,30 @@
 
         <!-- ================= TEMPLATES (Kept isolated outside layout wrapper) ================= -->
 
-        <!-- Animated Slider Template -->
+        <!-- 1. Animated Slider Template -->
         <template id="animated-slider-template">
             <div class="animated-slider">
                 <div class="slide active">
                     <img src="https://picsum.photos/1200/400?random=1" alt="Promo Slider Image 1" />
-                    <div class="caption zoom-in">Explore</div>
+                    <!-- <img src="https://loremflickr.com/g/1200/400/Grocery" alt="Promo Slider Image 1" /> -->
+                    <div class="caption zoom-in">Grocery</div>
                 </div>
 
                 <div class="slide">
                     <img src="https://picsum.photos/1200/400?random=2" alt="Promo Slider Image 2" />
-                    <div class="caption slide-left">Lights</div>
+                    <!-- <img src="https://loremflickr.com/g/1200/400/Household" alt="Promo Slider Image 2" /> -->
+                    <div class="caption slide-left">Household</div>
                 </div>
                     
                 <div class="slide">
                     <img src="https://picsum.photos/1200/400?random=3" alt="Promo Slider Image 3" />
-                    <div class="caption fade-in">Space</div>
+                    <!-- <img src="https://loremflickr.com/g/1200/400/Stationery" alt="Promo Slider Image 3" /> -->
+                    <div class="caption fade-in">Stationery</div>
                 </div>
             </div>
         </template>
 
-        <!-- Card Wrapper Template -->
+        <!-- 2. Product Card Template -->
         <template id="product-template">
             <div class="product-card-item">
                 <img src="" alt="" class="product-card-img" />
@@ -281,7 +309,7 @@
             </div>
         </template>
 
-        <!-- Single Page Product Wrapper Template -->
+        <!-- 3. Product Details Template -->
         <template id="product-details-template">
             <div class="product-details-view">
                 <button type="button" class="back-to-browsing-btn">← Back to Products</button>
@@ -302,23 +330,30 @@
             </div>
         </template>
 
-        <!-- Basket Item Template -->
+        <!-- 4. Basket Item Template -->
         <template id="basket-template">
             <div class="basket-card">
                 <div class="basket-card-item">
                     <input type="checkbox" class="basket-card-select-item" aria-label="Select item to delete or save for later" />
                     <img src="" alt="" class="basket-card-img" />
-                    <h3 class="basket-card-heading"></h3>
-                    <p class="basket-card-description"></p>
-                    <p class="basket-card-price">£<span>0.00</span></p>
+                    
+                    <div class="basket-card-info">
+                        <h3 class="basket-card-heading"></h3>
+                        <p class="basket-card-description"></p>
+                        <p class="basket-card-price">£<span>0.00</span></p>
+                    </div>
                 </div>
 
                 <div class="basket-action-links">
-                    <button type="button" class="basket-action-decrease" aria-label="Decrease quantity">-</button>
-                    <span class="basket-action-product-quantity" aria-live="polite">1</span>
-                    <button type="button" class="basket-action-increase" aria-label="Increase quantity">+</button>
-                    <button type="button" class="basket-action-delete">Delete</button>
-                    <button type="button" class="basket-action-share">Share</button>
+                    <div class="basket-quantity-controls">
+                        <button type="button" class="basket-action-decrease" aria-label="Decrease quantity">-</button>
+                        <span class="basket-action-product-quantity" aria-live="polite">1</span>
+                        <button type="button" class="basket-action-increase" aria-label="Increase quantity">+</button>
+                    </div>
+                    <div class="basket-utility-buttons">
+                        <button type="button" class="basket-action-delete">Delete</button>
+                        <button type="button" class="basket-action-share">Share</button>
+                    </div>
                 </div>
             </div>    
         </template>
