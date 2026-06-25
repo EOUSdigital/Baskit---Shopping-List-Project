@@ -194,20 +194,20 @@ a {
 
 /* -----===== LOGO =====----- */
 
-.logo-img {
+.brand-logo {
     width: 1.6rem;
     flex: 0 0 auto;
 }
 
 /* -----===== NAME =====----- */
 
-.brand-name-span {
+.brand-text {
     font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
 }
 
 /* Hide the requested items on mobile screens */
-.brand-name-span,
+.brand-text,
 .basket-nav-label,
 #cart-total-items.basket-nav-counter {
     display: none;
@@ -874,7 +874,7 @@ a {
         padding: var(--spacing-xs);
     }
 
-    /* ================================ Existing Mosaic Card Rules ======================================== */
+    /* -----===== Existing Mosaic Card Rules =====----- */
     .product-grid {
         grid-template-columns: repeat(2, minmax(18rem, 22rem)); /* Standard grids scale cleanly to 2 columns */
 
@@ -901,7 +901,7 @@ a {
 
     /* Basket Card */
     .basket-card {
-        flex-direction: row; /* Transforms into a modern, unified horizontal row */
+        flex-direction: row;                        /* Transforms into a modern, unified horizontal row */
         justify-content: space-between;
         align-items: center;
     }
@@ -916,7 +916,7 @@ a {
 /* Extra large devices (large laptops and desktops, 1280px and up) */
 @media only screen and (min-width: 80rem) { /* 80rem = 1280px */
     /* Bring hidden elements back to life beautifully */
-    .brand-name-span {
+    .brand-text {
         display: inline;
         font-size: var(--font-size-3xl);
     }
@@ -942,8 +942,8 @@ a {
     /* DESKTOP VIEW: Apply the 2x2 Mosaic Superpowers ONLY here! */
     .custom-solutions .product-card-item:first-child {
         grid-column: span 2;
-        grid-row: span 2; /* Safe here because neighboring cards prop up the rows */
-        height: 100%;     /* Fills the full 52rem vertical grid track budget */
+        grid-row: span 2;                       /* Safe here because neighboring cards prop up the rows */
+        height: 100%;                           /* Fills the full 52rem vertical grid track budget */
     }
 
     /* 2. Specificity Overrides: Lock down your special section budgets */
@@ -960,12 +960,11 @@ a {
     /* 3. The Advertisement Layout Superpowers! */
     .new-arrivals .ad-card {
         grid-column: span 1;
-        grid-row: span 2;               /* Force card to drop downward across 2 full rows */
-        height: 100%;                   /* Stretch card to fill the expanded height track */
+        height: 100%;                               /* Stretch card to fill the expanded height track */
         
         /* Optional Visual Flair to make it look like an authentic promotional block */
-        background-color: #fffbeb;      /* Subtle warm background color shift */
-        border: 2px dashed var(--color-warning); /* Dashed amber border frame */
+        background-color: #fffbeb;                /* Subtle warm background color shift */
+        border: 2px dashed var(--color-warning);    /* Dashed amber border frame */
     }
 
     .seasonal-content .product-card-item:first-child {
@@ -976,7 +975,3 @@ a {
         padding: var(--spacing-xl); /* Luxurious desktop spacing */
     }
 }
-
-
-
-
