@@ -121,6 +121,12 @@ function loadStoreSection(categoryName) {
 // Finds the <span> with ID 'year' in the footer and sets it to the current calendar year.
 document.getElementById("year").textContent = new Date().getFullYear();
 
+    if (targetSection) {
+        targetSection.classList.remove('hidden');
+            
+        // ADDED: Initialize the promo slider for this tab if it isn't running yet!
+        renderPromoSlider(targetSection);
+    }
 
 // ==========================================
 // 5. Array of objects containing product information
