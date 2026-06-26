@@ -122,7 +122,15 @@ function loadStoreSection(categoryName) {
 document.getElementById("year").textContent = new Date().getFullYear();
 
 
+// ==========================================
+// 5. Array of objects containing product information
+// ==========================================
 
+const allProducts = [
+    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "apple.jpg", category: "grocery" },
+    { id: 2, name: "A4 Notebook", price: 1.50, image: "notebook.jpg", category: "stationery" },
+    { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "tablets.jpg", category: "household" }
+]
 
 
 
