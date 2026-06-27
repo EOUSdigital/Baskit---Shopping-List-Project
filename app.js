@@ -17,6 +17,10 @@ navLinks.forEach(link => {
 
         //  Step 1: Loops through all store sections and adds the 'hidden' class to conceal them.
         sections.forEach(section => {
+            if (section.activeTimerId) {
+                console.log("Success! Clearing timer ID:", section.activeTimerId);  //  Developer code. Must be deleted once the test is completed.
+                clearInterval(section.activeTimerId);
+            }
             section.classList.add('hidden');
         });
         
@@ -87,7 +91,7 @@ function renderPromoSlider(sectionElement) {
     }
 
     // Rotates smoothly every 7 seconds safely
-    setInterval(nextSlide, 7000);
+    sectionElement.activeTimerId = setInterval(nextSlide, 7000);
 }
 
 // ==========================================
@@ -120,13 +124,6 @@ function loadStoreSection(categoryName) {
 
 // Finds the <span> with ID 'year' in the footer and sets it to the current calendar year.
 document.getElementById("year").textContent = new Date().getFullYear();
-
-    if (targetSection) {
-        targetSection.classList.remove('hidden');
-            
-        // ADDED: Initialize the promo slider for this tab if it isn't running yet!
-        renderPromoSlider(targetSection);
-    }
 
 // ==========================================
 // 5. Array of objects containing product information
