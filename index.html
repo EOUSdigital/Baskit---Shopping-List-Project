@@ -18,7 +18,7 @@
                     <ul class="primary-nav-links">
                         <!-- Logo & Name -->
                         <li class="brand-wrapper">
-                            <a class="brand-link" href="#all-products">
+                            <a class="brand-link" href="#all-products" aria-label="Reset and return to all products">
                                 <img src="../images/logo-Photoroom.png" alt="Baskit logo" class="brand-logo">
                                 <span class="brand-text">Baskit</span>
                             </a>
@@ -29,10 +29,10 @@
                             <form id="search-form" action="/search" class="nav-searchbar" method="GET" role="search">
                                 <div class="nav-left">
                                     <select id="search-category" name="category" aria-label="Select category" class="nav-search-dropdown">
-                                        <option value="all" selected>All</option>
-                                        <option value="grocery">Grocery</option>
-                                        <option value="household">Household</option>
-                                        <option value="stationery">Stationery</option>
+                                        <option value="all" href="all-products" selected>All</option>
+                                        <option value="grocery" href="#grocery">Grocery</option>
+                                        <option value="household" href="#household">Household</option>
+                                        <option value="stationery" href="#stationery">Stationery</option>
                                     </select>
                                 </div>
                                 <div class="nav-fill">
@@ -54,7 +54,7 @@
                             <a class="basket-nav-trigger" href="#shopping-basket" aria-label="View shopping basket">
 
                                 <span class="basket-icon" aria-hidden="true">🛒</span>
-                                <span class="basket-nav-label hide-on-mobile">Basket</span>
+                                <span class="basket-label hide-on-mobile">Basket</span>
                                 <span id="cart-total-items" class="basket-nav-counter" aria-live="polite">0</span>
                             </a>
                         </li>
