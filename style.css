@@ -109,6 +109,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    text-decoration: none;
     
     /* Temporarily developer code. This shows the true size of every element. Should be removed before going into production. */
     /* outline: 1px solid red; */
@@ -192,26 +193,48 @@ a {
     flex-wrap: nowrap;
 }
 
-/* -----===== LOGO =====----- */
+/* -----===== Logo & Name =====----- */
 
 .brand-logo {
     width: 1.6rem;
     flex: 0 0 auto;
 }
 
-/* -----===== NAME =====----- */
-
 .brand-text {
     font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
 }
 
+/* Target the parent link to align the content elements inside it */
+.brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs); /* Keeps the image and text nicely spaced */
+    text-decoration: none;  /* Clears unstyled link lines */
+
+    /* Adds a subtle interactive filter or opacity transition when hovered */
+    transition: opacity var(--transition-fast);
+}
+
+.brand-link:hover {
+    opacity: 0.8; 
+}
+
+/* Constrain the visual boundaries of the logo image asset */
+.brand-logo {
+    height: 2.5rem; /* Keeps the logo bounded and proportionate */
+    width: auto;
+    object-fit: contain;
+}
+
 /* Hide the requested items on mobile screens */
 .brand-text,
-.basket-nav-label,
+.basket-label,
 #cart-total-items.basket-nav-counter {
     display: none;
 }
+
+/* -----===== Cart =====----- */
 
 #cart-total-items.basket-nav-counter {
     /* display: inline; */              /* The code does not function properly if I let this line on. Will push the item number below basket, creating a second line. */
@@ -846,7 +869,7 @@ a {
         object-fit: contain;
     }
 
-    .basket-nav-label {
+    .basket-label {
         font-size: var(--font-size-sm);
         font-weight: var(--font-weight-semibold);
     }
@@ -921,7 +944,7 @@ a {
         font-size: var(--font-size-3xl);
     }
     
-    .basket-nav-label {
+    .basket-label {
         display: inline;
         font-size: var(--font-size-lg);
     }
