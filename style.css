@@ -195,13 +195,16 @@ a {
 
 /* -----===== Logo & Name =====----- */
 
+/* Constrain the visual boundaries of the logo image asset */
 .brand-logo {
-    width: 1.6rem;
+    height: 1.7rem; /* Keeps the logo bounded and proportionate */
+    width: auto;
+    object-fit: contain;
     flex: 0 0 auto;
 }
 
 .brand-text {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-3xl);
     font-weight: var(--font-weight-bold);
 }
 
@@ -218,13 +221,6 @@ a {
 
 .brand-link:hover {
     opacity: 0.8; 
-}
-
-/* Constrain the visual boundaries of the logo image asset */
-.brand-logo {
-    height: 2.5rem; /* Keeps the logo bounded and proportionate */
-    width: auto;
-    object-fit: contain;
 }
 
 /* Hide the requested items on mobile screens */
@@ -941,7 +937,6 @@ a {
     /* Bring hidden elements back to life beautifully */
     .brand-text {
         display: inline;
-        font-size: var(--font-size-3xl);
     }
     
     .basket-label {
