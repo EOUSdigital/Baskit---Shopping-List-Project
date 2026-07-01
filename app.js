@@ -118,30 +118,48 @@ function loadStoreSection(categoryName) {
     renderPromoGrid(categoryName);
 }
 
+
 // ==========================================
-// 4. FOOTER COMPONENT
+// 4. Array of objects containing product information
+// ==========================================
+
+const allProducts = [
+    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "apple.jpg", "description": "...", category: "grocery" },
+    { id: 2, name: "A4 Notebook", price: 1.50, image: "notebook.jpg", "description": "A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.", category: "stationery" },
+    { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "tablets.jpg", "description": "...", category: "household" }
+]
+
+// ==========================================
+// 5. FOOTER COMPONENT
 // ==========================================
 
 // Finds the <span> with ID 'year' in the footer and sets it to the current calendar year.
 document.getElementById("year").textContent = new Date().getFullYear();
 
 // ==========================================
-// 5. Array of objects containing product information
+// 6. Next Action Step
 // ==========================================
 
-const allProducts = [
-    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "apple.jpg", category: "grocery" },
-    { id: 2, name: "A4 Notebook", price: 1.50, image: "notebook.jpg", category: "stationery" },
-    { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "tablets.jpg", category: "household" }
-]
+function renderProducts() {
+    // 1. Find the target container grid
+    const targetGrid = document.querySelector('.flash-deals');
+    // Guard clause safety check!
+    if (!targetGrid) return;
 
+    // 2. Create an empty bucket string to hold all our cards
+    let allCardsHTML = "";
 
-
-
-
-
-
-
-
-
-
+    // 3. Loop through each item
+    allProducts.forEach((product) => {
+        // Use += to ADD each new card string to our bucket variable
+        allCardsHTML += `
+            <div class="product-card-item">
+                <h3 class="product-card-heading">${product.name}</h3>
+                <p class="product-card-price">£${product.price}</p>
+            </div>
+        `;
+    });
+    
+    // 4. Dump the whole bucket of cards into the webpage grid at once!
+    targetGrid.innerHTML = allCardsHTML;
+}
