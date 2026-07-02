@@ -103,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Find our main landing page section container (#all-products)
     const initialSection = document.getElementById('all-products');
     renderPromoSlider(initialSection);
+
+    renderProducts();
 });
 
 // A placeholder function designed to load specific store views when called.
@@ -124,9 +126,11 @@ function loadStoreSection(categoryName) {
 // ==========================================
 
 const allProducts = [
-    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "apple.jpg", "description": "...", category: "grocery" },
+    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "apple.jpg", "description": "Crisp, nutrient-dense fruits grown strictly adhering to natural farming methods.", category: "grocery" },
     { id: 2, name: "A4 Notebook", price: 1.50, image: "notebook.jpg", "description": "A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.", category: "stationery" },
-    { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "tablets.jpg", "description": "...", category: "household" }
+    { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "tablets.jpg", "description": "Compact, pre-measured blocks of concentrated detergent formulated to clean crockery, remove grease, and eliminate food stains in a single wash cycle.", category: "household" },
+    { id: 4, name: "Basil", price: 1.60, image: "basil.jpg", "description": "A live herb pot that sits perfectly on a sunny kitchen windowsill, providing a continuous supply of fresh, aromatic leaves.", category: "grocery" },
+
 ]
 
 // ==========================================
@@ -154,8 +158,11 @@ function renderProducts() {
         // Use += to ADD each new card string to our bucket variable
         allCardsHTML += `
             <div class="product-card-item">
+                <img src="https://picsum.photos/id/24/300/200" alt="Product Image" class="product-card-img" />
                 <h3 class="product-card-heading">${product.name}</h3>
+                <p class="product-card-description">${product.description}</p>
                 <p class="product-card-price">£${product.price}</p>
+                <button class="product-card-button" type="button" data-test="...">Quick View</button>
             </div>
         `;
     });
@@ -163,3 +170,5 @@ function renderProducts() {
     // 4. Dump the whole bucket of cards into the webpage grid at once!
     targetGrid.innerHTML = allCardsHTML;
 }
+
+
