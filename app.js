@@ -104,7 +104,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialSection = document.getElementById('all-products');
     renderPromoSlider(initialSection);
 
-    renderProducts();
+    // Call 1: Run the recipe using '.flash-deals' as the target class
+    renderProducts('.flash-deals');
+    
+    // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
+    renderProducts('.custom-solutions');
+
+    /*
+    renderProducts('.just-for-you');
+    renderProducts('.essential-collection');
+    renderProducts('.new-arrivals');
+    renderProducts('.seasonal-content');
+    */
 });
 
 // A placeholder function designed to load specific store views when called.
@@ -144,9 +155,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
 // 6. Next Action Step
 // ==========================================
 
-function renderProducts() {
+function renderProducts(gridClassName) {
     // 1. Find the target container grid
-    const targetGrid = document.querySelector('.flash-deals');
+    const targetGrid = document.querySelector(gridClassName);
     // Guard clause safety check!
     if (!targetGrid) return;
 
