@@ -110,12 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
     renderProducts('.custom-solutions');
 
-    /*
+    // 🚀 These sections should be checked before moving to a new section
     renderProducts('.just-for-you');
     renderProducts('.essential-collection');
     renderProducts('.new-arrivals');
     renderProducts('.seasonal-content');
-    */
+    // 🚀 These sections should be checked before moving to a new section
 });
 
 // A placeholder function designed to load specific store views when called.
