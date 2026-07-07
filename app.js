@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProducts('.just-for-you');
     renderProducts('.essential-collection');
     renderProducts('.new-arrivals');
-    renderProducts('.seasonal-content');
+    // renderProducts('.seasonal-content');
     // 🚀 These sections should be checked before moving to a new section
 });
 
@@ -140,8 +140,109 @@ const allProducts = [
     { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "apple.jpg", "description": "Crisp, nutrient-dense fruits grown strictly adhering to natural farming methods.", category: "grocery" },
     { id: 2, name: "A4 Notebook", price: 1.50, image: "notebook.jpg", "description": "A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.", category: "stationery" },
     { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "tablets.jpg", "description": "Compact, pre-measured blocks of concentrated detergent formulated to clean crockery, remove grease, and eliminate food stains in a single wash cycle.", category: "household" },
-    { id: 4, name: "Basil", price: 1.60, image: "basil.jpg", "description": "A live herb pot that sits perfectly on a sunny kitchen windowsill, providing a continuous supply of fresh, aromatic leaves.", category: "grocery" },
 
+]
+
+const grocery = [
+    { id: 1, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 2, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 3, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 4, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 5, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 6, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 7, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 8, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 9, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 10, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 11, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 12, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 13, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 14, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 15, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 16, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 17, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 18, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 19, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 20, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 21, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 22, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 23, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 24, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 25, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 26, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 27, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 28, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 29, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 30, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 31, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+]
+
+const household = [
+    { id: 1, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 2, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 3, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 4, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 5, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 6, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 7, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 8, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 9, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 10, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 11, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 12, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 13, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 14, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 15, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 16, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 17, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 18, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 19, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 20, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 21, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 22, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 23, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 24, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 25, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 26, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 27, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 28, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 29, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 30, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 31, name: "", price: 0.00, image: "", "description": "", category: "household" },
+]
+
+const stationery = [
+    { id: 1, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 2, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 3, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 4, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 5, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 6, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 7, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 8, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 9, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 10, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 11, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 12, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 13, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 14, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 15, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 16, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 17, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 18, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 19, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 20, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 21, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 22, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 23, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 24, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 25, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 26, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 27, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 28, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 29, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 30, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 31, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
 ]
 
 // ==========================================
@@ -155,7 +256,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 // 6. Next Action Step
 // ==========================================
 
-function renderProducts(gridClassName) {
+function renderProducts(gridClassName, arrayToUse) {
     // 1. Find the target container grid
     const targetGrid = document.querySelector(gridClassName);
     // Guard clause safety check!
@@ -165,7 +266,7 @@ function renderProducts(gridClassName) {
     let allCardsHTML = "";
 
     // 3. Loop through each item
-    allProducts.forEach((product) => {
+    arrayToUse.forEach((product) => {
         // Use += to ADD each new card string to our bucket variable
         allCardsHTML += `
             <div class="product-card-item">
