@@ -95,7 +95,44 @@ function renderPromoSlider(sectionElement) {
 }
 
 // ==========================================
-// 3. CORE INITIALIZATION & APP ROUTING
+// 3.1 CORE INITIALIZATION & APP ROUTING
+// ==========================================
+
+function renderProducts(gridClassName, arrayToUse) {
+    // 1. Find the target container grid
+    const targetGrid = document.querySelector(gridClassName);
+    // Guard clause safety check!
+    if (!targetGrid) return;
+
+    // 2. Create an empty bucket string to hold all our cards
+    let allCardsHTML = "";
+
+    // 3. Loop through each item
+    arrayToUse.forEach((product) => {
+        // SAFETY GUARD: If the product name is empty or missing, skip it completely!
+        if (!product.name || product.name === "") {
+            // This acts like a 'skip' command for this specific loop iteration
+            return;
+        }
+
+        // Use += to ADD each new card string to our bucket variable
+        allCardsHTML += `
+            <div class="product-card-item">
+                <img src="${product.image}" alt="${product.name}" class="product-card-img" />
+                <h3 class="product-card-heading">${product.name}</h3>
+                <p class="product-card-description">${product.description}</p>
+                <p class="product-card-price">£${product.price}</p>
+                <button class="product-card-button" type="button" data-test="...">Add to basket</button>
+            </div>
+        `;
+    });
+    
+    // 4. Dump the whole bucket of cards into the webpage grid at once!
+    targetGrid.innerHTML = allCardsHTML;
+}
+
+// ==========================================
+// 3.2 Next Action Step for Function Definition
 // ==========================================
 
 // Fire slider engine once the landing page DOM nodes are loaded safely!
@@ -104,18 +141,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialSection = document.getElementById('all-products');
     renderPromoSlider(initialSection);
 
+
+
+    // 1. Cut out 11 items from each warehouse list
+    const grocerySlice = grocery.slice(0, 11);
+    const householdSlice = household.slice(0, 11);
+    const stationerySlice = stationery.slice(0, 11);
+
+    // 2. Use .concat() to chain them together into a single master array of 33 items!
+    const landingPageProducts = grocerySlice.concat(householdSlice, stationerySlice);
+
+    // 3. Mix them up completely!
+    const shuffledLandingProducts = shuffleArray(landingPageProducts);
+
     // Call 1: Run the recipe using '.flash-deals' as the target class
-    renderProducts('.flash-deals');
+    renderProducts('.flash-deals', shuffledLandingProducts);
     
     // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
-    renderProducts('.custom-solutions');
+    renderProducts('.custom-solutions', shuffledLandingProducts);
 
     // 🚀 These sections should be checked before moving to a new section
-    renderProducts('.just-for-you');
-    renderProducts('.essential-collection');
-    renderProducts('.new-arrivals');
-    // renderProducts('.seasonal-content');
+    renderProducts('.just-for-you', shuffledLandingProducts);
+    renderProducts('.essential-collection', shuffledLandingProducts);
+    renderProducts('.new-arrivals', shuffledLandingProducts);
+    renderProducts('.seasonal-content', shuffledLandingProducts);
     // 🚀 These sections should be checked before moving to a new section
+
+    const frontPageGrocery = grocery.slice(0, 11);
 });
 
 // A placeholder function designed to load specific store views when called.
@@ -131,25 +183,29 @@ function loadStoreSection(categoryName) {
     renderPromoGrid(categoryName);
 }
 
+// ==========================================
+// 3.3 Shuffling All 33 Items Cleanly
+// ==========================================
+
+// To randomize an array in JavaScript, developers use an algorithm to mix up the item positions. For a beginner, one of the easiest ways to shuffle a copy of an array is using a tool called .sort() combined with a random number generator (Math.random()).
+// A reusable utility function that takes ANY array and returns it mixed up
+function shuffleArray(array) {
+    // .sort() rearranges items based on a true/false condition. 
+    // Math.random() - 0.5 randomly gives a positive or negative number, causing a chaotic shuffle!
+    return array.sort(() => Math.random() - 0.5);
+}
 
 // ==========================================
 // 4. Array of objects containing product information
 // ==========================================
 
-const allProducts = [
-    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "apple.jpg", "description": "Crisp, nutrient-dense fruits grown strictly adhering to natural farming methods.", category: "grocery" },
-    { id: 2, name: "A4 Notebook", price: 1.50, image: "notebook.jpg", "description": "A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.", category: "stationery" },
-    { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "tablets.jpg", "description": "Compact, pre-measured blocks of concentrated detergent formulated to clean crockery, remove grease, and eliminate food stains in a single wash cycle.", category: "household" },
-
-]
-
 const grocery = [
-    { id: 1, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
-    { id: 2, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
-    { id: 3, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
-    { id: 4, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
-    { id: 5, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
-    { id: 6, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
+    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "../images/Grocery/Fresh-Organic-Apples-1627321463.jpg", "description": "Crisp, nutrient-dense fruits grown strictly adhering to natural farming methods.", category: "grocery" },
+    { id: 2, name: "Velvet Classic Quilted Toilet Tissue 24 Rolls", price: 8.50, image: "../images/Grocery/Velvet_Classic_Quilted_Toilet_Tissue_24_Rolls_AC_SL1024_.jpg", "description": "The Classic Quilted Velvet white toilet rolls give you a luxurious feeling of softness with its unique quilted pattern.", category: "grocery" },
+    { id: 3, name: "Pepsi Max Cherry No Sugar Cola Cans 24 x 330ml", price: 12.00, image: "../images/Grocery/Pepsi_Max_Cherry_No_Sugar_AC_SL1000_.jpg", "description": "MAXIMUM CHERRY, NO SUGAR a bold fizzy drink with a refreshing Cherry twist; Zero Sugar, Zero Carbs", category: "grocery" },
+    { id: 4, name: "Lurpak Slightly Salted Spreadable Blend of Butter and Rapeseed Oil 400 g", price: 3.00, image: "../images/Grocery/Lurpak_Slightly_Salted_Spreadable_Blend_of_Butter_and_Rapeseed_Oil_400_g_515C8XZh5GL._AC_SL1000_.jpg", "description": "Slightly salted spreadable is made from natural ingredients. We start our recipe with butter made from 100% fresh milk.", category: "grocery" },
+    { id: 5, name: "Iceland 12 Large Free Range Eggs", price: 3.30, image: "../images/Grocery/Free_Range_Eggs_5135UaVeh9L._AC_SL1200_.jpg", "description": "Free Range Eggs", category: "grocery" },
+    { id: 6, name: "Semi-Skimmed Milk 2 litres 2l (Chilled)", price: 1.65, image: "../images/Grocery/Pasteurised_homogenised_milk_51YxlpPuKUL._AC_SL1200_.jpg", "description": "Pasteurised homogenised. Starndardised semi skimmed milk", category: "grocery" },
     { id: 7, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
     { id: 8, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
     { id: 9, name: "", price: 0.00, image: "", "description": "", category: "grocery" },
@@ -178,7 +234,7 @@ const grocery = [
 ]
 
 const household = [
-    { id: 1, name: "", price: 0.00, image: "", "description": "", category: "household" },
+    { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "../images/Household/Dishwasher-Tablets-700467.png", "description": "Compact, pre-measured blocks of concentrated detergent formulated to clean crockery, remove grease, and eliminate food stains in a single wash cycle.", category: "household" },
     { id: 2, name: "", price: 0.00, image: "", "description": "", category: "household" },
     { id: 3, name: "", price: 0.00, image: "", "description": "", category: "household" },
     { id: 4, name: "", price: 0.00, image: "", "description": "", category: "household" },
@@ -212,7 +268,7 @@ const household = [
 ]
 
 const stationery = [
-    { id: 1, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
+    { id: 2, name: "A4 Notebook", price: 4.50, image: "../images/Stationery/A4-Notebook-89410080.png", "description": "A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.", category: "stationery" },
     { id: 2, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
     { id: 3, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
     { id: 4, name: "", price: 0.00, image: "", "description": "", category: "stationery" },
@@ -252,35 +308,6 @@ const stationery = [
 // Finds the <span> with ID 'year' in the footer and sets it to the current calendar year.
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// ==========================================
-// 6. Next Action Step
-// ==========================================
 
-function renderProducts(gridClassName, arrayToUse) {
-    // 1. Find the target container grid
-    const targetGrid = document.querySelector(gridClassName);
-    // Guard clause safety check!
-    if (!targetGrid) return;
-
-    // 2. Create an empty bucket string to hold all our cards
-    let allCardsHTML = "";
-
-    // 3. Loop through each item
-    arrayToUse.forEach((product) => {
-        // Use += to ADD each new card string to our bucket variable
-        allCardsHTML += `
-            <div class="product-card-item">
-                <img src="https://picsum.photos/id/24/300/200" alt="Product Image" class="product-card-img" />
-                <h3 class="product-card-heading">${product.name}</h3>
-                <p class="product-card-description">${product.description}</p>
-                <p class="product-card-price">£${product.price}</p>
-                <button class="product-card-button" type="button" data-test="...">Quick View</button>
-            </div>
-        `;
-    });
-    
-    // 4. Dump the whole bucket of cards into the webpage grid at once!
-    targetGrid.innerHTML = allCardsHTML;
-}
 
 
