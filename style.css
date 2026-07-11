@@ -584,23 +584,24 @@ a {
     height: auto;
 
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-md);
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    border-radius: var(--radius-md);
+    /* border: 1px solid var(--color-border); */
+    /* box-shadow: var(--shadow-md); */
+    /* transition: transform var(--transition-normal), box-shadow var(--transition-normal); */
 }
 
 .product-card-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(0px);
+    /* box-shadow: var(--shadow-lg); */
+
 }
 
 .product-card-img {
     width: 100%;
     height: 12rem; /* Give it a standard bounded height */
-    object-fit: cover; /* Keeps image proportions from squishing */
+    object-fit: contain; /* Keeps image proportions from squishing */
 
-    border-radius: var(--radius-md); /* Added a subtle roundness to match your card */
+    border-radius: var(--radius-md); /* Added a subtle roundness to match the card */
     margin-bottom: var(--spacing-md);
 }
 
@@ -627,31 +628,36 @@ a {
 
     /* Official standard property for modern/future engines */
     line-clamp: 2;
+    margin-bottom: 0.3rem;
 }
 
 .product-card-price {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
-    margin-top: auto;
+    margin: auto;
 }
 
 .product-card-button {
     width: 100%;
     height: var(--input-height);
-    background-color: var(--color-primary);
-    color: var(--color-surface);
+    background-color: var(--color-warning);
+    color: var(--color-text-primary);
     font-weight: var(--font-weight-bold);
     font-size: var(--font-size-sm);
     border: none;
     border-radius: var(--radius-md);
     cursor: pointer;
     margin-top: var(--spacing-md);
-    transition: background-color var(--transition-fast);
+    /* transition: background-color var(--transition-fast); */
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-slow), box-shadow var(--transition-normal);
 }
 
 .product-card-button:hover {
-    background-color: var(--color-primary-hover);
+    color: var(--color-text-secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
 .product-card-button:focus-visible {
@@ -780,7 +786,7 @@ a {
     line-height: var(--line-height-tight); 
     
     /* Strip browser default margins to protect the spacing budget */
-    margin: 0; 
+    margin-bottom: 0.5rem; 
 }
 
 /* ==========================================================================
@@ -911,7 +917,7 @@ a {
     }
 
     .new-arrivals .product-card-item:nth-child(8) {
-        grid-column: span 2;
+        grid-row: span 2;
     }
 
     .seasonal-content .product-card-item:first-child {
