@@ -786,7 +786,14 @@ a {
     line-height: var(--line-height-tight); 
     
     /* Strip browser default margins to protect the spacing budget */
-    margin-bottom: 0.5rem; 
+    margin-bottom: 0.5rem;
+
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;          /* Limits text to exactly 2 lines */
+
+    /* Official standard property for modern/future engines */
+    line-clamp: 2;
 }
 
 /* ==========================================================================
