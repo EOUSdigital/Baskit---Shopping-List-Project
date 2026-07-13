@@ -30,9 +30,9 @@
                                 <div class="nav-left">
                                     <select id="search-category" name="category" aria-label="Select category" class="nav-search-dropdown">
                                         <option value="all" href="all-products" selected>All</option>
-                                        <option value="grocery" href="#grocery">Grocery</option>
-                                        <option value="household" href="#household">Household</option>
-                                        <option value="stationery" href="#stationery">Stationery</option>
+                                        <option value="grocery" href="#grocery" data-category="grocery">Grocery</option>
+                                        <option value="household" href="#household" data-category="household">Household</option>
+                                        <option value="stationery" href="#stationery" data-category="stationery">Stationery</option>
                                     </select>
                                 </div>
                                 <div class="nav-fill">
@@ -70,9 +70,9 @@
                 <nav id="secondary-nav" aria-label="Secondary navigation">
                     <ul class="secondary-nav-links">
                         <li><a class="nav-links-item active" aria-current="page" href="#all-products">All</a></li>
-                        <li><a class="nav-links-item" href="#grocery">Grocery</a></li>
-                        <li><a class="nav-links-item" href="#household">Household</a></li>
-                        <li><a class="nav-links-item" href="#stationery">Stationery</a></li>
+                        <li><a class="nav-links-item" href="#grocery" data-category="grocery"="">Grocery</a></li>
+                        <li><a class="nav-links-item" href="#household" data-category="household">Household</a></li>
+                        <li><a class="nav-links-item" href="#stationery" data-category="stationery">Stationery</a></li>
                     </ul>
                 </nav>
 
@@ -92,31 +92,8 @@
                     <h2 id="all-products-heading">All Products</h2>
                     <!-- Dynamic JavaScript Product Grid injection point -->
                     <div class="product-grid flash-deals">
-                        <!-- <div class="product-card-item">Card 1</div> -->
-                        <div class="product-card-item">
-                            <img src="https://picsum.photos/id/24/300/200" alt="Product Image" class="product-card-img" />
-
-                            <div class="product-card-info">
-                                <h3 class="product-card-heading">Friendly Textbook Title</h3>
-                                <p class="product-card-description">A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.</p>
-                                <p class="product-card-price">£<span>14.99</span></p>
-                            </div>
-
-                            <button class="product-card-button" type="button" data-test="...">Quick View</button>
-                        </div>
-
-                        <!-- <div class="product-card-item">Card 2</div> -->
-                        <div class="product-card-item">
-                            <img src="https://picsum.photos/id/48/300/200" alt="Product Image" class="product-card-img" />
-
-                            <div class="product-card-info">
-                                <h3 class="product-card-heading">Another Great Resource</h3>
-                                <p class="product-card-description">Short description here.</p>
-                                <p class="product-card-price">£<span>9.99</span></p>
-                            </div>
-
-                            <button class="product-card-button" type="button" data-test="...">Quick View</button>
-                        </div>
+                        <div class="product-card-item">Card 1</div>
+                        <div class="product-card-item">Card 2</div>
                         <div class="product-card-item">Card 3</div>
                         <div class="product-card-item">Card 4</div>
                     </div>
@@ -248,7 +225,7 @@
                     </div>
                 </section>
 
-                <section id="product-details" aria-labelledby="product-details-heading" class="hidden"></section>
+                <section id="product-details" aria-labelledby="product-details-heading" class="hidden" aria-label="Product individual specification specs"></section>
 
                 <!-- Shopping List Basket Section -->
                 <section id="shopping-basket" aria-labelledby="basket-heading" class="hidden">
