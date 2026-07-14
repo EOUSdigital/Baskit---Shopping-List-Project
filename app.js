@@ -1,19 +1,47 @@
 "use strict";           // Forces the browser to run your code strictly, throwing errors for bad practices.
 
 // ==========================================
-// 1. HEADER & NAVIGATION SYSTEM
+// GLOBAL STATE APP REGISTRY
 // ==========================================
+
+let basket = [];
+let previouslyActiveSectionId = "#all-products";
 
 //  Grabs all HTML elements with the class 'nav-links-item' (the menu buttons)
 const navLinks = document.querySelectorAll('.nav-links-item');
-//  Grabs all <section> elements living inside your <main> container
+//  Grabs all <section> elements living inside the <main> container
 const sections = document.querySelectorAll('main section');
+
+// Unified Router Utility to handle clean page swapping
+function changeRouteView(targetSectionId) {
+    sections.forEach(section => {
+        if (section.activeTimerId) {
+            clearInterval(section.activeTimerId);
+        };
+
+        section.classList.add('hidden');
+    });
+
+    const targetSection = document.querySelector(targetSectionId);
+    if (targetSection) {
+        targetSection.classList.remove('hidden');
+        renderPromoSlider(targetSection);
+        if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
+            previouslyActiveSectionId = targetSectionId;
+        };
+    };
+};
+
+// ==========================================
+// 1. HEADER & NAVIGATION SYSTEM
+// ==========================================
 
 //  Loops through every navigation link button one by one
 navLinks.forEach(link => {
     link.addEventListener('click', (event) => {
         //  Prevents the default browser action (stops the page from jumping or reloading)
         event.preventDefault();
+        const targetSectionId = link.getAttribute('href');
 
         //  Step 1: Loops through all store sections and adds the 'hidden' class to conceal them.
         sections.forEach(section => {
@@ -27,7 +55,24 @@ navLinks.forEach(link => {
         // Step 2: Find the target section ID from the clicked link's href attribute (e.g., "#grocery")
         const targetSectionId = link.getAttribute('href'); 
         const targetSection = document.querySelector(targetSectionId);
-        
+
+        //  Phase A: READ the data-category attribute from the clicked link (e.g., "grocery")
+        const selectedCategory = link.dataset.category;
+
+        //  Phase B: IF the link actually has a category attribute (prevents crashing on "All Products" link)
+        if (selectedCategory) {
+            // DYNAMIC LOOKUP: Look inside the map using brackets! 
+            // If selectedCategory is "grocery", targetArray becomes the grocery data array.
+            const targetArray = productDataMap[selectedCategory];
+
+            // Phase C. FIND the target grid container inside this active section
+            // In the HTML, the inner grids use unique classes like '.grocery-content'
+            const targetGridClass = `.${selectedCategory}-content`;
+
+            //  Phase D. RUN the rendering function dynamically!
+            renderProducts(targetGridClass, targetArray);
+        }
+
         // Step 3: Open the chosen section and trigger its slider engine dynamically!
         if (targetSection) {
             targetSection.classList.remove('hidden');
@@ -141,8 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialSection = document.getElementById('all-products');
     renderPromoSlider(initialSection);
 
-
-
     // 1. Cut out 11 items from each warehouse list
     const grocerySlice = grocery.slice(0, 11);
     const householdSlice = household.slice(0, 11);
@@ -154,18 +197,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Mix them up completely!
     const shuffledLandingProducts = shuffleArray(landingPageProducts);
 
+    let currentSliceIndex = 0;
+
     // Call 1: Run the recipe using '.flash-deals' as the target class
-    renderProducts('.flash-deals', shuffledLandingProducts);
+    renderProducts('.flash-deals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 4));
     
     // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
-    renderProducts('.custom-solutions', shuffledLandingProducts);
+    renderProducts('.custom-solutions', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 5));
 
     // 🚀 These sections should be checked before moving to a new section
-    renderProducts('.just-for-you', shuffledLandingProducts);
-    renderProducts('.essential-collection', shuffledLandingProducts);
-    renderProducts('.new-arrivals', shuffledLandingProducts);
-    renderProducts('.seasonal-content', shuffledLandingProducts);
-    // 🚀 These sections should be checked before moving to a new section
+    renderProducts('.just-for-you', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 8));
+    renderProducts('.essential-collection', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 2));
+    renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
+    renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
 
     const frontPageGrocery = grocery.slice(0, 11);
 });
@@ -196,11 +240,11 @@ function shuffleArray(array) {
 }
 
 // ==========================================
-// 4. Array of objects containing product information
+// 4.1 Array of objects containing product information
 // ==========================================
 
 const grocery = [
-    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "../images/Grocery/Fresh-Organic-Apples-1627321463.jpg", "description": "Crisp, nutrient-dense fruits grown strictly adhering to natural farming methods.", category: "grocery" },
+    { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "../images/Grocery/Fresh-Organic-Apples-1627321463.png", "description": "Crisp, nutrient-dense fruits grown strictly adhering to natural farming methods.", category: "grocery" },
     { id: 2, name: "Velvet Classic Quilted Toilet Tissue 24 Rolls", price: 8.50, image: "../images/Grocery/Velvet_Classic_Quilted_Toilet_Tissue_24_Rolls_AC_SL1024_.jpg", "description": "The Classic Quilted Velvet white toilet rolls give you a luxurious feeling of softness with its unique quilted pattern.", category: "grocery" },
     { id: 3, name: "Pepsi Max Cherry No Sugar Cola Cans 24 x 330ml", price: 12.00, image: "../images/Grocery/Pepsi_Max_Cherry_No_Sugar_AC_SL1000_.jpg", "description": "MAXIMUM CHERRY, NO SUGAR a bold fizzy drink with a refreshing Cherry twist; Zero Sugar, Zero Carbs", category: "grocery" },
     { id: 4, name: "Lurpak Slightly Salted Spreadable Blend of Butter and Rapeseed Oil 400 g", price: 3.00, image: "../images/Grocery/Lurpak_Slightly_Salted_Spreadable_Blend_of_Butter_and_Rapeseed_Oil_400_g_515C8XZh5GL._AC_SL1000_.jpg", "description": "Slightly salted spreadable is made from natural ingredients. We start our recipe with butter made from 100% fresh milk.", category: "grocery" },
@@ -211,9 +255,10 @@ const grocery = [
     { id: 9, name: "nakd. Variety pack", price: 15.25, image: "../images/Grocery/nakd._Variety_pack_81RYuVcGzdL._AC_SL1500_.jpg", "description": "Raw fruit & nut bars - 100% natural ingredients - No added sugar - Vegan - Gluten free - 18 x 35g bars - 630g", category: "grocery" },
     { id: 10, name: "Filippo Berio", price: 10.20, image: "../images/Grocery/Filippo_Berio_71i3zw8KsXL._AC_SL1500_.jpg", "description": "Extra Virgin Olive Oil, 1L", category: "grocery" },
     { id: 11, name: "HANDPICK, Spearmint Tea Bags", price: 8.99, image: "../images/Grocery/HANDPICK_Spearmint_Tea_619xC4P1+6L._AC_SL1000_.jpg", "description": "Non-GMO, 100% Pure Spearmint Leaf Tea Bags Certified by Tea Board of India | Round Eco-Conscious Teabags", category: "grocery" },
+    
     { id: 12, name: "Eat Wholesome Organic Apple Cider Vinegar", price: 5.50, image: "../images/Grocery/Eat_Wholesome_Organic_Apple_Cider_Vinegar_71leP8LRFNL._AC_SL1500_.jpg", "description": "Raw, Unpasteurised, Unfiltered, Award-Winning, Vegan, With The Mother, 1L Glass Bottle in Box", category: "grocery" },
     { id: 13, name: "Minton & Donello Organic Porridge Oats 1kg", price: 2.80, image: "../images/Grocery/Minton_Donello_Organic_Porridge_Oats_611dznoNQDL._AC_SL1500_.jpg", "description": "Wholesome, Creamy Oats Great for Breakfast, Baking, Smooth & Warming Bowls, and Nutritious Everyday Meals", category: "grocery" },
-    { id: 14, name: "Twinings English Breakfast Tea, 4 x 80", price: 14.00, image: "../images/Grocery/Twinings_English_Breakfast_Tea_71FFA09872L._AC_SL1500_.jpg", "description": "Biodegradable Plant-Based Tea Bags", category: "grocery" },
+    { id: 14, name: "Twinings English Breakfast Loose Tea Caddy - 500g", price: 14.00, image: "../images/Grocery/Twinings_English_Breakfast_Tea_71FFA09872L._AC_SL1500_.jpg", "description": "Golden and well rounded. It's a tea with a lot of body and a light finish. Biodegradable Plant-Based Tea Bags", category: "grocery" },
     { id: 15, name: "Bulk Zero Calorie Barista Syrup, Caramel, 1 Litre", price: 5.99, image: "../images/Grocery/Bulk_Zero_Calorie_Barista_Syrup_Caramel_510j2MhKluL._AC_SL1500_.jpg", "description": "Perfect for Protein Shakes, Coffee, Tea, Desserts, Pancakes and Waffles, Vegan, No Sugar, Fat, or Calories", category: "grocery" },
     { id: 16, name: "Mutti Finely Chopped Tomatoes 400g (Pack of 6)", price: 6.60, image: "../images/Grocery/Mutti_Finely_Chopped_Tomatoes_400g_81eX+X25uhL._AC_SL1500_.jpg", "description": "Premiumness, the best tomatoes are picked when perfectly ripe, cold crushed, and processed with our patented technique to capture the flavour of just-harvested tomatoes.", category: "grocery" },
     { id: 17, name: "Koka Original Chicken Flavour Oriental Style Instant Noodles, 85 g (Pack of 5)", price: 1.88, image: "../images/Grocery/Koka_Original_Chicken_Flavour_Oriental_Style_Instant_Noodles_71mwINa7bUL._AC_SL1000_.jpg", "description": "Chicken flavour instant noodles. Perfect as a snack or meal accompaniment.", category: "grocery" },
@@ -227,14 +272,15 @@ const grocery = [
     { id: 25, name: "Mai Thai AAA Jasmine Rice, (Pack of 1), 5kg", price: 6.40, image: "../images/Grocery/Mai_Thai_AAA_Jasmine_Rice_(Pack of 1)_5kg61KL1qucrZL._AC_SL1226_.jpg", "description": "AAA Quality Thai Fragrant Jasmine Rice. Floral Aroma. Soft , Sticky Texture", category: "grocery" },
     { id: 26, name: "Barry's Irish Breakfast Tea Bags, 250 g", price: 10.80, image: "../images/Grocery/Barry's_Irish_Breakfast_Tea_Bags_250g_51BlAuJfHFL._AC_SL1024_.jpg", "description": "Brisk refreshing taste and a bright golden colour. Ideal for anytime of the day. Lightest and most refreshing signature blend", category: "grocery" },
     { id: 27, name: "KTC Chick Peas, 400g", price: 0.52, image: "../images/Grocery/KTC_Chick_Peas_400g_61Wef4W1DQL._AC_SL1024_.jpg", "description": "Base for home made hummous. Ready to use. High inprotein and fibre", category: "grocery" },
-    { id: 28, name: "Indus Paprika Powder, 100g", price: 1.05, image: "", "description": "../images/Grocery/Indus_Paprika_Powder_100g_618FN8UHaUL._AC_SL1280_.jpg", category: "grocery" },
+    { id: 28, name: "Indus Paprika Powder, 100g", price: 1.05, image: "../images/Grocery/Indus_Paprika_Powder_100g_618FN8UHaUL._AC_SL1280_.jpg", "description": "Essentials Noble Sweet Paprika Powder", category: "grocery" },
     { id: 29, name: "KTC Premium Quality Edible Mustard Oil Blend, 1 Litre", price: 3.40, image: "../images/Grocery/KTC_Premium_Quality _Mustard_Oil_Blend_1Litre_51I6knk6xQL._AC_SL1000_.jpg", "description": "Mustard Seed Oil (51%), Rapeseed Oil & Antifoaming Agent (E900) (49%)", category: "grocery" },
     { id: 30, name: "Carotino Better Ghee, 1kg", price: 4.00, image: "../images/Grocery/Carotino_Better_Ghee_1kg_61R9AbzWi-L._AC_SL1000_.jpg", "description": "Finest butter taste and aroma. Tastes just like butter ghee, but is a healthier option. Around half the price of butter ghee", category: "grocery" },
     { id: 31, name: "Keeling's Oranges", price: 2.25, image: "../images/Grocery/Keeling's_Easy_Peelers_711Cf5NKDaL._AC_.jpg", "description": "Easy Peelers", category: "grocery" },
+    { id: 32, name: "Black Seed Oil Organic Cold Pressed. Up to 5X Strength.", price: 16.97, image: "../images/Grocery/Black_Seed_Oil_Organic_71whufpGt2L._AC_SL1500_.jpg", "description": "Award Winning Organic Black Seed Oil - Known as Cumin, Cold Pressed Nigella Sativa, and Kalonji, 200 ml", category: "grocery" },
 ]
 
 const household = [
-    { id: 3, name: "Dishwasher Tablets", price: 8.49, image: "../images/Household/Dishwasher-Tablets-700467.png", "description": "Compact, pre-measured blocks of concentrated detergent formulated to clean crockery, remove grease, and eliminate food stains in a single wash cycle.", category: "household" },
+    { id: 1, name: "Dishwasher Tablets", price: 8.49, image: "../images/Household/Dishwasher-Tablets-700467.png", "description": "Compact, pre-measured blocks of concentrated detergent formulated to clean crockery, remove grease, and eliminate food stains in a single wash cycle.", category: "household" },
     { id: 2, name: "Zoflora Midnight Blooms Multipurpose Cleaner Trigger Spray, 1 x 800ml", price: 2.00, image: "../images/Household/Zoflora_Midnight_Blooms_Multipurpose_Cleaner_Trigger_Spray_51vLxxddJ7L._AC_SL1107_.jpg", "description": "Floral Antibacterial Multi-Surface Cleaner, Pet-Friendly, Kills 99.9 Percent of Bacteria and Viruses.", category: "household" },
     { id: 3, name: "Hi-Spec 42pc 4V USB Electric Power Driver & Household Tool Kit", price: 26.34, image: "../images/Household/Hi-Spec_42pc_4V_USB_Electric_Power_Driver_818w0RIzT2L._AC_SL1500_.jpg", "description": "Cordless Power & Hand Tool Set: Includes a 4V USB rechargeable electric screwdriver and 41 hand tools for home repairs, furniture assembly, and everyday DIY tasks", category: "household" },
     { id: 4, name: "Microfibre Cleaning Cloths Pack of 50, 30 x 30 cm Ultra Absorbent Lint Free Microfibre Cloth", price: 18.31, image: "../images/Household/Microfibre_Cleaning_Cloths_Pack_91LnWTakrEL._AC_SL1500_.jpg", "description": "Streak Free Reusable Cleaning Towels With free Gloves, Multi-Purpose Washable Cloth for Kitchen, Windows", category: "household" },
@@ -245,6 +291,7 @@ const household = [
     { id: 9, name: "Elbow Grease Rubber Gloves (Medium)", price: 1.29, image: "../images/Household/Elbow_Grease_Rubber_Gloves_(Medium)_81TWpbEP1zL._AC_SL1500_.jpg", "description": "Cotton Lined, Super Strong, Non-Slip Household Cleaning Gloves", category: "household" },
     { id: 10, name: "Leebein Electric Spin Scrubber", price: 29.96, image: "../images/Household/Leebein_Electric_Spin_Scrubber_71aQbSwuNxL._AC_SL1500_.jpg", "description": "Cordless Cleaning Brush with 8 Replaceable Brush Heads, Extendable Long Handle Bathroom Cleaning Scrubber, 300/400RPM Spin Scrubber for Bathroom Kitchen Floor Tile", category: "household" },
     { id: 11, name: "Air Wick Cherry Blossom & Raspberry", price: 5.50, image: "../images/Household/Air_Wick_Cherry_Blossom_Raspberry_81rpZ5Yom8L._AC_SL1500_.jpg", "description": "Advanced Electrical Plug-in Kit 19ml, Lasts for up to 100 Days, Air Freshener", category: "household" },
+    
     { id: 12, name: "UpCircle Bamboo Cotton Buds - 200 Pieces", price: 4.50, image: "../images/Household/UpCircle_Bamboo_Cotton_Buds_200_Pieces_713AzRHXYeL._AC_SL1500_.jpg", "description": "Biodegradable, Sustainable, Plastic-Free, Fully Recyclable Ear Buds - A Staple For Any Bathroom", category: "household" },
     { id: 13, name: "VTL® 60 Litre Black Plastic Swing Bin", price: 12.99, image: "../images/Household/VTL_60Litre_Black_Plastic_Swing_Bin_41zsWWR1IuL._SL1500_.jpg", "description": "Sleek black finish adds sophistication to any setting, making it suitable for kitchens, offices, bathrooms, and more.", category: "household" },
     { id: 14, name: "The Household Fortress Protocol", price: 9.99, image: "../images/Household/The_Household_Fortress_Protocol_81BLGy6sYdL._SL1500_.jpg", "description": "A Complete Preparedness Handbook for Families Facing Supply Chain Disruption, Power Outages, Economic Instability, Communication and Survival in Times of Global Crisis", category: "household" },
@@ -265,10 +312,11 @@ const household = [
     { id: 29, name: "2 Pack Household Voltage Stabilizer", price: 14.99, image: "../images/Household/2_Pack_Household_Voltage_Stabilizer_61IdSyMl7rL._AC_SL1254_.jpg", "description": "220V Household Over & Under Voltage Stabiliser Socket, Surge Spike Protection Wall Plug for Fridge TV Air Conditioner Washing Machine", category: "household" },
     { id: 30, name: "IGNPION Woven Square Tissue Holder Seagrass Facial Tissue", price: 15.99, image: "../images/Household/IGNPION_Woven_Square_Tissue_Holder_Seagrass_Facial_Tissue_81N3ym13jtL._AC_SL1500_.jpg", "description": "Box Cover Decorative Household Cube Tissue Organizer Box with Remote Control Storage Holder for House Office Car Hotel, Caramels", category: "household" },
     { id: 31, name: "Sightday Medicine Storage Box", price: 16.99, image: "../images/Household/Sightday_Medicine_Storage_Box_71bg5xw1jRL._AC_SL1500_.jpg", "description": "Household Medicine Storage Box Organiser,Double Layers First Aid Box,Multi Grid Portable with Lid Medication Cabinet for Home(Green-L)", category: "household" },
+    { id: 32, name: "Bio-D Washing Powder | 2 Kg | Upto 33 Washes", price: 13.45, image: "../images/Household/Bio-D_Washing_Powder_71fAUeyHipL._AC_SL1500_.jpg", "description": "Concentrated Non-Bio Laundry Detergent | Fragrance Free & Hypoallergenic | Allergy UK Approved | Vegan & Cruelty Free", category: "" },
 ]
 
 const stationery = [
-    { id: 2, name: "A4 Notebook", price: 4.50, image: "../images/Stationery/A4-Notebook-89410080.png", "description": "A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.", category: "stationery" },
+    { id: 1, name: "A4 Notebook", price: 4.50, image: "../images/Stationery/A4-Notebook-89410080.png", "description": "A comprehensive guide filled with useful resources, illustrations, and clear examples for learning.", category: "stationery" },
     { id: 2, name: "Helix Oxford Complete Back to School Stationery Set", price: 22.49, image: "../images/Stationery/Helix_Oxford_Complete_Back_to_School_Stationery_Set_81nkjhDX9TL._AC_SL1392_.jpg", "description": "Comprehensive Helix Oxford school supplies set including Maths Set, Pens, Ruler, Scientific Calculator & More - Ideal for High School or College", category: "stationery" },
     { id: 3, name: "FINDMAG Strong Fridge Magnets", price: 5.99, image: "../images/Stationery/FINDMAG_Strong_Fridge_Magnets_71Rj-XfDKkL._AC_SL1500_.jpg", "description": "8 Pack Magnetic Push Pins for Refrigerator and Noticeboard, Small Whiteboard Magnets for Crafts, Planner, School Office Locker Accessory (Black)", category: "stationery" },
     { id: 4, name: "BLUE GINKGO Desk Organizer", price: 25.99, image: "../images/Stationery/BLUE_GINKGO_Desk_Organizer_614z7w+EtsL._AC_SL1500_.jpg", "description": "Korean-Made Office Storage for Pens, Notes, Mail, and Supplies (White)", category: "stationery" },
@@ -279,6 +327,7 @@ const stationery = [
     { id: 9, name: "BIC Back to School Stationery Set", price: 13.29, image: "../images/Stationery/BIC_Back_to_School_Stationery_Set_81VOwJ4MpkL._AC_SL1500_.jpg", "description": "Assorted Colour Ballpoint Pens, Highlighters and Retractable 4 Colour Pen Multipack - 23 Piece Bundle", category: "stationery" },
     { id: 10, name: "MUNBYN Shipping Scale, 200kg/440lb/1.8oz", price: 35.99, image: "../images/Stationery/MUNBYN_Shipping_Scale_71vR-xFDveL._SL1500_.jpg", "description": "Digital Postal Scale for Packages with Hold/Tare Function, Backlit LCD, Battery & Cable Included, Postage Scale for Small Business,Packages,Luggage,Home Use", category: "stationery" },
     { id: 11, name: "Star Wars Bumper Stationery Set (The Mandalorian Where I Go Design)", price: 11.99, image: "../images/Stationery/Star_Wars_Bumper_Stationery_Set_71dkUij6rmL._AC_SL1080_.jpg", "description": "School Stationery Set and Office Supplies - Official Merchandise", category: "stationery" },
+    
     { id: 12, name: "STABILO BOSS ORIGINAL", price: 8.50, image: "../images/Stationery/STABILO_BOSS_ORIGINAL_817qQVERhxL._AC_SL1500_.jpg", "description": "Highlighter - Pack of 8 - Assorted Colours", category: "stationery" },
     { id: 13, name: "27 Pcs Back to School Stationery Set", price: 10.99, image: "../images/Stationery/27_Pcs_Back_to_School_Stationery_Set_714WHKxw+AL._AC_SL1500_.jpg", "description": "Maths Set with Clear Pencil Case, Assorted Stationery Pack with Ballpoint Pens, Highlighters, Pencils, Foldback Clips, Ruler Set, Compasses", category: "stationery" },
     { id: 14, name: "Shuttle Art Dual Tip Brush Pens", price: 29.98, image: "../images/Stationery/Shuttle_Art_Dual_Tip_Brush_Pens_Art_Markers_71w121sNY9L._AC_SL1500_.jpg", "description": "105 Colours Fine and Brush Tip Markers Set with Portable Case & 1 Colouring Book, Felt Tip Colouring Pens for Adults and Kids Colouring Calligraphy Journal Doodling", category: "stationery" },
@@ -287,19 +336,30 @@ const stationery = [
     { id: 17, name: "Pencil Erasers Classic Eraser", price: 3.79, image: "../images/Stationery/Pencil_Erasers_Classic_Eraser_71OgSAoPsmL._AC_SL1500_.jpg", "description": "White Plastic Rubbers Erasers for Universal Use in Schools Offices Sketches Paintings Fine Arts Soft 2B Eraser 10 Pcs", category: "stationery" },
     { id: 18, name: "deli Stapler with 640 Staples", price: 7.99, image: "../images/Stationery/deli_Stapler_with_640_Staples_61x3ctb9iXL._AC_SL1500_.jpg", "description": "Desktop Office Stapler, 25 Sheet Capacity, Compact Stapler and Staples Set for Home, School & Office Stationery Supplies Black", category: "stationery" },
     { id: 19, name: "PRT Label Maker Machine with Tape", price: 13.99, image: "../images/Stationery/PRT_Label_Maker_Machine_with_Tape_61BB0MG4ygL._AC_SL1500_.jpg", "description": "Portable Bluetooth Label Printer, Handheld Sticker Maker with Multiple Templates for Home, School, Office Organization, Waterproof Storage Barcode Label- White", category: "stationery" },
-    { id: 20, name: "100 A4 Plastic Value Punched Punch Pockets", price: 6.99, image: "", "description": "10-15 Sheets 30 Micron for Folders Filing Wallets Sleeves", category: "stationery" },
+    { id: 20, name: "100 A4 Plastic Value Punched Punch Pockets", price: 6.99, image: "../images/Stationery/Plastic_Value_Punched_Punch_Pockets_51zWuH0AIwL._AC_SL1000_.jpg", "description": "10-15 Sheets 30 Micron for Folders Filing Wallets Sleeves", category: "stationery" },
     { id: 21, name: "Parker Jotter Ballpoint Pen", price: 13.49, image: "../images/Stationery/Parker_Jotter_Ballpoint_Pen_71zvXjwBxvL._AC_SL1500_.jpg", "description": "Stainless Steel with Chrome Trim | Medium Point | Handwriting Pens & Stationery Supplies | Blue Ink | Gift Box", category: "stationery" },
-    { id: 22, name: "Lychico Desk Organiser", price: 8.99, image: "", "description": "360-Degree Rotating Pencil Cup Organiser With 5-Compartment Desk Organiser, Large Capacity Pencil Pot Cup for Office, Home & School Supplies, Stationery Accessories", category: "stationery" },
+    { id: 22, name: "Lychico Desk Organiser", price: 8.99, image: "../images/Stationery/Lychico_Desk_Organiser_71pTYd+rCGL._AC_SL1500_.jpg", "description": "360-Degree Rotating Pencil Cup Organiser With 5-Compartment Desk Organiser, Large Capacity Pencil Pot Cup for Office, Home & School Supplies, Stationery Accessories", category: "stationery" },
     { id: 23, name: "SUPVAN E11 Bluetooth Label", price: 29.99, image: "../images/Stationery/SUPVAN_E11_Bluetooth_Label_71QV-+5fTsL._AC_SL1500_.jpg", "description": "Maker Machine with 4 Tapes, Support Keyboard & App with 30+ Fonts and 660+ Icons, Rechargeable Inkless Labeler for Home, Kitchen, Office, School Organization, Black", category: "stationery" },
     { id: 24, name: "Yafe A5 Spiral Notebooks 5 Pack", price: 9.39, image: "../images/Stationery/Yafe_A5_Spiral_Notebooks_5Pack_81QKDA+olIL._AC_SL1500_.jpg", "description": "Kraft Cover, Lined, 120 Pages | Double Wirebound, Thick Beige Paper, Easy to Carry for School, Office, Travel", category: "stationery" },
     { id: 25, name: "SUIN Gel Pens Black Ink 0.7mm", price: 8.99, image: "../images/Stationery/SUIN_Gel_Pens_Black_Ink_0.7mm_71TZiSMgYOL._AC_SL1500_.jpg", "description": "Retractable Smooth Writing Pens with Soft Grip, 5 Pack Refillable Aesthetic Pens with 5 Refills for Journaling, Note Taking, Office & School", category: "stationery" },
-    { id: 26, name: "Helix Pringles Desk Stationery Set", price: 5.69, image: "", "description": "Elevate Your Workspace with Our Eco-Friendly Stationery Desk Set! Transform your desk into a hub of creativity and organization with our meticulously curated stationery set. This set includes.", category: "stationery" },
+    { id: 26, name: "Helix Pringles Desk Stationery Set", price: 5.69, image: "../images/Stationery/Helix_Pringles_Desk_Stationery_Set_71NzT9ENM2L._AC_SL1500_.jpg", "description": "Elevate Your Workspace with Our Eco-Friendly Stationery Desk Set! Transform your desk into a hub of creativity and organization with our meticulously curated stationery set. This set includes.", category: "stationery" },
     { id: 27, name: "AFMAT Fully Automatic Electric Pencil Sharpener for Colored Pencils 7-11.5mm", price: 30.49, image: "../images/Stationery/AFMAT_Fully_Automatic_Electric_Pencil_Sharpener_71JT55om+-L._AC_SL1500_.jpg", "description": "Auto in&Out, Rechargeable Hands-Free Pencil Sharpener with Container for School,Home,Classroom,Battery Operated,Black PSX5", category: "stationery" },
     { id: 28, name: "Rapesco 1808 Transparent Adhesive Tape Rolls, 26 mm x 66 m, Clear Refills, Pack of 8", price: 7.81, image: "../images/Stationery/Rapesco_1808_Transparent_Adhesive_Tape_71f5J63YHbL._AC_SL1500_.jpg", "description": "Strong, anti-tangle, and moisture-resistant adhesive tape offering long-lasting adhesion, making it suitable for applications requiring a reliable seal", category: "stationery" },
     { id: 29, name: "ABC life Expanding File Folder", price: 10.98, image: "../images/Stationery/ABC_life_Expanding_File_Folder_81QHXerHGpL._AC_SL1500_.jpg", "description": "12 Pockets A4 Accordion File Organiser, Portable Rainbow Document Filing Box, Accordian Monthly Bill Receipt Paperwork Organiser Storage for Home & Office & School", category: "stationery" },
     { id: 30, name: "Pocket Size Notebook", price: 13.71, image: "../images/Stationery/Pocket_Size_Notebook_714TV5XezYL._AC_SL1500_.jpg", "description": "Mini Diary,Pocket Size Notebook | For Business, Student, Travel, Office, Study, Daily, School, Work, Meetings", category: "stationery" },
     { id: 31, name: "Rapesco PF827PB2 Germ-Savvy Antibacterial", price: 8.92, image: "../images/Stationery/Rapesco_1808_Transparent_Adhesive_Tape_71f5J63YHbL._AC_SL1500_.jpg", "description": "2-Hole Punch, 30 Sheet Capacity, Black", category: "stationery" },
+    { id: 32, name: "Dragon Touch Calendar", price: 160.98, image: "../images/Stationery/Dragon_Touch_Calendar_71MRGrqf3+L._AC_SL1500_.jpg", "description": "15.6 Digital Calendar Family Wall Planner, 1080P Full HD Interactive Touchscreen, Smart Chore Chart and Home Organization, Gift for Busy Families Scheduling-Black", category: "" },
 ]
+
+// ==========================================
+// 4.2 Setting up the Dictionary in JavaScript - the "translator map" object
+// ==========================================
+
+const productDataMap = {
+    grocery: grocery,
+    household: household,
+    stationery: stationery
+};
 
 // ==========================================
 // 5. FOOTER COMPONENT
