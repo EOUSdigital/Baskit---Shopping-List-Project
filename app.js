@@ -4,7 +4,7 @@
 // GLOBAL STATE APP REGISTRY
 // ==========================================
 
-let basket = [];
+let basket = [];                    // Stores cart items tracking: { product, quantity }
 let previouslyActiveSectionId = "#all-products";
 
 //  Grabs all HTML elements with the class 'nav-links-item' (the menu buttons)
@@ -17,8 +17,7 @@ function changeRouteView(targetSectionId) {
     sections.forEach(section => {
         if (section.activeTimerId) {
             clearInterval(section.activeTimerId);
-        };
-
+        }
         section.classList.add('hidden');
     });
 
@@ -33,55 +32,44 @@ function changeRouteView(targetSectionId) {
 };
 
 // ==========================================
-// 1. HEADER & NAVIGATION SYSTEM
+// 1. HEADER NAVIGATION SYSTEM & ROUTING ENGINE
 // ==========================================
 
-//  Loops through every navigation link button one by one
+//  Loops through every navigation link button one by one.
+// Handle department menu link clicks
 navLinks.forEach(link => {
     link.addEventListener('click', (event) => {
-        //  Prevents the default browser action (stops the page from jumping or reloading)
         event.preventDefault();
         const targetSectionId = link.getAttribute('href');
-
-        //  Step 1: Loops through all store sections and adds the 'hidden' class to conceal them.
-        sections.forEach(section => {
-            if (section.activeTimerId) {
-                console.log("Success! Clearing timer ID:", section.activeTimerId);  //  Developer code. Must be deleted once the test is completed.
-                clearInterval(section.activeTimerId);
-            }
-            section.classList.add('hidden');
-        });
         
-        // Step 2: Find the target section ID from the clicked link's href attribute (e.g., "#grocery")
-        const targetSectionId = link.getAttribute('href'); 
-        const targetSection = document.querySelector(targetSectionId);
-
-        //  Phase A: READ the data-category attribute from the clicked link (e.g., "grocery")
         const selectedCategory = link.dataset.category;
-
-        //  Phase B: IF the link actually has a category attribute (prevents crashing on "All Products" link)
         if (selectedCategory) {
-            // DYNAMIC LOOKUP: Look inside the map using brackets! 
-            // If selectedCategory is "grocery", targetArray becomes the grocery data array.
             const targetArray = productDataMap[selectedCategory];
-
-            // Phase C. FIND the target grid container inside this active section
-            // In the HTML, the inner grids use unique classes like '.grocery-content'
             const targetGridClass = `.${selectedCategory}-content`;
-
-            //  Phase D. RUN the rendering function dynamically!
             renderProducts(targetGridClass, targetArray);
         }
-
-        // Step 3: Open the chosen section and trigger its slider engine dynamically!
-        if (targetSection) {
-            targetSection.classList.remove('hidden');
-            
-            // ADDED: Initialize the promo slider for this tab if it isn't running yet!
-            renderPromoSlider(targetSection);
-        }
+        changeRouteView(targetSectionId);
     });
 });
+
+// Handle clicking the Basket Icon in the navigation bar
+const basketTrigger = document.querySelector('.basket-nav-trigger');
+if (basketTrigger) {
+    basketTrigger.addEventListener('click', (event) => {
+        event.preventDefault();
+        renderBasketView(); // Build the shopping cart elements
+        changeRouteView("#shopping-basket"); // Switch to basket page
+    });
+}
+
+// Handle clicking the Logo to go back home
+const brandLink = document.querySelector('.brand-link');
+if (brandLink) {
+    brandLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        changeRouteView("#all-products");
+    });
+}
 
 
 // ==========================================
