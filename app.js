@@ -87,9 +87,11 @@ function renderPromoSlider(sectionElement) {
     // Structural guard safety check: if either container or template is missing, stop running completely.
     if (!placeholder || !template) return;
 
-    // ADDED SAFEGUARD: If a slider is already rendered inside this section, stop here!
-    // This prevents duplicate intervals from stacking up if a user clicks the same link twice.
-    if (placeholder.querySelector('.animated-slider')) return;
+    // 1. Always clear any existing interval on this section to prevent memory leaks
+    if (sectionElement.activeTimerId) {
+        clearInterval(sectionElement.activeTimerId);
+        sectionElement.activeTimerId = null;
+    }
 
     // Clear out placeholder text content & grab a clean template copy.
     placeholder.innerHTML = '';
@@ -131,38 +133,166 @@ function renderPromoSlider(sectionElement) {
 // 3.1 CORE INITIALIZATION & APP ROUTING
 // ==========================================
 
+// ==========================================
+// DYNAMIC RENDER & BASKET ENGINE
+// ==========================================
+
 function renderProducts(gridClassName, arrayToUse) {
-    // 1. Find the target container grid
     const targetGrid = document.querySelector(gridClassName);
-    // Guard clause safety check!
     if (!targetGrid) return;
 
-    // 2. Create an empty bucket string to hold all our cards
-    let allCardsHTML = "";
+    targetGrid.innerHTML = ""; // Wipe the grid clean of any old cards
 
-    // 3. Loop through each item
     arrayToUse.forEach((product) => {
-        // SAFETY GUARD: If the product name is empty or missing, skip it completely!
-        if (!product.name || product.name === "") {
-            // This acts like a 'skip' command for this specific loop iteration
-            return;
-        }
+        if (!product.name) return;
 
-        // Use += to ADD each new card string to our bucket variable
-        allCardsHTML += `
-            <div class="product-card-item">
-                <img src="${product.image}" alt="${product.name}" class="product-card-img" />
-                <h3 class="product-card-heading">${product.name}</h3>
-                <p class="product-card-description">${product.description}</p>
-                <p class="product-card-price">£${product.price}</p>
-                <button class="product-card-button" type="button" data-test="...">Add to basket</button>
-            </div>
+        // Create the card container programmatically in browser memory
+        const card = document.createElement('div');
+        card.className = "product-card-item";
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" class="product-card-img" />
+            <h3 class="product-card-heading">${product.name}</h3>
+            <p class="product-card-description">${product.description}</p>
+            <p class="product-card-price">£${product.price.toFixed(2)}</p>
+            <button class="product-card-button" type="button" data-test="...">Add to basket</button>
         `;
+
+        // Action 1: If user clicks the card layout (excluding the button), open details
+        card.addEventListener('click', (event) => {
+            if (event.target.classList.contains('product-card-button')) return;
+            openProductDetailsPage(product);
+        });
+
+        // Action 2: If user clicks "Add to basket", run cart state updates
+        const basketBtn = card.querySelector('.product-card-button');
+        basketBtn.addEventListener('click', (event) => {
+            event.stopPropagation(); // Stops the event from bubbling up to 'card'
+            addItemToCartState(product);
+        });
+
+        targetGrid.appendChild(card);
     });
-    
-    // 4. Dump the whole bucket of cards into the webpage grid at once!
-    targetGrid.innerHTML = allCardsHTML;
 }
+
+// Populates and shows the unique template details page
+function openProductDetailsPage(product) {
+    const detailSection = document.getElementById('product-details');
+    const template = document.getElementById('product-details-template');
+    if (!detailSection || !template) return;
+
+    detailSection.innerHTML = "";
+    const clone = template.content.cloneNode(true);
+
+    clone.querySelector('.details-large-img').src = product.image;
+    clone.querySelector('.details-large-img').alt = product.name;
+    clone.querySelector('.details-title-heading').textContent = product.name;
+    clone.querySelector('.details-full-description').textContent = product.description;
+    clone.querySelector('.details-large-price span').textContent = product.price.toFixed(2);
+
+    // Wire up template "Back" button
+    clone.querySelector('.back-to-browsing-btn').addEventListener('click', () => {
+        changeRouteView(previouslyActiveSectionId);
+    });
+
+    // Wire up template "Add to basket" button
+    clone.querySelector('.details-add-to-basket-btn').addEventListener('click', () => {
+        addItemToCartState(product);
+    });
+
+    detailSection.appendChild(clone);
+    changeRouteView("#product-details");
+}
+
+// Memory controller: adds a product or increments quantity
+function addItemToCartState(product) {
+    const existingEntry = basket.find(item => item.product.id === product.id && item.product.category === product.category);
+    
+    if (existingEntry) {
+        existingEntry.quantity += 1;
+    } else {
+        basket.push({ product: product, quantity: 1 });
+    }
+    updateGlobalCartCounters();
+}
+
+// Recalculates total items and updates indicators
+function updateGlobalCartCounters() {
+    const totalCount = basket.reduce((total, item) => total + item.quantity, 0);
+    
+    // Updates the navigation bar badge indicator
+    const navCounter = document.getElementById('cart-total-items');
+    if (navCounter) navCounter.textContent = totalCount;
+
+    // Updates price/items labels inside the shopping basket view if visible
+    const basketCountSpan = document.getElementById('total-items-count');
+    const basketPriceSpan = document.getElementById('total-price-value');
+    
+    if (basketCountSpan) basketCountSpan.textContent = totalCount;
+    if (basketPriceSpan) {
+        const totalPrice = basket.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+        basketPriceSpan.textContent = totalPrice.toFixed(2);
+    }
+}
+
+// Clones the basket template and populates your cart list view
+function renderBasketView() {
+    const container = document.getElementById('dynamic-basket-container');
+    const template = document.getElementById('basket-template');
+    if (!container || !template) return;
+
+    container.innerHTML = ""; // Wipe older rendered list references
+
+    if (basket.length === 0) {
+        container.innerHTML = `<p class="empty-cart-msg" style="padding: var(--spacing-md); text-align: center;">Your shopping basket is empty.</p>`;
+        updateGlobalCartCounters();
+        return;
+    }
+
+    basket.forEach(item => {
+        const clone = template.content.cloneNode(true);
+        
+        clone.querySelector('.basket-card-img').src = item.product.image;
+        clone.querySelector('.basket-card-img').alt = item.product.name;
+        clone.querySelector('.basket-card-heading').textContent = item.product.name;
+        clone.querySelector('.basket-card-description').textContent = item.product.description;
+        clone.querySelector('.basket-card-price span').textContent = (item.product.price * item.quantity).toFixed(2);
+        clone.querySelector('.basket-action-product-quantity').textContent = item.quantity;
+
+        // Increase quantity (+) button
+        clone.querySelector('.basket-action-increase').addEventListener('click', () => {
+            item.quantity += 1;
+            updateGlobalCartCounters();
+            renderBasketView();
+        });
+
+        // Decrease quantity (-) button
+        clone.querySelector('.basket-action-decrease').addEventListener('click', () => {
+            item.quantity -= 1;
+            if (item.quantity <= 0) {
+                basket = basket.filter(bItem => bItem !== item);
+            }
+            updateGlobalCartCounters();
+            renderBasketView();
+        });
+
+        // Delete button
+        clone.querySelector('.basket-action-delete').addEventListener('click', () => {
+            basket = basket.filter(bItem => bItem !== item);
+            updateGlobalCartCounters();
+            renderBasketView();
+        });
+
+        // Share button
+        clone.querySelector('.basket-action-share').addEventListener('click', () => {
+            alert(`Sharing link copied for item: ${item.product.name}!`);
+        });
+
+        container.appendChild(clone);
+    });
+
+    updateGlobalCartCounters();
+}
+
 
 // ==========================================
 // 3.2 Next Action Step for Function Definition
