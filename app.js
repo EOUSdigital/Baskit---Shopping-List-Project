@@ -25,11 +25,24 @@ function changeRouteView(targetSectionId) {
     if (targetSection) {
         targetSection.classList.remove('hidden');
         renderPromoSlider(targetSection);
+        
+        // Exclude temporary views from overwriting the last category section
         if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
             previouslyActiveSectionId = targetSectionId;
-        };
-    };
-};
+        }
+
+        // Dynamically update active states in the secondary navigation links
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === targetSectionId) {
+                link.classList.add('active');
+                link.setAttribute('aria-current', 'page');
+            } else {
+                link.classList.remove('active');
+                link.removeAttribute('aria-current');
+            }
+        });
+    }
+}
 
 // ==========================================
 // 1. HEADER NAVIGATION SYSTEM & ROUTING ENGINE
@@ -93,16 +106,28 @@ function renderPromoSlider(sectionElement) {
         sectionElement.activeTimerId = null;
     }
 
-    // Clear out placeholder text content & grab a clean template copy.
-    placeholder.innerHTML = '';
-    const templateClone = template.content.cloneNode(true);
-
-    // Inject the clean slider clone node directly into the page layout placeholder.
-    placeholder.appendChild(templateClone);
-
     // Select target slide items inside this specific placeholder canvas.
     const slides = placeholder.querySelectorAll('.slide');
     let current = 0;
+
+    // 2. Only clone and inject the template if it hasn't been rendered yet
+    if (slides.length === 0) {
+        placeholder.innerHTML = '';
+        const templateClone = template.content.cloneNode(true);
+        placeholder.appendChild(templateClone);
+        slides = placeholder.querySelectorAll('.slide');
+    } else {
+        // If already rendered, reset to show the first slide visually
+        slides.forEach((slide, idx) => {
+            if (idx === 0) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            };
+        });
+    }
+
+    if (slides.length === 0) return;
 
     // Internal navigation logic engine. Takes an index number and activates that specific slide image.
     function showSlide(index) {
@@ -113,10 +138,12 @@ function renderPromoSlider(sectionElement) {
 
         // Grabs the specific slide matching our current index number.
         const currentSlide = slides[index];
-        if (!currentSlide) return;
-
-        // Makes the single active slide visible. The modern CSS rules handle nested captions automatically!
-        currentSlide.classList.add('active');
+        if (!currentSlide) {
+            return;
+        } else {
+            // Makes the single active slide visible. The modern CSS rules handle nested captions automatically!
+            currentSlide.classList.add('active');
+        }
     }
 
     // Calculates the next slide number, wrapping back around to 0 at the end.
@@ -125,7 +152,7 @@ function renderPromoSlider(sectionElement) {
         showSlide(current);
     }
 
-    // Rotates smoothly every 7 seconds safely
+    // 3. Restart the interval timer safely. Rotates smoothly every 7 seconds safely.
     sectionElement.activeTimerId = setInterval(nextSlide, 7000);
 }
 
@@ -139,38 +166,41 @@ function renderPromoSlider(sectionElement) {
 
 function renderProducts(gridClassName, arrayToUse) {
     const targetGrid = document.querySelector(gridClassName);
-    if (!targetGrid) return;
+    const template = document.getElementById('product-template');
+    if (!targetGrid || !template) return;
 
-    targetGrid.innerHTML = ""; // Wipe the grid clean of any old cards
+    targetGrid.innerHTML = ""; // Wipe the grid clean of old cards
 
     arrayToUse.forEach((product) => {
         if (!product.name) return;
 
-        // Create the card container programmatically in browser memory
-        const card = document.createElement('div');
-        card.className = "product-card-item";
-        card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" class="product-card-img" />
-            <h3 class="product-card-heading">${product.name}</h3>
-            <p class="product-card-description">${product.description}</p>
-            <p class="product-card-price">£${product.price.toFixed(2)}</p>
-            <button class="product-card-button" type="button" data-test="...">Add to basket</button>
-        `;
+        // 1. Clone the template element cleanly
+        const clone = template.content.cloneNode(true);
+        const card = clone.querySelector('.product-card-item');
 
-        // Action 1: If user clicks the card layout (excluding the button), open details
+        // 2. Populate the template with the product data
+        clone.querySelector('.product-card-img').src = product.image;
+        clone.querySelector('.product-card-img').alt = product.name;
+        clone.querySelector('.product-card-heading').textContent = product.name;
+        clone.querySelector('.product-card-description').textContent = product.description;
+        clone.querySelector('.product-card-price span').textContent = product.price.toFixed(2);
+
+        // 3. Customize the action button to act as "Add to basket"
+        const actionBtn = clone.querySelector('.product-card-button');
+        actionBtn.textContent = "Add to basket";
+        
+        actionBtn.addEventListener('click', (event) => {
+            event.stopPropagation(); // Stops event bubbling up to the card click listener
+            addItemToCartState(product);
+        });
+
+        // 4. Clicking anywhere else on the card opens the detail page
         card.addEventListener('click', (event) => {
             if (event.target.classList.contains('product-card-button')) return;
             openProductDetailsPage(product);
         });
 
-        // Action 2: If user clicks "Add to basket", run cart state updates
-        const basketBtn = card.querySelector('.product-card-button');
-        basketBtn.addEventListener('click', (event) => {
-            event.stopPropagation(); // Stops the event from bubbling up to 'card'
-            addItemToCartState(product);
-        });
-
-        targetGrid.appendChild(card);
+        targetGrid.appendChild(clone);
     });
 }
 
@@ -352,10 +382,15 @@ function loadStoreSection(categoryName) {
 // To randomize an array in JavaScript, developers use an algorithm to mix up the item positions. For a beginner, one of the easiest ways to shuffle a copy of an array is using a tool called .sort() combined with a random number generator (Math.random()).
 // A reusable utility function that takes ANY array and returns it mixed up
 function shuffleArray(array) {
-    // .sort() rearranges items based on a true/false condition. 
-    // Math.random() - 0.5 randomly gives a positive or negative number, causing a chaotic shuffle!
-    return array.sort(() => Math.random() - 0.5);
-}
+    // Clone the array to keep the original data pure and immutable
+    const shuffled = [...array]; 
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        // Modern ES6 destructuring swap
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
+    }
+    return shuffled;
+};
 
 // ==========================================
 // 4.1 Array of objects containing product information
