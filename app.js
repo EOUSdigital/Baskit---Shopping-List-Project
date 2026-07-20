@@ -4,7 +4,9 @@
 // GLOBAL STATE APP REGISTRY
 // ==========================================
 
-let basket = [];                    // Stores cart items tracking: { product, quantity }
+// Stores cart items tracking: { product, quantity }
+// Checks for existing storage data first; defaults to empty array if none found
+let basket = JSON.parse(localStorage.getItem('baskit_cart')) || [];
 let previouslyActiveSectionId = "#all-products";
 
 //  Grabs all HTML elements with the class 'nav-links-item' (the menu buttons)
@@ -325,6 +327,9 @@ function addItemToCartState(product) {
 // Recalculates total items and updates indicators
 function updateGlobalCartCounters() {
     const totalCount = basket.reduce((total, item) => total + item.quantity, 0);
+
+    // Save the updated basket state to Local Storage
+    localStorage.setItem('baskit_cart', JSON.stringify(basket));
     
     // Updates the navigation bar badge indicator
     const navCounter = document.getElementById('cart-total-items');
@@ -343,18 +348,31 @@ function updateGlobalCartCounters() {
 
 // Clones the basket template and populates your cart list view
 function renderBasketView() {
-    const container = document.getElementById('dynamic-basket-container');
-    const template = document.getElementById('basket-template');
-    if (!container || !template) return;
+const container = document.getElementById('dynamic-basket-container');
+    const clearBtn = document.getElementById('clear-entire-basket-btn');
 
-    container.innerHTML = ""; // Wipe older rendered list references
+    // FIXED: Added missing template reference
+    const template = document.getElementById('basket-template');
+    
+    if (!container) return;
 
     if (basket.length === 0) {
-        container.innerHTML = `<p class="empty-cart-msg" style="padding: var(--spacing-md); text-align: center;">Your shopping basket is empty.</p>`;
+        container.innerHTML = `<p class="empty-cart-msg">Your shopping basket is empty.</p>`;
+        if (clearBtn) clearBtn.style.display = 'none'; // Clear UI State step met
         updateGlobalCartCounters();
         return;
     }
 
+    if (clearBtn) {
+        clearBtn.style.display = 'block'; // Show control when items exist
+        clearBtn.onclick = () => {
+            basket = [];
+            updateGlobalCartCounters();
+            renderBasketView();
+        };
+    }
+
+    container.innerHTML = ""; // Wipe older rendered list references
     basket.forEach(item => {
         const clone = template.content.cloneNode(true);
         
@@ -437,6 +455,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
 
     const frontPageGrocery = grocery.slice(0, 11);
+
+    // Sync visual counts with whatever was loaded out of local storage
+    updateGlobalCartCounters();
 });
 
 // A placeholder function designed to load specific store views when called.
