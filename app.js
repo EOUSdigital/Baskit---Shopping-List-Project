@@ -392,12 +392,11 @@ const container = document.getElementById('dynamic-basket-container');
 
         // Decrease quantity (-) button
         clone.querySelector('.basket-action-decrease').addEventListener('click', () => {
-            item.quantity -= 1;
-            if (item.quantity <= 0) {
-                basket = basket.filter(bItem => bItem !== item);
+            if (item.quantity > 1) {
+                item.quantity -= 1;
+                updateGlobalCartCounters();
+                renderBasketView();
             }
-            updateGlobalCartCounters();
-            renderBasketView();
         });
 
         // Delete button
