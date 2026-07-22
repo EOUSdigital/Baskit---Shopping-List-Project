@@ -240,6 +240,7 @@
                         <p class="shopping-basket-subtotal">Subtotal</p>
                         <p class="shopping-basket-items">(<span id="total-items-count">0</span> items):</p>
                         <p class="shopping-basket-price">£<span id="total-price-value" data-test="basket-subtotal-display">0.00</span></p>
+                        <button id="clear-entire-basket-btn" type="button">Clear All Items</button>
                     </div>
                 </section>
 
@@ -326,8 +327,12 @@
                         <button type="button" class="basket-action-decrease" aria-label="Decrease quantity" data-test="...">-</button>
                         <span class="basket-action-product-quantity" aria-live="polite">1</span>
                         <button type="button" class="basket-action-increase" aria-label="Increase quantity" data-test="...">+</button>
+                        <input type="number" class="basket-action-quantity-input" min="1" value="1" />
+                    </div>
+                    <div class="basket-quantity-edit">
                     </div>
                     <div class="basket-utility-buttons">
+                        <button type="button" class="basket-action-edit" data-test="...">Edit</button>
                         <button type="button" class="basket-action-delete" data-test="...">Delete</button>
                         <button type="button" class="basket-action-share" data-test="...">Share</button>
                     </div>
