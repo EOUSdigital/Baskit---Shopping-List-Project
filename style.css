@@ -478,6 +478,8 @@ a {
 }
 
 .shopping-basket-total {
+    display: flex;
+    gap: 1rem;
     background-color: var(--color-surface-variant);
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
@@ -487,6 +489,14 @@ a {
     font-size: var(--font-size-base); 
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
+}
+
+/* Clear Basket Button */
+
+#clear-entire-basket-btn {
+    margin-top: 1rem;
+    padding: 0.3rem 0.5rem;
+    background-color: var(--color-error);
 }
 
 
@@ -770,6 +780,14 @@ a {
 
 .basket-utility-buttons .basket-action-delete {
     color: var(--color-error);  /* Alerts user to clear intent */
+}
+
+.basket-utility-buttons .basket-action-edit {
+    color: var(--color-success);
+}
+
+.basket-action-quantity-input {
+    display: none;
 }
 
 .product-card-heading,
