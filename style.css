@@ -478,17 +478,26 @@ a {
 }
 
 .shopping-basket-total {
-    display: flex;
-    gap: 1rem;
+    display: inline-flex;
+    justify-content: space-between;
     background-color: var(--color-surface-variant);
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
     border: 0.1rem solid var(--color-border);
-
-
+    
+    
     font-size: var(--font-size-base); 
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
+}
+
+.shopping-basket-total-span {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.shopping-basket-price {
+    margin-left: 1rem;
 }
 
 /* Clear Basket Button */
@@ -740,7 +749,7 @@ a {
 /* --- Right Side: Action Control Items --- */
 .basket-action-links {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: var(--spacing-md);
     border-top: 1px solid var(--color-border);
@@ -753,7 +762,7 @@ a {
     gap: var(--spacing-sm);
     background-color: var(--color-background);
     border-radius: var(--radius-md);
-    padding: var(--spacing-xs);
+    padding: var(--spacing-xxs);
 }
 
 .basket-quantity-controls button {
@@ -788,6 +797,25 @@ a {
 
 .basket-action-quantity-input {
     display: none;
+    width: 2.5rem;
+    padding: 0.1rem 0;
+    font-size: var(--font-size-md);
+    text-align: center;         /* Centers the number horizontally */
+    /* -moz-appearance: textfield; Firefox arrow removal */
+}
+
+.basket-action-quantity-input::-webkit-outer-spin-button,
+.basket-action-quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.basket-quantity-error-msg {
+    display: none;
+    color: #e74c3c;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    margin-top: var(--spacing-sm);
 }
 
 .product-card-heading,
@@ -957,9 +985,17 @@ a {
     }
     
     .basket-action-links {
+        display: block;
         border-top: none;
         padding-top: 0;
         justify-content: flex-end;
+        align-items: center;
+    }
+
+    .basket-card-price {
+        display: inline-table;
+        align-content: center;
+        margin-top: 1rem;
     }
 }
 
