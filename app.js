@@ -16,6 +16,9 @@ const sections = document.querySelectorAll('main section');
 
 // Unified Router Utility to handle clean page swapping
 function changeRouteView(targetSectionId) {
+    // SAVE THE CURRENT ROUTE TO LOCAL STORAGE
+    localStorage.setItem('baskit_active_route', targetSectionId);
+
     sections.forEach(section => {
         if (section.activeTimerId) {
             clearInterval(section.activeTimerId);
@@ -373,7 +376,9 @@ const container = document.getElementById('dynamic-basket-container');
     }
 
     container.innerHTML = ""; // Wipe older rendered list references
+    
     basket.forEach(item => {
+        //  Basket card settings
         const clone = template.content.cloneNode(true);
         
         clone.querySelector('.basket-card-img').src = item.product.image;
@@ -411,11 +416,50 @@ const container = document.getElementById('dynamic-basket-container');
             alert(`Sharing link copied for item: ${item.product.name}!`);
         });
 
+        // Reference the elements for this card
+        const editBtn = clone.querySelector('.basket-action-edit');
+        const decreaseBtn = clone.querySelector('.basket-action-decrease');
+        const increaseBtn = clone.querySelector('.basket-action-increase');
+        const qtySpan = clone.querySelector('.basket-action-product-quantity');
+        const qtyInput = clone.querySelector('.basket-action-quantity-input');
+        const qtyError = clone.querySelector('.basket-quantity-error-msg');
+
+        let isEditing = false; // Track edit mode state for this card
+
+        editBtn.addEventListener('click', () => {
+            if (!isEditing) {
+                // --- PHASE 2: Enter Edit Mode ---
+                isEditing = true;
+                editBtn.textContent = 'Update';
+
+                // Set input value to current item quantity
+                qtyInput.value = item.quantity;
+
+                // Hide normal controls, show input field
+                decreaseBtn.style.display = 'none';
+                increaseBtn.style.display = 'none';
+                qtySpan.style.display = 'none';
+                qtyInput.style.display = 'inline-block';
+            } else {
+                // --- PHASE 3: Update & Save ---
+                const newQty = parseInt(qtyInput.value, 10);
+
+                // Validate that quantity is a valid number and at least 1
+                if (newQty && newQty >= 1) {
+                    item.quantity = newQty;
+                    updateGlobalCartCounters();
+                    renderBasketView(); // Refresh UI to exit edit mode and update subtotals
+                } else {
+                    if (qtyError) {
+                        qtyError.style.display = 'block';
+                    };
+                };
+            };
+        });
         container.appendChild(clone);
     });
-
     updateGlobalCartCounters();
-}
+};
 
 
 // ==========================================
@@ -457,6 +501,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sync visual counts with whatever was loaded out of local storage
     updateGlobalCartCounters();
+
+    // RESTORE THE SAVED ROUTE ON REFRESH
+    const savedRoute = localStorage.getItem('baskit_active_route') || '#all-products';
+    
+    if (savedRoute === '#shopping-basket') {
+        renderBasketView();
+    }
+    
+    changeRouteView(savedRoute);
 });
 
 // A placeholder function designed to load specific store views when called.
