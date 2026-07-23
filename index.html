@@ -237,10 +237,12 @@
                     <div id="dynamic-basket-container"></div>
 
                     <div class="shopping-basket-total">
-                        <p class="shopping-basket-subtotal">Subtotal</p>
-                        <p class="shopping-basket-items">(<span id="total-items-count">0</span> items):</p>
-                        <p class="shopping-basket-price">£<span id="total-price-value" data-test="basket-subtotal-display">0.00</span></p>
                         <button id="clear-entire-basket-btn" type="button">Clear All Items</button>
+                        <div class="shopping-basket-total-span">
+                            <p class="shopping-basket-subtotal">Subtotal</p>
+                            <p class="shopping-basket-items">(<span id="total-items-count">0</span> items):</p>
+                            <p class="shopping-basket-price">£<span id="total-price-value" data-test="basket-subtotal-display">0.00</span></p>
+                        </div>
                     </div>
                 </section>
 
@@ -318,24 +320,25 @@
                     <div class="basket-card-info">
                         <h3 class="basket-card-heading"></h3>
                         <p class="basket-card-description"></p>
-                        <p class="basket-card-price">£<span>0.00</span></p>
+                        <div class="basket-utility-buttons">
+                            <button type="button" class="basket-action-edit" data-test="...">Edit</button>
+                            <button type="button" class="basket-action-delete" data-test="...">Delete</button>
+                            <button type="button" class="basket-action-share" data-test="...">Share</button>
+                        </div>
                     </div>
                 </div>
-
+                
                 <div class="basket-action-links">
                     <div class="basket-quantity-controls">
                         <button type="button" class="basket-action-decrease" aria-label="Decrease quantity" data-test="...">-</button>
                         <span class="basket-action-product-quantity" aria-live="polite">1</span>
                         <button type="button" class="basket-action-increase" aria-label="Increase quantity" data-test="...">+</button>
                         <input type="number" class="basket-action-quantity-input" min="1" value="1" />
+
+                        <!-- NEW: Inline validation message container -->
+                        <span class="basket-quantity-error-msg">Enter 1 or more</span>
                     </div>
-                    <div class="basket-quantity-edit">
-                    </div>
-                    <div class="basket-utility-buttons">
-                        <button type="button" class="basket-action-edit" data-test="...">Edit</button>
-                        <button type="button" class="basket-action-delete" data-test="...">Delete</button>
-                        <button type="button" class="basket-action-share" data-test="...">Share</button>
-                    </div>
+                    <p class="basket-card-price">£<span>0.00</span></p>
                 </div>
             </div>    
         </template>
