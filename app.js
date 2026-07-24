@@ -351,7 +351,7 @@ function updateGlobalCartCounters() {
 
 // Clones the basket template and populates your cart list view
 function renderBasketView() {
-const container = document.getElementById('dynamic-basket-container');
+    const container = document.getElementById('dynamic-basket-container');
     const clearBtn = document.getElementById('clear-entire-basket-btn');
 
     // FIXED: Added missing template reference
@@ -369,9 +369,15 @@ const container = document.getElementById('dynamic-basket-container');
     if (clearBtn) {
         clearBtn.style.display = 'block'; // Show control when items exist
         clearBtn.onclick = () => {
-            basket = [];
-            updateGlobalCartCounters();
-            renderBasketView();
+            // 1. Ask the user for confirmation first
+            const userConfirmed = confirm("Are you sure you want to clear your entire shopping basket?");
+
+            if (userConfirmed) {
+                basket = [];
+                updateGlobalCartCounters();
+                renderBasketView();
+            }
+            // If the user clicked "Cancel", execution stops here and your basket stays safe!
         };
     }
 
