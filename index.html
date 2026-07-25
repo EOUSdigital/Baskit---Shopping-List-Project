@@ -29,10 +29,10 @@
                             <form id="search-form" action="/search" class="nav-searchbar" method="GET" role="search">
                                 <div class="nav-left">
                                     <select id="search-category" name="category" aria-label="Select category" class="nav-search-dropdown">
-                                        <option value="all" href="all-products" selected>All</option>
-                                        <option value="grocery" href="#grocery" data-category="grocery">Grocery</option>
-                                        <option value="household" href="#household" data-category="household">Household</option>
-                                        <option value="stationery" href="#stationery" data-category="stationery">Stationery</option>
+                                        <option value="all" selected>All</option>
+                                        <option value="grocery" data-category="grocery">Grocery</option>
+                                        <option value="household" data-category="household">Household</option>
+                                        <option value="stationery" data-category="stationery">Stationery</option>
                                     </select>
                                 </div>
                                 <div class="nav-fill">
@@ -40,7 +40,7 @@
                                 </div>
 
                                 <div class="nav-right">
-                                    <button type="submit" id="search-submit" data-test="...">
+                                    <button type="submit" id="search-submit" aria-label="Search" data-test="...">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                         </svg>
