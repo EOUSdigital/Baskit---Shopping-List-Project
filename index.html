@@ -79,7 +79,6 @@
             </div>
         </header>
 
-
         <!-- MAIN -->
         <main id="main">
             <!-- Single main layout wrapper for structural alignment -->
@@ -104,28 +103,7 @@
                     <!-- The target placeholder for the slider -->
                     <div class="slider-placeholder"></div>
                     <h1 id="grocery-heading">Grocery</h1>
-                    <div class="product-grid grocery-content">
-                        <div class="product-card-item">Card 1</div>
-                        <div class="product-card-item">Card 2</div>
-                        <div class="product-card-item">Card 3</div>
-                        <div class="product-card-item">Card 4</div>
-                        <div class="product-card-item">Card 5</div>
-                        <div class="product-card-item">Card 6</div>
-                        <div class="product-card-item">Card 7</div>
-                        <div class="product-card-item">Card 8</div>
-                        <div class="product-card-item">Card 9</div>
-                        <div class="product-card-item">Card 10</div>
-                        <div class="product-card-item">Card 11</div>
-                        <div class="product-card-item">Card 12</div>
-                        <div class="product-card-item">Card 13</div>
-                        <div class="product-card-item">Card 14</div>
-                        <div class="product-card-item">Card 15</div>
-                        <div class="product-card-item">Card 16</div>
-                        <div class="product-card-item">Card 17</div>
-                        <div class="product-card-item">Card 18</div>
-                        <div class="product-card-item">Card 19</div>
-                        <div class="product-card-item">Card 20</div>
-                    </div>
+                    <div class="product-grid grocery-content"></div>
                 </section>
 
                 <!-- Household Page Section -->
@@ -134,26 +112,6 @@
                     <div class="slider-placeholder"></div>
                     <h1 id="household-heading">Household</h1>
                     <div class="product-grid household-content">
-                        <div class="product-card-item">Card 1</div>
-                        <div class="product-card-item">Card 2</div>
-                        <div class="product-card-item">Card 3</div>
-                        <div class="product-card-item">Card 4</div>
-                        <div class="product-card-item">Card 5</div>
-                        <div class="product-card-item">Card 6</div>
-                        <div class="product-card-item">Card 7</div>
-                        <div class="product-card-item">Card 8</div>
-                        <div class="product-card-item">Card 9</div>
-                        <div class="product-card-item">Card 10</div>
-                        <div class="product-card-item">Card 11</div>
-                        <div class="product-card-item">Card 12</div>
-                        <div class="product-card-item">Card 13</div>
-                        <div class="product-card-item">Card 14</div>
-                        <div class="product-card-item">Card 15</div>
-                        <div class="product-card-item">Card 16</div>
-                        <div class="product-card-item">Card 17</div>
-                        <div class="product-card-item">Card 18</div>
-                        <div class="product-card-item">Card 19</div>
-                        <div class="product-card-item">Card 20</div>
                     </div>
                 </section>
 
@@ -162,28 +120,7 @@
                     <!-- The target placeholder for the slider -->
                     <div class="slider-placeholder"></div>
                     <h1 id="stationery-heading">Stationery</h1>
-                    <div class="product-grid stationery-content">
-                        <div class="product-card-item">Card 1</div>
-                        <div class="product-card-item">Card 2</div>
-                        <div class="product-card-item">Card 3</div>
-                        <div class="product-card-item">Card 4</div>
-                        <div class="product-card-item">Card 5</div>
-                        <div class="product-card-item">Card 6</div>
-                        <div class="product-card-item">Card 7</div>
-                        <div class="product-card-item">Card 8</div>
-                        <div class="product-card-item">Card 9</div>
-                        <div class="product-card-item">Card 10</div>
-                        <div class="product-card-item">Card 11</div>
-                        <div class="product-card-item">Card 12</div>
-                        <div class="product-card-item">Card 13</div>
-                        <div class="product-card-item">Card 14</div>
-                        <div class="product-card-item">Card 15</div>
-                        <div class="product-card-item">Card 16</div>
-                        <div class="product-card-item">Card 17</div>
-                        <div class="product-card-item">Card 18</div>
-                        <div class="product-card-item">Card 19</div>
-                        <div class="product-card-item">Card 20</div>
-                    </div>
+                    <div class="product-grid stationery-content"></div>
                 </section>
 
                 <section id="product-details" aria-labelledby="product-details-heading" class="hidden" aria-label="Product individual specification specs"></section>
@@ -213,49 +150,24 @@
 
         <!-- ================= TEMPLATES (Kept isolated outside layout wrapper) ================= -->
 
-        <!-- 1. Animated Slider Template -->
-        <template id="animated-slider-template">
-            <div class="animated-slider">
-                <div class="slide active">
-                    <img src="https://picsum.photos/1200/400?random=1" alt="Promo Slider Image 1" />
-                    <!-- <img src="https://loremflickr.com/g/1200/400/Grocery" alt="Promo Slider Image 1" /> -->
-                    <div class="caption zoom-in">Grocery</div>
-                </div>
-
-                <div class="slide">
-                    <img src="https://picsum.photos/1200/400?random=2" alt="Promo Slider Image 2" />
-                    <!-- <img src="https://loremflickr.com/g/1200/400/Household" alt="Promo Slider Image 2" /> -->
-                    <div class="caption slide-left">Household</div>
-                </div>
-                    
-                <div class="slide">
-                    <img src="https://picsum.photos/1200/400?random=3" alt="Promo Slider Image 3" />
-                    <!-- <img src="https://loremflickr.com/g/1200/400/Stationery" alt="Promo Slider Image 3" /> -->
-                    <div class="caption fade-in">Stationery</div>
-                </div>
-            </div>
-        </template>
-
-        <!-- 2. Product Card Template -->
+        <!-- ================= Product Components ================= -->
+        <!-- Product Card Template -->
         <template id="product-template">
             <div class="product-card-item">
                 <img src="" alt="" class="product-card-img" />
-
                 <div class="product-card-info">
                     <h3 class="product-card-heading"></h3>
                     <p class="product-card-description"></p>
                     <p class="product-card-price">£<span>0.00</span></p>
                 </div>
-
                 <button class="product-card-button" type="button" data-test="...">View</button>
             </div>
         </template>
 
-        <!-- 3. Product Details Template -->
+        <!-- Product Details Template -->
         <template id="product-details-template">
             <div class="product-details-view">
                 <button type="button" class="back-to-browsing-btn" data-test="...">← Back to Products</button>
-
                 <div class="details-split-layout">
                     <div class="details-image-container">
                         <img src="" alt="" class="details-large-img" />
@@ -272,13 +184,13 @@
             </div>
         </template>
 
-        <!-- 4. Basket Item Template -->
+        <!-- ================= Basket Components ================= -->
+        <!-- Basket Item Template -->
         <template id="basket-template">
             <div class="basket-card">
                 <div class="basket-card-item">
                     <input type="checkbox" class="basket-card-select-item" aria-label="Select item to delete or save for later" />
                     <img src="" alt="" class="basket-card-img" />
-                    
                     <div class="basket-card-info">
                         <h3 class="basket-card-heading"></h3>
                         <p class="basket-card-description"></p>
@@ -289,14 +201,12 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="basket-action-links">
                     <div class="basket-quantity-controls">
                         <button type="button" class="basket-action-decrease" aria-label="Decrease quantity" data-test="...">-</button>
                         <span class="basket-action-product-quantity" aria-live="polite">1</span>
                         <button type="button" class="basket-action-increase" aria-label="Increase quantity" data-test="...">+</button>
                         <input type="number" class="basket-action-quantity-input" min="1" value="1" />
-
                         <!-- NEW: Inline validation message container -->
                         <span class="basket-quantity-error-msg">Enter 1 or more</span>
                     </div>
@@ -305,8 +215,29 @@
             </div>    
         </template>
 
+        <!-- ================= Promotional Components ================= -->
+        <!-- Animated Slider Template -->
+        <template id="animated-slider-template">
+            <div class="animated-slider">
+                <div class="slide active">
+                    <img src="https://picsum.photos/1200/400?random=1" alt="Promo Slider Image 1" />
+                    <!-- <img src="https://loremflickr.com/g/1200/400/Grocery" alt="Promo Slider Image 1" /> -->
+                    <div class="caption zoom-in">Grocery</div>
+                </div>
+                <div class="slide">
+                    <img src="https://picsum.photos/1200/400?random=2" alt="Promo Slider Image 2" />
+                    <!-- <img src="https://loremflickr.com/g/1200/400/Household" alt="Promo Slider Image 2" /> -->
+                    <div class="caption slide-left">Household</div>
+                </div>
+                <div class="slide">
+                    <img src="https://picsum.photos/1200/400?random=3" alt="Promo Slider Image 3" />
+                    <!-- <img src="https://loremflickr.com/g/1200/400/Stationery" alt="Promo Slider Image 3" /> -->
+                    <div class="caption fade-in">Stationery</div>
+                </div>
+            </div>
+        </template>
 
-        <!-- FOOTER -->
+        <!-- ================= FOOTER ================= -->
         <footer id="footer">
             <div class="page-inner">
                 <!-- Semantic Navigation Utility List -->
