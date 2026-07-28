@@ -21,7 +21,8 @@
     /* === STATUS COLORS === */
     --color-success: #0f7a52;
     --color-error: #ca3535;
-    --color-warning: #ffdd00;
+    --color-warning: #ffa500;
+    --color: #ffdd00;
     
     /* === EFFECTS === */
     --focus-ring: 0 0 0 3px rgba(0, 82, 204, 0.5);
@@ -35,7 +36,7 @@
     --header-height: 64px;
     --input-height: 40px;
     
-    /* === SPACING === */
+    /* === SPACING & SIZING === */
     --spacing-xxs: 0.25rem;
     --spacing-xs: 0.5rem;
     --spacing-sm: 0.75rem;
@@ -45,11 +46,10 @@
     --spacing-2xl: 3rem;
     --spacing-3xl: 4rem;
     --spacing-4xl: 5rem;
-    --spacing-5xl: 6rem;
     
     --gutter: 1rem;
     
-    /* === RADIUS === */
+    /* === BORDER & RADIUS === */
     --radius-sm: 3px;
     --radius-md: 6px;
     --radius-lg: 8px;
@@ -71,7 +71,6 @@
     --font-size-2xl: 1.5rem;
     --font-size-3xl: 2rem;
     --font-size-4xl: 3rem;
-    --font-size-5xl: 4rem;
     
     --font-weight-light: 300;
     --font-weight-normal: 400;
