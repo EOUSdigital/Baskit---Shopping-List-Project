@@ -23,8 +23,9 @@
     --raw-red: #ca3535;
     --raw-orange: #ffa500;
     --raw-yellow: #ffdd00;
+    --raw-lightyellow: #fffbeb;
 
-    /* =============== 2. SEMANTIC TOKENS (The Default Theme) =============== */
+    /* =============== 2. SEMANTIC TOKENS (The Default Theme) - assign meaning to those values (text, background, primary action, status colors). =============== */
     /* -----===== UI Colors =====----- */
     --color-text-primary: var(--raw-slate-900);
     --color-text-secondary: var(--raw-slate-700);
@@ -43,9 +44,10 @@
     --color-error: var(--raw-red);
     --color-warning: var(--raw-orange);
     --color-warning-accent: var(--raw-yellow);
+    --color-promo-surface: var(--raw-lightyellow);
     --color-premium: var(--raw-purple-600);
 
-    /* =============== 3. STRUCTURAL TOKENS (Agnostic to Themes) =============== */
+    /* =============== 3. STRUCTURAL TOKENS (Agnostic to Themes) - define spacing, typography, shadows, transitions, radii, breakpoints, and layout constants. =============== */
     --focus-ring: 0 0 0 0.188rem rgba(29, 112, 184, 0.5);
     
     --transition-fast: 150ms ease;
@@ -164,6 +166,17 @@ a {
     color: inherit;
 }
 
+img {
+    border-style: none;
+}
+
+h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
 .page-inner {
     /* width: min(100% - 2rem, var(--container-max)); */
     width: 100%;
@@ -172,11 +185,6 @@ a {
     padding-inline: var(--gutter, 2rem);
     box-sizing: border-box;
 }
-
-img {
-    border-style: none;
-}
-
 
 /* ==========================================================================
                                 HEADER
@@ -425,11 +433,8 @@ img {
 #household, 
 #stationery, 
 #shopping-basket {
-    position: relative;
     display: block;         /* Removed display: grid to allow children 100% width freedom */
-    width: 100%;
-    max-width: var(--container-max);
-    margin: 0 auto;
+    position: relative;
 }
 
 /* -----===== Product Grid Layouts =====----- */
@@ -446,7 +451,7 @@ img {
     justify-content: center;
 
     /* Temporarily developer code. This shows the true size of the element. Should be removed before going into production. */
-    outline: 1px solid blue;
+    /* outline: 1px solid blue; */
 }
 
 /* Ensure the layout wraps correctly when empty or loading dynamically */
@@ -455,16 +460,6 @@ img {
 }
 
 /*  -----===== All Products =====----- */
-
-#all-products {
-    position: relative;
-    display: grid;
-    max-width: var(--container-max);
-    margin: 0 auto;
-
-    /* Temporarily developer code. This shows the true size of the element. Should be removed before going into production. */
-    outline: 1px solid red;
-}
 
 #all-products-heading {
     display: flex;
@@ -484,8 +479,8 @@ img {
     flex-direction: column;
     gap: var(--spacing-lg);
 
-
-    outline: 1px solid #0f7a52;
+     /* Temporarily developer code. This shows the true size of the element. Should be removed before going into production. */
+    /* outline: 1px solid #0f7a52; */
 }
 
 /* Header Title Style */
@@ -528,7 +523,7 @@ img {
 #clear-entire-basket-btn,
 #proceed-checkout-btn {
     padding: 0.3rem 0.5rem;
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-normal);
     font-size: var(--font-size-md);
     background-color: var(--color-warning);
 
@@ -562,8 +557,6 @@ img {
 .animated-slider {
     position: relative;
     width: 100%;
-    max-width: var(--container-max);
-    margin: 0 auto var(--spacing-xl) auto;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
     overflow: hidden;
@@ -677,7 +670,7 @@ img {
 }
 
 .product-card-description {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-md);
     font-weight: var(--font-weight-semibold);
     color: var(--color-text-primary);
     line-height: var(--line-height-tight);
@@ -701,12 +694,13 @@ img {
     margin: auto;
 }
 
-.product-card-button {
+.product-card-button,
+.details-add-to-basket-btn {
     width: 100%;
     height: var(--input-height);
     background-color: var(--color-warning);
     color: var(--color-text-primary);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     font-size: var(--font-size-sm);
     border: none;
     border-radius: var(--radius-md);
@@ -717,15 +711,58 @@ img {
     transition: transform var(--transition-slow), box-shadow var(--transition-normal);
 }
 
-.product-card-button:hover {
+.product-card-button:hover,
+.details-add-to-basket-btn:hover {
     color: var(--color-text-secondary);
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
 
-.product-card-button:focus-visible {
+.product-card-button:focus-visible,
+.details-add-to-basket-btn:focus-visible {
     outline: none;
     box-shadow: var(--focus-ring);
+}
+
+.details-add-to-basket-btn {
+    width: 50%;
+}
+
+/* BACK TO BROWSING button */
+
+.back-to-browsing-btn {
+    padding: 0.5rem 1rem;
+    margin: var(--spacing-md) 0;
+    height: var(--input-height);
+    background-color: var(--color-warning-accent);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color var(--transition-normal);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-slow), box-shadow var(--transition-normal);
+}
+
+.back-to-browsing-btn:hover {
+    color: var(--color-text-secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/*  -----===== PRODUCT DETAILS =====----- */
+
+#product-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#product-details img {
+    width: 25rem;
+    height: auto;
 }
 
 /*  -----===== BASKET =====----- */
@@ -1090,11 +1127,11 @@ img {
     /* 3. The Advertisement Layout Superpowers! */
     .new-arrivals .ad-card {
         grid-column: span 1;
-        height: 100%;                               /* Stretch card to fill the expanded height track */
+        height: 100%;                                   /* Stretch card to fill the expanded height track */
         
         /* Optional Visual Flair to make it look like an authentic promotional block */
-        background-color: #fffbeb;                /* Subtle warm background color shift */
-        border: 2px dashed var(--color-warning);    /* Dashed amber border frame */
+        background-color: var(--color-promo-surface);   /* Subtle warm background color shift */
+        border: 2px dashed var(--color-warning);        /* Dashed amber border frame */
     }
 
     .seasonal-content .product-card-item:first-child {
