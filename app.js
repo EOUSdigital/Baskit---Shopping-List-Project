@@ -302,9 +302,9 @@ function openProductDetailsPage(product) {
     clone.querySelector('.details-large-price span').textContent = product.price.toFixed(2);
 
     // Wire up template "Back" button
-    clone.querySelector('.back-to-browsing-btn').addEventListener('click', () => {
-        changeRouteView(previouslyActiveSectionId);
-    });
+    // clone.querySelector('.back-to-browsing-btn').addEventListener('click', () => {
+    //     changeRouteView(previouslyActiveSectionId);
+    // });
 
     // Wire up template "Add to basket" button
     clone.querySelector('.details-add-to-basket-btn').addEventListener('click', () => {
