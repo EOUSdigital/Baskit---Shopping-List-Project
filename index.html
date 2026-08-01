@@ -29,7 +29,7 @@
                             <form id="search-form" action="/search" class="nav-searchbar" method="GET" role="search">
                                 <div class="nav-left">
                                     <select id="search-category" name="category" aria-label="Select category" class="nav-search-dropdown">
-                                        <option value="all" selected>All</option>
+                                        <option value="all" data-category="all" selected>All</option>
                                         <option value="grocery" data-category="grocery">Grocery</option>
                                         <option value="household" data-category="household">Household</option>
                                         <option value="stationery" data-category="stationery">Stationery</option>
@@ -69,10 +69,10 @@
                 <!-- Secondary Navigation -->
                 <nav id="secondary-nav" aria-label="Secondary navigation">
                     <ul class="secondary-nav-links">
-                        <li><a class="nav-links-item active" aria-current="page" href="#all-products">All</a></li>
-                        <li><a class="nav-links-item" href="#grocery" data-category="grocery">Grocery</a></li>
-                        <li><a class="nav-links-item" href="#household" data-category="household">Household</a></li>
-                        <li><a class="nav-links-item" href="#stationery" data-category="stationery">Stationery</a></li>
+                        <li><a class="nav-links-item" href="#all-products" data-category="all" active aria-current="page">ALL</a></li>
+                        <li><a class="nav-links-item" href="#grocery" data-category="grocery">GROCERY</a></li>
+                        <li><a class="nav-links-item" href="#household" data-category="household">HOUSEHOLD</a></li>
+                        <li><a class="nav-links-item" href="#stationery" data-category="stationery">STATIONERY</a></li>
                     </ul>
                 </nav>
 
@@ -82,13 +82,13 @@
         <!-- MAIN -->
         <main id="main">
             <!-- Single main layout wrapper for structural alignment -->
-            <div cla
+            <div class="page-inner">
                 
                 <!-- Landing Page Section -->
                 <section id="all-products" aria-labelledby="all-products-heading">
                     <!-- The target placeholder for the slider -->
                     <div class="slider-placeholder"></div>
-                    <h1 id="all-products-heading">Baskit Online Store</h1>
+                    <h1 id="all-products-heading">Baskit Online</h1>
                     <!-- Dynamic JavaScript Product Grid injection point -->
                     <div class="product-grid flash-deals"></div>
                     <div class="product-grid custom-solutions"></div>
@@ -123,6 +123,7 @@
                     <div class="product-grid stationery-content"></div>
                 </section>
 
+                <!-- Product Details Section-->
                 <section id="product-details" aria-labelledby="product-details-heading" class="hidden" aria-label="Product individual specification specs"></section>
 
                 <!-- Shopping List Basket Section -->
@@ -166,8 +167,8 @@
 
         <!-- Product Details Template -->
         <template id="product-details-template">
+            <!-- <button type="button" class="back-to-browsing-btn" data-test="...">← Back to Products</button> -->
             <div class="product-details-view">
-                <button type="button" class="back-to-browsing-btn" data-test="...">← Back to Products</button>
                 <div class="details-split-layout">
                     <div class="details-image-container">
                         <img src="" alt="" class="details-large-img" />
