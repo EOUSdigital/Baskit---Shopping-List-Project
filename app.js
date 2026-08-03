@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
     renderProducts('.custom-solutions', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 5));
 
-    // 🚀 These sections should be checked before moving to a new section
+    // 🔴🔴🔴 These sections should be checked before moving to a new section
     renderProducts('.just-for-you', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 8));
     renderProducts('.essential-collection', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 2));
     renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
