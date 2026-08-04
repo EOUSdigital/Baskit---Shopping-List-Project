@@ -676,8 +676,15 @@ const productDataMap = {
 // ==========================================
 
 // Finds the <span> with ID 'year' in the footer and sets it to the current calendar year.
-document.getElementById("year").textContent = new Date().getFullYear();
+// Code wrapped in an IIFE (Immediately Invoked Function Expression) to safely use 'return'
+(function() {
+    // 1. Find the element
+    const yearElement = document.getElementById("year");
 
+    // 2. Safe check: if it does not exist, exit this function safely
+    if (!yearElement) return;
 
-
+    // 3. Update the year
+    yearElement.textContent = new Date().getFullYear();
+})();
 
