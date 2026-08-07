@@ -51,7 +51,7 @@
     --focus-ring: 0 0 0 0.188rem rgba(29, 112, 184, 0.5);
 
     /*  -----===== Motion System v1 - Legacy transition tokens combining duration and easing. Retained for compatibility.=====----- */
-    /*🔴🔴🔴  Global application transitions - will be replaced with Duration Tokens and Easing Tokens (Cubic Bezier Curves) once the project grows.  */
+    /*🔴🔴🔴  Global application transitions - they will be replaced with Duration Tokens and Easing Tokens (Cubic Bezier Curves) once the project grows.  */
     --transition-fast: 150ms ease;
     --transition-normal: 250ms cubic-bezier(0.4,0,0.2,1);
     --transition-slow: 400ms ease;
@@ -148,8 +148,8 @@
     --z-sm: 200;
     --z-md: 300;
     --z-lg: 400;
-    --z-dropdown: 450;          /* Fixed hierarchy placement */
-    --z-modal: 500;             /* Modal now sits cleanly on top */
+    --z-dropdown: 500;          /* Fixed hierarchy placement */
+    --z-modal: 600;             /* Modal is displayed on top of the current page settings */
     --z-tooltip: 1000;
 }
 
@@ -164,9 +164,6 @@
     margin: 0;
     padding: 0;
     text-decoration: none;
-    
-    /* Temporarily developer code. This shows the true size of every element. Should be removed before going into production. */
-    /* outline: 1px solid red; */
 }
 
 html {
@@ -262,7 +259,7 @@ h1 {
 
 /* Constrain the visual boundaries of the logo image asset */
 .brand-logo {
-    height: 1.7rem; /* Keeps the logo bounded and proportionate */
+    height: 1.7rem;                     /* Keeps the logo bounded and proportionate */
     width: auto;
     object-fit: contain;
     flex: 0 0 auto;
@@ -277,8 +274,8 @@ h1 {
 .brand-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-xs); /* Keeps the image and text nicely spaced */
-    text-decoration: none;  /* Clears unstyled link lines */
+    gap: var(--spacing-xs);             /* Keeps the image and text nicely spaced */
+    text-decoration: none;              /* Clears unstyled link lines */
 
     /* Adds a subtle interactive filter or opacity transition when hovered */
     transition: opacity var(--transition-fast);
@@ -298,7 +295,6 @@ h1 {
 /* -----===== Cart =====----- */
 
 #cart-total-items.basket-nav-counter {
-    /* display: inline; */              /* The code does not function properly if I let this line on. Will push the item number below basket, creating a second line. */
     background-color: var(--color-success);
     color: var(--color-surface);
     font-size: var(--font-size-xxs);
@@ -329,7 +325,7 @@ h1 {
 
 .search-container {
     flex: 1 1 auto;
-    min-width: 0;       /* CRITICAL: Allows flex items to shrink smaller than their text/content width */
+    min-width: 0;                           /* CRITICAL: Allows flex items to shrink smaller than their text/content width */
     margin-inline: var(--spacing-xxs);
 }
 
@@ -367,14 +363,14 @@ h1 {
     font-size: var(--font-size-sm);
     cursor: pointer;
     outline: none;
-    max-width: 4.5rem; /* Prevents dropdown from taking too much horizontal room */
+    max-width: 4.5rem;                          /* Prevents dropdown from taking too much horizontal room */
 }
 
-/* Middle Side: The Input field wrapper */
+/* Centre Side: The Input field wrapper */
 .nav-fill {
     display: flex;
     flex: 1 1 auto;
-    min-width: 0; /* Allows the input box itself to shrink safely */
+    min-width: 0;                               /* Allows the input box itself to shrink safely */
     height: 100%;
 }
 
@@ -414,19 +410,19 @@ h1 {
     vertical-align: middle;
 }
 
-/* Keep the text sizes uniform inside your form components */
+/* Uniform text sizes components */
 .nav-search-dropdown,
 #search-input,
 #search-submit {
     font-family: inherit;
 }
 
-/* Style the Basket Badge as a floating indicator */
+/* Style the basket badge as a floating indicator */
 .basket-nav-trigger {
     position: relative;
     display: inline-block;
     text-decoration: none;
-    font-size: var(--font-size-lg); /* Makes the emoji slightly larger on mobile */
+    font-size: var(--font-size-lg);                 /* Makes the emoji slightly larger on mobile */
 }
 
 /* -----===== SECONDARY NAV =====----- */
@@ -466,7 +462,7 @@ h1 {
 #household, 
 #stationery, 
 #shopping-basket {
-    display: block;         /* Removed display: grid to allow children 100% width freedom */
+    display: block;                                 /* Removed display: grid to allow children 100% width freedom */
     position: relative;
 }
 
@@ -484,9 +480,6 @@ h1 {
     /* Advanced layout flow concept */
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
     justify-content: center;
-
-    /* Temporarily developer code. This shows the true size of the element. Should be removed before going into production. */
-    /* outline: 1px solid blue; */
 }
 
 /* Ensure the layout wraps correctly when empty or loading dynamically */
@@ -513,9 +506,6 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
-
-     /* Temporarily developer code. This shows the true size of the element. Should be removed before going into production. */
-    /* outline: 1px solid #0f7a52; */
 }
 
 /* Header Title Style */
@@ -604,8 +594,8 @@ h1 {
 .slide img {
     width: 100%;
     height: 100%;
-    /* This ensures the banner images perfectly stretch across the 25rem height container (.animated-slider) without squishing or altering aspect ratios. */
-    object-fit: cover;
+    /* The following settings ensures the banner images perfectly stretch across the 25rem height container (.animated-slider) without shrinking or altering aspect ratios. */
+    object-fit: cover;                      
 }
 
 .slide {
@@ -655,7 +645,7 @@ h1 {
 /* -----===== Base keyframe attachments =====----- */
 
 /* Keeping 'forwards' ensures the captions stay fully visible (opacity: 1) once their CSS keyframe cycle finishes. */
-/* animation: name duration timing-function delay iteration-count direction fill-mode; */
+/* animation:   name    duration    timing-function     delay   iteration-count     direction   fill-mode; */
 .slide.active .zoom-in { animation: zoomIn 1s ease forwards; }
 .slide.active .slide-left { animation: slideLeft 1s ease forwards; }
 .slide.active .fade-in { animation: fadeIn 1s ease forwards; }
@@ -686,7 +676,7 @@ h1 {
     width: 100%;
     min-height: 25rem;
 
-    /* New settings AI - Rows will expand naturally based on the tallest card in that row */
+    /* Rows will expand naturally based on the tallest card from the row */
     height: auto;
 
     background-color: var(--color-surface);
@@ -703,10 +693,10 @@ h1 {
 
 .product-card-img {
     width: auto;
-    height: 12rem;                      /* Give it a standard bounded height */
-    object-fit: contain;                /* Keeps image proportions from squishing */
+    height: 12rem;                                  /* Give it a standard bounded height */
+    object-fit: contain;                            /* Keeps image proportions from shrinking */
 
-    border-radius: var(--radius-md);    /* Added a subtle roundness to match the card */
+    border-radius: var(--radius-md);                /* Added a subtle roundness to match the card */
     margin-bottom: var(--spacing-md);
 }
 
@@ -724,12 +714,12 @@ h1 {
     color: var(--color-text-primary);
     line-height: var(--line-height-tight);
 
-    display: -webkit-box;               /* Activates legacy flexbox */
-    -webkit-box-orient: vertical;       /* Sets layout direction to vertical */  
-    overflow: hidden;                   /* Hides the text beyond 2 lines */
+    display: -webkit-box;                           /* Activates legacy flexbox */
+    -webkit-box-orient: vertical;                   /* Sets layout direction to vertical */  
+    overflow: hidden;                               /* Hides the text beyond 2 lines */
 
     /* Legacy prefixed property for current/older browsers */
-    -webkit-line-clamp: 2;              /* Limits text to exactly 2 lines */
+    -webkit-line-clamp: 2;                          /* Limits text to exactly 2 lines */
 
     /* Official standard property for modern/future engines */
     line-clamp: 2;
@@ -814,7 +804,7 @@ h1 {
     width: 100%;
     min-height: 35rem;
 
-    /* New settings AI - Rows will expand naturally based on the tallest card in that row */
+    /* Rows will expand naturally based on the tallest card from the row */
     height: auto;
 
     background-color: var(--color-surface);
@@ -826,10 +816,10 @@ h1 {
 
 .details-large-img {
     width: auto;
-    height: 15rem;                      /* Give it a standard bounded height */
-    object-fit: contain;                /* Keeps image proportions from squishing */
+    height: 15rem;                                          /* Give it a standard bounded height */
+    object-fit: contain;                                    /* Keeps image proportions from squishing */
 
-    border-radius: var(--radius-md);    /* Added a subtle roundness to match the card */
+    border-radius: var(--radius-md);                        /* Added a subtle roundness to match the card */
     margin-bottom: var(--spacing-md);
 }
 
@@ -884,7 +874,7 @@ h1 {
 
 .basket-card {
     display: flex;
-    flex-direction: column;                     /* Mobile first: stack details over buttons */
+    flex-direction: column;                                     /* Mobile first: stack details over buttons */
     gap: var(--spacing-md);
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
@@ -901,13 +891,13 @@ h1 {
     gap: var(--spacing-md);
 }
 
-/* FIX: Connects directly to your HTML image class */
+/* FIX: Connects directly to HTML image class */
 .basket-card-img {
     width: 5rem;
     height: 5rem;
-    object-fit: cover;                      /* Changed from contain to cover so your thumbnails fill space elegantly */
+    object-fit: cover;                                          /* Changed from contain to cover so the thumbnails fill space elegantly */
     border-radius: var(--radius-md);
-    flex-shrink: 0;                         /* Prevents the image from being squeezed by text space budgeting */
+    flex-shrink: 0;                                             /* Prevents the image from being squeezed by text space budgeting */
 }
 
 /* FIX: Forces text nodes to arrange downward, maximizing horizontal spacing boundaries */
@@ -928,7 +918,7 @@ h1 {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
 
-    /* Prevent massive description text from breaking your layout structure */
+    /* Prevent massive description text from breaking the layout structure */
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -986,7 +976,7 @@ h1 {
 }
 
 .basket-utility-buttons .basket-action-delete {
-    color: var(--color-error);  /* Alerts user to clear intent */
+    color: var(--color-error);                                  /* Alerts user to clear intent */
 }
 
 .basket-utility-buttons .basket-action-edit {
@@ -998,7 +988,7 @@ h1 {
     width: 2.5rem;
     padding: 0.1rem 0;
     font-size: var(--font-size-md);
-    text-align: center;                         /* Centers the number horizontally */
+    text-align: center;                                         /* Centers the number horizontally */
     /* -moz-appearance: textfield; Firefox arrow removal */
 }
 
@@ -1018,15 +1008,15 @@ h1 {
 
 .product-card-heading,
 .basket-card-heading {
-    /* Keep them as standard block elements so they play perfectly with Flexbox */
+    /* Standard block elements that interact perfectly with Flexbox */
     display: block; 
     
-    /* Use your pre-defined design tokens instead of hardcoded numbers */
+    /* Usage of pre-defined design tokens instead of hardcoded numbers */
     font-size: var(--font-size-base); 
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
 
-    /* CRITICAL: Tighten the line height so wrapped text doesn't create huge gaps */
+    /* CRITICAL: Tighten the line height so wrapped text does not create huge gaps */
     line-height: var(--line-height-tight); 
     
     /* Strip browser default margins to protect the spacing budget */
@@ -1034,7 +1024,7 @@ h1 {
 
     -webkit-box-orient: vertical;
     overflow: hidden;
-    -webkit-line-clamp: 2;                  /* Limits text to exactly 2 lines */
+    -webkit-line-clamp: 2;                                      /* Limits text to exactly 2 lines */
 
     /* Official standard property for modern/future engines */
     line-clamp: 2;
@@ -1073,7 +1063,7 @@ h1 {
 @media only screen and (min-width: 48rem) { /* 48rem = 768px */
 
     .primary-nav-links {
-        gap: var(--spacing-lg);                 /* Restore normal desktop spacing */
+        gap: var(--spacing-lg);                                 /* Restore normal desktop spacing */
     }
 
     #cart-total-items.basket-nav-counter {
@@ -1103,7 +1093,7 @@ h1 {
     .basket-nav-trigger {
         display: flex;
         align-items: center;
-        gap: var(--spacing-xs);                 /* Keeps the icon, word, and badge closely unified */
+        gap: var(--spacing-xs);                                 /* Keeps the icon, word, and badge closely unified */
         color: var(--color-text-primary);
         padding: var(--spacing-xs) var(--spacing-sm);
         border-radius: var(--radius-md);
@@ -1128,8 +1118,8 @@ h1 {
     }
 
     .basket-nav-counter {
-        color: var(--color-surface);            /* White/Contrast text color */
-        background-color: var(--color-primary); /* High-intent accent color */
+        color: var(--color-surface);                            /* White/Contrast text color */
+        background-color: var(--color-primary);                 /* High-intent accent color */
         font-size: var(--font-size-xs);
         font-weight: var(--font-weight-bold);
 
@@ -1177,7 +1167,7 @@ h1 {
 
     /* Basket Card */
     .basket-card {
-        flex-direction: row;                        /* Transforms into a modern, unified horizontal row */
+        flex-direction: row;                                    /* Transforms the settings into a modern, unified horizontal row */
         justify-content: space-between;
         align-items: center;
     }
@@ -1224,27 +1214,27 @@ h1 {
     /* DESKTOP VIEW: Apply the 2x2 Mosaic Superpowers ONLY here! */
     .custom-solutions .product-card-item:first-child {
         grid-column: span 2;
-        grid-row: span 2;                               /* Safe here because neighboring cards prop up the rows */
-        height: 100%;                                   /* Fills the full 52rem vertical grid track budget */
+        grid-row: span 2;                                       /* Safe here because neighboring cards prop up the rows */
+        height: 100%;                                           /* Fills the full vertical grid track budget */
     }
 
-    /* 2. Specificity Overrides: Lock down your special section budgets */
+    /* 2. Specificity Overrides: Lock down the special section budgets */
     .product-grid.essential-collection {
-        grid-template-columns: repeat(2, minmax(18rem, 1fr));  /* Force 2 wide columns */
+        grid-template-columns: repeat(2, minmax(18rem, 1fr));   /* Force 2 wide columns */
     }
 
     .product-grid.seasonal-content {
-        grid-template-columns: repeat(3, minmax(18rem, 1fr)); /* Force 3 magazine-style columns */
+        grid-template-columns: repeat(3, minmax(18rem, 1fr)); /* Force three magazine-style columns */
     }
 
     /* 3. The Advertisement Layout Superpowers! */
     .new-arrivals .ad-card {
         grid-column: span 1;
-        height: 100%;                                   /* Stretch card to fill the expanded height track */
+        height: 100%;                                       /* Stretch card to fill the expanded height track */
         
         /* Optional Visual Flair to make it look like an authentic promotional block */
-        background-color: var(--color-promo-surface);   /* Subtle warm background color shift */
-        border: 0.125rem dashed var(--color-warning);        /* Dashed amber border frame */
+        background-color: var(--color-promo-surface);       /* Subtle warm background color shift */
+        border: 0.125rem dashed var(--color-warning);       /* Dashed amber border frame */
     }
 
     .seasonal-content .product-card-item:first-child {
@@ -1252,11 +1242,15 @@ h1 {
     }
 
     .product-card-item {
-        padding: var(--spacing-xl);                     /* Luxurious desktop spacing */
+        padding: var(--spacing-xl);                         /* Luxurious desktop spacing */
     }
 }
 
-/* Motion Preferences Integrated are placed at the absolute end of the CSS file */
+
+/* ==========================================================================
+                                Motion Preferences Integrated
+============================================================================ */
+
 @media (prefers-reduced-motion: reduce) {
     /* Slide Animations - Turn off high-velocity text movements and scale changes */
     .slide.active .zoom-in,
