@@ -767,30 +767,6 @@ h1 {
     width: 50%;
 }
 
-/* BACK TO BROWSING button */
-/*
-.back-to-browsing-btn {
-    padding: 0.5rem 1rem;
-    margin: var(--spacing-md) 0;
-    height: var(--input-height);
-    background-color: var(--color-warning-accent);
-    color: var(--color-text-primary);
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-sm);
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: background-color var(--transition-normal);
-    box-shadow: var(--shadow-md);
-    transition: transform var(--transition-slow), box-shadow var(--transition-normal);
-}
-
-.back-to-browsing-btn:hover {
-    color: var(--color-text-secondary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-*/
 
 /*  -----===== PRODUCT DETAILS =====----- */
 
