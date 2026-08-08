@@ -301,11 +301,6 @@ function openProductDetailsPage(product) {
     clone.querySelector('.details-full-description').textContent = product.description;
     clone.querySelector('.details-large-price span').textContent = product.price.toFixed(2);
 
-    // Wire up template "Back" button
-    // clone.querySelector('.back-to-browsing-btn').addEventListener('click', () => {
-    //     changeRouteView(previouslyActiveSectionId);
-    // });
-
     // Wire up template "Add to basket" button
     clone.querySelector('.details-add-to-basket-btn').addEventListener('click', () => {
         addItemToCartState(product);
@@ -327,7 +322,7 @@ function addItemToCartState(product) {
     updateGlobalCartCounters();
 }
 
-// Recalculates total items and updates indicators
+// 🚩🚩🚩 Recalculates total items and updates indicators
 function updateGlobalCartCounters() {
     const totalCount = basket.reduce((total, item) => total + item.quantity, 0);
 
@@ -348,6 +343,22 @@ function updateGlobalCartCounters() {
         basketPriceSpan.textContent = totalPrice.toFixed(2);
     }
 }
+
+// Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
+
+function calculateBasketTotal() {
+
+}
+
+function saveBasket() {
+
+}
+
+function updateBasketCounters() {
+
+}
+
+
 
 // Clones the basket template and populates your cart list view
 function renderBasketView() {
