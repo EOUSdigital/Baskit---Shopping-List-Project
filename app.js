@@ -16,7 +16,7 @@ const sections = document.querySelectorAll('main section');
 
 // Unified Router Utility to handle clean page swapping
 function changeRouteView(targetSectionId) {
-    // SAVE THE CURRENT ROUTE TO LOCAL STORAGE
+    // Save the current route to local storage.
     localStorage.setItem('baskit_active_route', targetSectionId);
 
     sections.forEach(section => {
@@ -53,8 +53,7 @@ function changeRouteView(targetSectionId) {
 // 1.1 HEADER NAVIGATION SYSTEM & ROUTING ENGINE
 // ==========================================
 
-//  Loops through every navigation link button one by one.
-// Handle department menu link clicks
+//  Loops through every navigation link button one by one. Handle department menu link clicks.
 navLinks.forEach(link => {
     link.addEventListener('click', (event) => {
         event.preventDefault();
@@ -70,13 +69,13 @@ navLinks.forEach(link => {
     });
 });
 
-// Handle clicking the Basket Icon in the navigation bar
+// Handle clicking the Basket Icon in the navigation bar.
 const basketTrigger = document.querySelector('.basket-nav-trigger');
 if (basketTrigger) {
     basketTrigger.addEventListener('click', (event) => {
         event.preventDefault();
-        renderBasketView(); // Build the shopping cart elements
-        changeRouteView("#shopping-basket"); // Switch to basket page
+        renderBasketView();                         // Build the shopping cart elements
+        changeRouteView("#shopping-basket");        // Switch to basket page
     });
 }
 
@@ -108,7 +107,7 @@ if (searchForm && searchInput && searchCategory) {
 
         if (!query) return;
 
-        // 1. Gather all searchable items
+        // 1. Gather all searchable items.
         let pool = [];
         
         if (category === 'all') {
@@ -117,7 +116,7 @@ if (searchForm && searchInput && searchCategory) {
                 pool = productDataMap[category] || [];
             }
 
-        // 2. Filter products based on name or description matching
+        // 2. Filter products based on name or description matching.
         const results = pool.filter(product => 
             product.name.toLowerCase().includes(query) || 
             product.description.toLowerCase().includes(query)
@@ -129,7 +128,7 @@ if (searchForm && searchInput && searchCategory) {
             mainHeading.textContent = `Search Results for "${searchInput.value}" (${results.length} found)`;
         }
 
-        // Temporarily hide the slider and replace Flash Deals grid with results
+        // Temporarily hide the slider and replace Flash Deals grid with results.
         const sliderPlaceholder = document.querySelector('#all-products .slider-placeholder');
         // Hide slider
         if (sliderPlaceholder) sliderPlaceholder.innerHTML = '';
@@ -139,7 +138,7 @@ if (searchForm && searchInput && searchCategory) {
             grid.style.display = 'none';
         });
 
-        // Show results in the Flash Deals container as a grid
+        // Show results in the "Flash Deals" container as a grid
         const resultsGrid = document.querySelector('#all-products .flash-deals');
         if (resultsGrid) {
             resultsGrid.style.display = 'grid';
