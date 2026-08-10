@@ -1,4 +1,4 @@
-"use strict";           // Forces the browser to run your code strictly, throwing errors for bad practices.
+"use strict";           // Activates Strict Mode for the JavaScript code in its scope. Strict Mode changes some of JavaScript's otherwise permissive behaviour so that certain mistakes become errors instead of silently producing potentially unexpected results.
 
 // ==========================================
 // GLOBAL STATE APP REGISTRY
@@ -515,8 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
     renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
 
-    const frontPageGrocery = grocery.slice(0, 11);
-
     // Sync visual counts with whatever was loaded out of local storage
     updateGlobalCartCounters();
 
@@ -526,7 +524,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedRoute === '#shopping-basket') {
         renderBasketView();
     }
-    
     changeRouteView(savedRoute);
 });
 
