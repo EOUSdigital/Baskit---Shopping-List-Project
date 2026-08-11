@@ -69,7 +69,7 @@ navLinks.forEach(link => {
     });
 });
 
-// Handle clicking the Basket Icon in the navigation bar.
+// Handle clicking the "Basket Icon" in the navigation bar.
 const basketTrigger = document.querySelector('.basket-nav-trigger');
 if (basketTrigger) {
     basketTrigger.addEventListener('click', (event) => {
@@ -174,7 +174,7 @@ function renderPromoSlider(sectionElement) {
     let slides = placeholder.querySelectorAll('.slide');
     let current = 0;
 
-    // 2. Only clone and inject the template if it hasn't been rendered yet
+    // 2. Only clone and inject the template if it has not been rendered yet
     if (slides.length === 0) {
         placeholder.innerHTML = '';
         const templateClone = template.content.cloneNode(true);
@@ -233,7 +233,7 @@ function renderProducts(gridClassName, arrayToUse) {
     const template = document.getElementById('product-template');
     if (!targetGrid || !template) return;
 
-    targetGrid.innerHTML = ""; // Clear out old cards
+    targetGrid.innerHTML = "";                          // Clear out old cards
 
     arrayToUse.forEach((product) => {
         if (!product.name) return;
@@ -249,7 +249,7 @@ function renderProducts(gridClassName, arrayToUse) {
         const priceSpan = clone.querySelector('.product-card-price span') || clone.querySelector('span');
         const button = clone.querySelector('.product-card-button') || clone.querySelector('button');
 
-        // 3. Populate fields safely only if they exist in your template
+        // 3. Populate fields safely only if they exist in the template
         if (img) {
             img.src = product.image;
             img.alt = product.name;
@@ -321,7 +321,7 @@ function addItemToCartState(product) {
     updateGlobalCartCounters();
 }
 
-// 🚩🚩🚩 Recalculates total items and updates indicators
+// 🚩🚩🚩 Recalculates total items and updates indicators. The following function will be split into more accessible functions. 
 function updateGlobalCartCounters() {
     const totalCount = basket.reduce((total, item) => total + item.quantity, 0);
 
@@ -345,21 +345,14 @@ function updateGlobalCartCounters() {
 
 // Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
 
-function calculateBasketTotal() {
+function calculateBasketTotal() {}
 
-}
+function saveBasket() {}
 
-function saveBasket() {
-
-}
-
-function updateBasketCounters() {
-
-}
+function updateBasketCounters() {}
 
 
-
-// Clones the basket template and populates your cart list view
+// Clones the basket template and populates the cart list view
 function renderBasketView() {
     const container = document.getElementById('dynamic-basket-container');
     const clearBtn = document.getElementById('clear-entire-basket-btn');
@@ -370,7 +363,7 @@ function renderBasketView() {
     if (!container) return;
 
     if (basket.length === 0) {
-        container.innerHTML = `<p class="empty-cart-msg">Your shopping basket is empty.</p>`;
+        container.innerHTML = `<p class="empty-cart-msg">The shopping basket is empty.</p>`;
         if (clearBtn) clearBtn.style.display = 'none'; // Clear UI State step met
         updateGlobalCartCounters();
         return;
@@ -387,11 +380,11 @@ function renderBasketView() {
                 updateGlobalCartCounters();
                 renderBasketView();
             }
-            // If the user clicked "Cancel", execution stops here and your basket stays safe!
+            // If the user clicked "Cancel", execution stops here and the basket stays safe!
         };
     }
 
-    container.innerHTML = ""; // Wipe older rendered list references
+    container.innerHTML = "";                           // Wipe older rendered list references
     
     basket.forEach(item => {
         //  Basket card settings
@@ -440,7 +433,7 @@ function renderBasketView() {
         const qtyInput = clone.querySelector('.basket-action-quantity-input');
         const qtyError = clone.querySelector('.basket-quantity-error-msg');
 
-        let isEditing = false; // Track edit mode state for this card
+        let isEditing = false;                                  // Track edit mode state for this card
 
         editBtn.addEventListener('click', () => {
             if (!isEditing) {
@@ -448,9 +441,9 @@ function renderBasketView() {
                 isEditing = true;
                 editBtn.textContent = 'Update';
 
-                if (qtyError) qtyError.style.display = 'none'; // Hide any previous error message!
+                if (qtyError) qtyError.style.display = 'none';  // Hide any previous error message!
 
-                qtyInput.value = item.quantity;         // Set input value to current item quantity
+                qtyInput.value = item.quantity;                 // Set input value to current item quantity
 
                 // Hide normal controls, show input field
                 decreaseBtn.style.display = 'none';
