@@ -27,6 +27,7 @@ function changeRouteView(targetSectionId) {
     });
 
     const targetSection = document.querySelector(targetSectionId);
+    
     if (targetSection) {
         targetSection.classList.remove('hidden');
         renderPromoSlider(targetSection);
