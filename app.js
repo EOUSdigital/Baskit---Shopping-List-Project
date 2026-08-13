@@ -234,7 +234,7 @@ function renderProducts(gridClassName, arrayToUse) {
     const template = document.getElementById('product-template');
     if (!targetGrid || !template) return;
 
-    targetGrid.innerHTML = "";                          // Clear out old cards
+    targetGrid.innerHTML = "";                                  // Clear out old cards
 
     arrayToUse.forEach((product) => {
         if (!product.name) return;
@@ -269,7 +269,7 @@ function renderProducts(gridClassName, arrayToUse) {
         if (button) {
             button.textContent = "Add to basket";
             button.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevents opening the details page modal/view
+                event.stopPropagation();                        // Prevents opening the details page modal/view
                 addItemToCartState(product);
             });
         }
@@ -344,7 +344,7 @@ function updateGlobalCartCounters() {
     }
 }
 
-// Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
+// 🚩🚩🚩 Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
 
 function calculateBasketTotal() {}
 
@@ -459,7 +459,7 @@ function renderBasketView() {
                 if (newQty && newQty >= 1) {
                     item.quantity = newQty;
                     updateGlobalCartCounters();
-                    renderBasketView(); // Refresh UI to exit edit mode and update subtotals
+                    renderBasketView();                         // Refresh UI to exit edit mode and update subtotals
                 } else {
                     if (qtyError) {
                         qtyError.style.display = 'block';
@@ -544,8 +544,7 @@ function shuffleArray(array) {
     const shuffled = [...array]; 
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        // Modern ES6 destructuring swap
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];    // Modern ES6 destructuring swap
     }
     return shuffled;
 };
