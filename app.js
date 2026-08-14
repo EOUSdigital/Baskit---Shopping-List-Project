@@ -30,7 +30,7 @@ function changeRouteView(targetSectionId) {
     
     if (targetSection) {
         targetSection.classList.remove('hidden');
-        renderPromoSlider(targetSection);
+        renderPromoSlider(targetSection);                       //  The following code must be refactor and included into the slider
         
         // Exclude temporary views from overwriting the last category section
         if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
@@ -307,7 +307,7 @@ function openProductDetailsPage(product) {
     });
 
     detailSection.appendChild(clone);
-    changeRouteView("#product-details");
+    changeRouteView("#product-details");                    
 }
 
 // Memory controller: adds a product or increments quantity
