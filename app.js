@@ -50,6 +50,11 @@ function changeRouteView(targetSectionId) {
     }
 }
 
+function () {}
+function () {}
+function () {}
+
+
 // ==========================================
 // 1.1 HEADER NAVIGATION SYSTEM & ROUTING ENGINE
 // ==========================================
@@ -517,6 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedRoute === '#shopping-basket') {
         renderBasketView();
     }
+    
     changeRouteView(savedRoute);
 });
 
