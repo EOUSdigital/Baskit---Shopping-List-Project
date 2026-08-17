@@ -50,9 +50,9 @@ function changeRouteView(targetSectionId) {
     }
 }
 
-function () {}
-function () {}
-function () {}
+function navigationUI() {}
+function sliderStartStopTimer() {}
+function persistenceSaveLoadRoute() {}
 
 
 // ==========================================
@@ -522,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedRoute === '#shopping-basket') {
         renderBasketView();
     }
-    
+
     changeRouteView(savedRoute);
 });
 
