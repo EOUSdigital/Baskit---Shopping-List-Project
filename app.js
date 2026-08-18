@@ -1,5 +1,17 @@
 "use strict";           // Activates Strict Mode for the JavaScript code in its scope. Strict Mode changes some of JavaScript's otherwise permissive behaviour so that certain mistakes become errors instead of silently producing potentially unexpected results.
 
+
+// ==========================================
+// GLOBAL Application
+// ==========================================
+
+function initializeApplication() {
+    loadBasket();
+    loadSavedRoute();
+    initializeNavigation();
+    initializeSlider();
+}
+
 // ==========================================
 // GLOBAL STATE APP REGISTRY
 // ==========================================
@@ -14,11 +26,21 @@ const navLinks = document.querySelectorAll('.nav-links-item');
 //  Grabs all <section> elements living inside the <main> container
 const sections = document.querySelectorAll('main section');
 
-// Unified Router Utility to handle clean page swapping
+// Unified Router Utility to handle clean page swapping. The changeRouteView() receives a requested route and makes the corresponding section the active visible view.
 function changeRouteView(targetSectionId) {
-    // Save the current route to local storage.
+    // 1. Receive the requested route. Save the current route to local storage. Persistence → save/load route
     localStorage.setItem('baskit_active_route', targetSectionId);
 
+    // 2. Find the corresponding section
+    const targetSection = document.querySelector(targetSectionId);
+
+    // 3. Handle a missing section. If it does not exist: report an error and stop safely.
+    if (!targetSection) {
+        console.error(`Route not found: ${targetSectionId}`);
+        return;
+    }
+
+    // 4. Hide the inactive sections.
     sections.forEach(section => {
         if (section.activeTimerId) {
             clearInterval(section.activeTimerId);
@@ -26,28 +48,36 @@ function changeRouteView(targetSectionId) {
         section.classList.add('hidden');
     });
 
-    const targetSection = document.querySelector(targetSectionId);
-    
-    if (targetSection) {
-        targetSection.classList.remove('hidden');
-        renderPromoSlider(targetSection);                       //  The following code must be refactor and included into the slider
-        
-        // Exclude temporary views from overwriting the last category section
-        if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
-            previouslyActiveSectionId = targetSectionId;
-        }
+    // 5. Show the requested section. Exclude temporary views from overwriting the last category section
+    targetSection.classList.remove('hidden');
 
-        // Dynamically update active states in the secondary navigation links
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === targetSectionId) {
-                link.classList.add('active');
-                link.setAttribute('aria-current', 'page');
-            } else {
-                link.classList.remove('active');
-                link.removeAttribute('aria-current');
-            }
-        });
+    //  Navigation state → remember previous browsing section
+    // Temporary views should not overwrite the last browsing/category section.
+    if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
+        previouslyActiveSectionId = targetSectionId;
     }
+
+    // ➡️ Navigation UI + Accessibility
+    // Dynamically update active states in the secondary navigation links
+    // Synchronize the active navigation link with the current route.
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === targetSectionId) {
+            //  Navigation UI → active navigation link
+            link.classList.add('active');
+            //  Accessibility → aria-current
+            link.setAttribute('aria-current', 'page');
+        } else {
+            //  Navigation UI → active navigation link
+            link.classList.remove('active');
+            //  Accessibility → aria-current
+            link.removeAttribute('aria-current');
+        }
+    });
+
+    // ➡️ Slider lifecycle → initialize/stop/manage slider
+    // TEMPORARY: Slider lifecycle is currently triggered here.
+    //  The following code will be refactor and included into the slider system
+    renderPromoSlider(targetSection);
 }
 
 function navigationUI() {}
