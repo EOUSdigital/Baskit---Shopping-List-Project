@@ -29,6 +29,12 @@ const sections = document.querySelectorAll('main section');
 // Unified Router Utility to handle clean page swapping. The changeRouteView() receives a requested route and makes the corresponding section the active visible view.
 function changeRouteView(targetSectionId) {
     // 1. Receive the requested route. Save the current route to local storage. Persistence → save/load route
+    //  Does saving to Local Storage make the section visible? No.
+
+
+    // TODO: move route persistence outside the router.
+    // ➡️ Persistence → save/load route
+    // Persistence: route persistence currently occurs here.
     localStorage.setItem('baskit_active_route', targetSectionId);
 
     // 2. Find the corresponding section
@@ -40,26 +46,31 @@ function changeRouteView(targetSectionId) {
         return;
     }
 
-    // 4. Hide the inactive sections.
+    // 4. Hide the inactive sections. We are now mixing: section visibility + slider timer management
     sections.forEach(section => {
+        // slider timer management
         if (section.activeTimerId) {
             clearInterval(section.activeTimerId);
         }
+        // TEMPORARY: slider timer cleanup currently occurs here.
+        // This will move to the slider lifecycle.
+        // section visibility
         section.classList.add('hidden');
     });
 
-    // 5. Show the requested section. Exclude temporary views from overwriting the last category section
+    // 5. Show the requested section.
     targetSection.classList.remove('hidden');
 
     //  Navigation state → remember previous browsing section
-    // Temporary views should not overwrite the last browsing/category section.
+    //  Temporary views should not overwrite the last browsing/category section.
     if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
         previouslyActiveSectionId = targetSectionId;
     }
 
-    // ➡️ Navigation UI + Accessibility
-    // Dynamically update active states in the secondary navigation links
-    // Synchronize the active navigation link with the current route.
+    //  TODO: The following code will be refactored and included in a new function.
+    //  ➡️ Navigation UI + Accessibility
+    //  Dynamically Synchronize the active navigation link and aria-current with the current route.
+    //  Does accessibility metadata determine which section is visible? No.
     navLinks.forEach(link => {
         if (link.getAttribute('href') === targetSectionId) {
             //  Navigation UI → active navigation link
@@ -74,9 +85,10 @@ function changeRouteView(targetSectionId) {
         }
     });
 
-    // ➡️ Slider lifecycle → initialize/stop/manage slider
-    // TEMPORARY: Slider lifecycle is currently triggered here.
-    //  The following code will be refactor and included into the slider system
+    //  TODO: The following code will be refactored and included in the slider system.
+    //  ➡️ Slider lifecycle → initialize/stop/manage slider
+    //  TEMPORARY: Slider lifecycle is currently triggered here.
+    //  Does clearing a slider timer determine which route is visible? No.
     renderPromoSlider(targetSection);
 }
 
