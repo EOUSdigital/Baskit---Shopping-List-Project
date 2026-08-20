@@ -33,6 +33,8 @@ function changeRouteView(targetSectionId) {
 
 
     // TODO: move route persistence outside the router.
+    // TODO: move route persistence outside the router.
+    // ➡️ Persistence → save/load route
     // ➡️ Persistence → save/load route
     // Persistence: route persistence currently occurs here.
     localStorage.setItem('baskit_active_route', targetSectionId);
