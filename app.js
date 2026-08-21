@@ -5,12 +5,17 @@
 // GLOBAL Application
 // ==========================================
 
+let basket = loadBasket();
+
 function initializeApplication() {
-    loadBasket();
-    loadSavedRoute();
-    initializeNavigation();
-    initializeSlider();
+    loadRoute();
+    saveRoute();
+    // loadSavedRoute();
+    // initializeNavigation();
+    // initializeSlider();
 }
+
+initializeApplication();
 
 // ==========================================
 // GLOBAL STATE APP REGISTRY
@@ -18,7 +23,6 @@ function initializeApplication() {
 
 // Stores cart items tracking: { product, quantity }
 // Checks for existing storage data first; defaults to empty array if none found
-let basket = JSON.parse(localStorage.getItem('baskit_cart')) || [];
 let previouslyActiveSectionId = "#all-products";
 
 //  Grabs all HTML elements with the class 'nav-links-item' (the menu buttons)
@@ -26,18 +30,10 @@ const navLinks = document.querySelectorAll('.nav-links-item');
 //  Grabs all <section> elements living inside the <main> container
 const sections = document.querySelectorAll('main section');
 
-// Unified Router Utility to handle clean page swapping. The changeRouteView() receives a requested route and makes the corresponding section the active visible view.
+// 🟧 UNIFIED ROUTER UTILITY to handle clean page swapping. The changeRouteView() receives a requested route and makes the corresponding section the active visible view.
 function changeRouteView(targetSectionId) {
     // 1. Receive the requested route. Save the current route to local storage. Persistence → save/load route
     //  Does saving to Local Storage make the section visible? No.
-
-
-    // TODO: move route persistence outside the router.
-    // TODO: move route persistence outside the router.
-    // ➡️ Persistence → save/load route
-    // ➡️ Persistence → save/load route
-    // Persistence: route persistence currently occurs here.
-    localStorage.setItem('baskit_active_route', targetSectionId);
 
     // 2. Find the corresponding section
     const targetSection = document.querySelector(targetSectionId);
@@ -94,10 +90,20 @@ function changeRouteView(targetSectionId) {
     renderPromoSlider(targetSection);
 }
 
+//  🟧 BASKET PERSISTENCE
+
+// ➡️ Persistence → save/load route
+// Persistence: route persistence currently occurs here.
+function saveRoute(targetSectionId) {
+    localStorage.setItem('baskit_active_route', targetSectionId);
+}
+
+function loadRoute() {
+    return localStorage.getItem('baskit_active_route');
+}
+
 function navigationUI() {}
 function sliderStartStopTimer() {}
-function persistenceSaveLoadRoute() {}
-
 
 // ==========================================
 // 1.1 HEADER NAVIGATION SYSTEM & ROUTING ENGINE
@@ -375,9 +381,6 @@ function addItemToCartState(product) {
 function updateGlobalCartCounters() {
     const totalCount = basket.reduce((total, item) => total + item.quantity, 0);
 
-    // Save the updated basket state to Local Storage
-    localStorage.setItem('baskit_cart', JSON.stringify(basket));
-    
     // Updates the navigation bar badge indicator
     const navCounter = document.getElementById('cart-total-items');
     if (navCounter) navCounter.textContent = totalCount;
@@ -391,16 +394,48 @@ function updateGlobalCartCounters() {
         const totalPrice = basket.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
         basketPriceSpan.textContent = totalPrice.toFixed(2);
     }
+
+    saveBasket();
 }
+
+/*
+The basket is currently mixing responsibilities updateGlobalCartCounters() currently does this:
+
+updateGlobalCartCounters()
+        │
+        ├── calculate total quantity
+        │
+        ├── SAVE basket to Local Storage
+        │
+        ├── update navigation badge
+        │
+        └── update basket totals
+
+So the function is doing persistence + calculation + UI updates.
+*/
+
 
 // 🚩🚩🚩 Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
 
 function calculateBasketTotal() {}
 
-function saveBasket() {}
+//  🟧 
+
+
+
+function loadBasket() {
+    const savedBasket = localStorage.getItem('baskit_cart');
+
+    return savedBasket ? JSON.parse(savedBasket) : [];
+}
+
+function saveBasket() {
+    // Save the updated basket state to Local Storage
+    localStorage.setItem('baskit_cart', JSON.stringify(basket));
+}
+
 
 function updateBasketCounters() {}
-
 
 // Clones the basket template and populates the cart list view
 function renderBasketView() {
@@ -561,7 +596,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateGlobalCartCounters();
 
     // RESTORE THE SAVED ROUTE ON REFRESH
-    const savedRoute = localStorage.getItem('baskit_active_route') || '#all-products';
+    // ➡️ This is already a natural place to eventually have:
+    const savedRoute = loadRoute();
     
     if (savedRoute === '#shopping-basket') {
         renderBasketView();
