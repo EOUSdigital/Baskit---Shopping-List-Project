@@ -9,7 +9,7 @@ let basket = loadBasket();
 
 function initializeApplication() {
     loadRoute();
-    saveRoute();
+    // saveRoute();
     // loadSavedRoute();
     // initializeNavigation();
     // initializeSlider();
@@ -113,8 +113,11 @@ function sliderStartStopTimer() {}
 navLinks.forEach(link => {
     link.addEventListener('click', (event) => {
         event.preventDefault();
+
+        // link.getAttribute('href'); The href determines which section becomes visible.
         const targetSectionId = link.getAttribute('href');
-        
+
+        //  link.dataset.category; The category determines which products are rendered.
         const selectedCategory = link.dataset.category;
         if (selectedCategory) {
             const targetArray = productDataMap[selectedCategory];
@@ -601,6 +604,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (savedRoute === '#shopping-basket') {
         renderBasketView();
+    } 
+    
+    if (savedRoute === '.nav-links-item') {
+        
     }
 
     changeRouteView(savedRoute);
