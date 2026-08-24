@@ -600,16 +600,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // RESTORE THE SAVED ROUTE ON REFRESH
     // ➡️ This is already a natural place to eventually have:
-    const savedRoute = loadRoute();
+    const savedRoute = loadRoute()  || '#all-products';
     
     if (savedRoute === '#shopping-basket') {
         renderBasketView();
     } 
-    
-    if (savedRoute === '.nav-links-item') {
-        
-    }
 
+    console.log("savedRoute:", savedRoute);
     changeRouteView(savedRoute);
 });
 
