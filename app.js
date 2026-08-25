@@ -124,6 +124,8 @@ navLinks.forEach(link => {
             const targetGridClass = `.${selectedCategory}-content`;
             renderProducts(targetGridClass, targetArray);
         }
+
+        saveRoute(targetSectionId);
         changeRouteView(targetSectionId);
     });
 });
