@@ -612,8 +612,15 @@ document.addEventListener('DOMContentLoaded', () => {
         renderBasketView();
     } 
 
+    // 🚩🚩🚩 Temporary log
     console.log("savedRoute:", savedRoute);
     changeRouteView(savedRoute);
+
+    // 🚩🚩🚩 Temporary log
+    console.log(
+    "all-products hidden:",
+    document.querySelector("#all-products").classList.contains("hidden")
+);
 });
 
 // A placeholder function designed to load specific store views when called.
