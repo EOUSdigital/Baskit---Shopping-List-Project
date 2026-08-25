@@ -585,18 +585,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentSliceIndex = 0;
 
+    // 🚩🚩🚩 Temporary log
+    console.log("Starting landing-page rendering");
     // Call 1: Run the recipe using '.flash-deals' as the target class
     renderProducts('.flash-deals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 4));
     
     // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
     renderProducts('.custom-solutions', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 5));
-
+    
     // 🔴🔴🔴 These sections should be checked before moving to a new section
     renderProducts('.just-for-you', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 8));
     renderProducts('.essential-collection', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 2));
     renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
     renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
 
+    // 🚩🚩🚩 Temporary log
+    console.log("Landing-page rendering completed");
     // Sync visual counts with whatever was loaded out of local storage
     updateGlobalCartCounters();
 
