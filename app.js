@@ -585,8 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentSliceIndex = 0;
 
-    // 🚩🚩🚩 Temporary log
-    console.log("Starting landing-page rendering");
+    console.log("Starting landing-page rendering");             // 🚩🚩🚩 Temporary log
     // Call 1: Run the recipe using '.flash-deals' as the target class
     renderProducts('.flash-deals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 4));
     
@@ -599,8 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
     renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
 
-    // 🚩🚩🚩 Temporary log
-    console.log("Landing-page rendering completed");
+    console.log("Landing-page rendering completed");            // 🚩🚩🚩 Temporary log
     // Sync visual counts with whatever was loaded out of local storage
     updateGlobalCartCounters();
 
@@ -610,20 +608,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (savedRoute === '#shopping-basket') {
         renderBasketView();
-    } 
+    }
 
-    // 🚩🚩🚩 Temporary log
-    console.log("savedRoute:", savedRoute);
+    const categoryName = savedRoute.replace('#', '');
+    if (productDataMap[categoryName]) {
+        loadStoreSection(categoryName);
+    }
+
+    console.log("savedRoute:", savedRoute);                     // 🚩🚩🚩 Temporary log
     changeRouteView(savedRoute);
 
-    // 🚩🚩🚩 Temporary log
-    console.log(
-    "all-products hidden:",
-    document.querySelector("#all-products").classList.contains("hidden")
-);
+    // 🚩🚩🚩 Temporary log -----------------------------------------------------------
+    console.log("all-products hidden:", document.querySelector("#all-products").classList.contains("hidden"));
 });
 
-// A placeholder function designed to load specific store views when called.
+//  A placeholder function designed to load specific store views when called.
+//  If later I will improve how products are rendered, I should not need to change loadStoreSection().
 function loadStoreSection(categoryName) {
     const currentSection = document.getElementById(categoryName);
     renderPromoSlider(currentSection);
