@@ -58,7 +58,7 @@ function changeRouteView(targetSectionId) {
     //  Navigation state → remember previous browsing section
     //  Temporary views should not overwrite the last browsing/category section.
     if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
-        previouslyActiveSectionId = targetSectionId;
+        previouslyActiveSectionId = targetSectionId;            // 🚩🚩🚩 How do we identify the current section when changeRouteView() is called? And you already have a possible answer in your project.
     }
 
     //  Is calling Navigation UI + Accessibility function
@@ -161,7 +161,7 @@ if (searchForm && searchInput && searchCategory) {
         // Stop standard form submissions & page reloads
         event.preventDefault();
 
-        //# 🔰 SEARCH LOGIC - obtain input, determine search pool, filter data
+        // 🔰 SEARCH LOGIC - obtain input, determine search pool, filter data
         const query = searchInput.value.trim().toLowerCase();
         // 'all', 'grocery', 'household', 'stationery'
         const category = searchCategory.value;
@@ -183,7 +183,7 @@ if (searchForm && searchInput && searchCategory) {
             product.description.toLowerCase().includes(query)
         );
 
-        //# 🔰 UI LOGIC - update heading, manipulate grids, render results
+        //* 🔰 UI LOGIC - update heading, manipulate grids, render results
         //  3. Clear and display search results on the main page dynamically!
         //  Changes All Products heading because search results are being displayed inside All Products
         const mainHeading = document.getElementById('all-products-heading');
@@ -205,7 +205,7 @@ if (searchForm && searchInput && searchCategory) {
             grid.style.display = 'none';
         });
 
-        //# 🔰 ROUTING - route to all-products
+        //* 🔰 ROUTING - route to all-products
         // Show results in the "Flash Deals" container as a grid
         const resultsGrid = document.querySelector('#all-products .flash-deals');
         if (resultsGrid) {
