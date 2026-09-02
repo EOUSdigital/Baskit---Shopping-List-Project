@@ -58,7 +58,7 @@ function changeRouteView(targetSectionId) {
     //  Navigation state → remember previous browsing section
     //  Temporary views should not overwrite the last browsing/category section.
     if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
-        previouslyActiveSectionId = targetSectionId;            // 🚩🚩🚩 How do we identify the current section when changeRouteView() is called? And you already have a possible answer in your project.
+        previouslyActiveSectionId = targetSectionId;
     }
 
     //  Is calling Navigation UI + Accessibility function
@@ -297,6 +297,7 @@ function initializeStopManageSlider(section) {
     // Stops the active timer for the supplied section.
     if (section.activeTimerId) {
         clearInterval(section.activeTimerId);
+        section.activeTimerId = null;
     }
 }
 
