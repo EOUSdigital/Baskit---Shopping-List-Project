@@ -33,6 +33,7 @@ const sections = document.querySelectorAll('main section');
 
 // 🟧 UNIFIED ROUTER UTILITY to handle clean page swapping. The changeRouteView() receives a requested route and makes the corresponding section the active visible view.
 function changeRouteView(targetSectionId) {
+    // 🚩🚩🚩 The first four operations clearly belong together:
     // 1. Receive the requested route. Save the current route to local storage. Persistence → save/load route
     //  Does saving to Local Storage make the section visible? No.
 
@@ -64,11 +65,8 @@ function changeRouteView(targetSectionId) {
     //  Is calling Navigation UI + Accessibility function
     navigationUI(targetSectionId);
 
-    //  TODO: The following code will be refactored and included in the slider system.
-    //  ➡️ TEMPORARY: Slider lifecycle → initialize/stop/manage slider is currently triggered here.
-    //  Does clearing a slider timer determine which route is visible? No.
-    renderPromoSlider(targetSection);
-
+    // Slider lifecycle
+    initializeStopManageSlider(targetSection);
 }
 
 // ➡️ RoutePersistence → save/load route the active route.
@@ -299,6 +297,8 @@ function initializeStopManageSlider(section) {
         clearInterval(section.activeTimerId);
         section.activeTimerId = null;
     }
+
+    renderPromoSlider(section);
 }
 
 // ==========================================
