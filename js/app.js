@@ -309,20 +309,41 @@ function initializeStopManageSlider(section) {
 // DYNAMIC RENDER & BASKET ENGINE
 // ==========================================
 
-function renderProducts(gridClassName, arrayToUse) {
+//  gridClassName - Where should the finished product cards go?
+//  arrayToUse - WHAT to copy for each card?
+function renderProducts(gridClassName /*WHERE?*/, arrayToUse/*WHAT?*/) {
+    //  This is where JavaScript crosses from your data/application logic into the DOM.
     const targetGrid = document.querySelector(gridClassName);
+    //  This finds your HTML <template> element.
+    //  The important thing about <template> is that its contents are not immediately rendered as normal page content.
+    //  Instead, JavaScript can use it as a blueprint. The selector will search for the HTML element whose id is product-template.
     const template = document.getElementById('product-template');
+
+    //  This means: If either the destination grid or product template does not exist, stop the function.
+    //  If could not find the destination OR could not find the template, stop. The || means "OR."
     if (!targetGrid || !template) return;
 
-    targetGrid.innerHTML = "";                                  // Clear out old cards
+    //?  The complete Step 1: I am being given a selector telling me where to render and an array containing what to render. Find the destination grid and the product template. If either one is missing, stop because I cannot safely continue.
 
+    //  Without this guard, would fail if targetGrid were null.
+    // Before rendering this new collection of products, remove whatever product cards are currently inside this grid.
+    targetGrid.innerHTML = "";                                  
+
+    //  This is where the rendering process becomes repetitive.
     arrayToUse.forEach((product) => {
+        //  This says: If this product does nt have a name, do not render it.
+        //  Does not exit renderProducts().
+        //  It exits the current forEach() callback. If a product missing a name, it will be skipped.
         if (!product.name) return;
 
-        // 1. Clone the HTML template
+        //  1. Clone the HTML template. Create a copy of the template's contents.
+        //  cloneNode(true) - Clone the node and all of its descendants. This is called a deep clone.
+        //  clone is a new DOM fragment containing the copied product-card structure.
+        //  If you put the cloning outside the loop, you would only create one copy.
         const clone = template.content.cloneNode(true);
-        
-        // 2. Fallback selection engine: Finds elements by generic tags if classes are missing
+
+        //  2. Fallback selection engine: Finds elements by generic tags if classes are missing. 
+        //  Try the first thing; if it is not available, use the second. (something || fallback)
         const card = clone.querySelector('.product-card-item') || clone.firstElementChild;
         const img = clone.querySelector('.product-card-img') || clone.querySelector('img');
         const heading = clone.querySelector('.product-card-heading') || clone.querySelector('h1, h2, h3, h4, h5, h6');
@@ -330,7 +351,8 @@ function renderProducts(gridClassName, arrayToUse) {
         const priceSpan = clone.querySelector('.product-card-price span') || clone.querySelector('span');
         const button = clone.querySelector('.product-card-button') || clone.querySelector('button');
 
-        // 3. Populate fields safely only if they exist in the template
+        //  3. Populate fields safely only if they exist in the template
+        //  Why if (img), if (heading), etc.? Only attempt to modify the element if it was actually found.
         if (img) {
             img.src = product.image;
             img.alt = product.name;
@@ -345,18 +367,32 @@ function renderProducts(gridClassName, arrayToUse) {
             priceSpan.textContent = product.price.toFixed(2);
         }
 
-        // 4. Setup button click handler
+        //  4. Setup button click handler
         if (button) {
             button.textContent = "Add to basket";
+            //  When this particular button is clicked, execute this function.
+            //  The browser creates a click event when the user clicks the button.
+            //  So event is an object representing what happened. It contains information and methods relating to that particular click.
             button.addEventListener('click', (event) => {
-                event.stopPropagation();                        // Prevents opening the details page modal/view
+                //  Prevents opening the details page modal/view
+                //  The code deliberately stops the propagation
+                //  Protection 1 — Button handler
+                event.stopPropagation();
+                //  This hands the product to the basket-state function.
+                //  1. renderProducts() wires the interaction.
+                //  2. addItemToCartState() handles the basket state.
                 addItemToCartState(product);
             });
         }
 
-        // 5. Setup card container click handler
+        //  5. Setup card container click handler.
+        //  The card itself gets a click listener.
+        //  The intended behavior is: Click the product card → open that product's details page.
         if (card) {
             card.addEventListener('click', (event) => {
+                //  event.target - It tells us the element where the event originated.
+                //  If the click originated directly on the Add to Basket button, do not open the product details.
+                //  Protection 2 — Card handler
                 if (button && event.target === button) return;
                 openProductDetailsPage(product);
             });
