@@ -113,7 +113,9 @@ navLinks.forEach(link => {
 
         //  link.dataset.category; The category determines which products are rendered.
         const selectedCategory = link.dataset.category;
-        if (selectedCategory) {
+        if (selectedCategory === 'all') {
+            loadAllProductsSection();
+        } else if (selectedCategory) {
             const targetArray = productDataMap[selectedCategory];
             const targetGridClass = `.${selectedCategory}-content`;
             renderProducts(targetGridClass, targetArray);
@@ -323,10 +325,8 @@ function renderProducts(gridClassName /*WHERE?*/, arrayToUse/*WHAT?*/) {
     //  If could not find the destination OR could not find the template, stop. The || means "OR."
     if (!targetGrid || !template) return;
 
-    //?  The complete Step 1: I am being given a selector telling me where to render and an array containing what to render. Find the destination grid and the product template. If either one is missing, stop because I cannot safely continue.
-
     //  Without this guard, would fail if targetGrid were null.
-    // Before rendering this new collection of products, remove whatever product cards are currently inside this grid.
+    //  Before rendering this new collection of products, remove whatever product cards are currently inside this grid.
     targetGrid.innerHTML = "";                                  
 
     //  This is where the rendering process becomes repetitive.
@@ -336,71 +336,87 @@ function renderProducts(gridClassName /*WHERE?*/, arrayToUse/*WHAT?*/) {
         //  It exits the current forEach() callback. If a product missing a name, it will be skipped.
         if (!product.name) return;
 
-        //  1. Clone the HTML template. Create a copy of the template's contents.
-        //  cloneNode(true) - Clone the node and all of its descendants. This is called a deep clone.
-        //  clone is a new DOM fragment containing the copied product-card structure.
-        //  If you put the cloning outside the loop, you would only create one copy.
-        const clone = template.content.cloneNode(true);
+        const card = createProductCard(product, template);
 
-        //  2. Fallback selection engine: Finds elements by generic tags if classes are missing. 
-        //  Try the first thing; if it is not available, use the second. (something || fallback)
-        const card = clone.querySelector('.product-card-item') || clone.firstElementChild;
-        const img = clone.querySelector('.product-card-img') || clone.querySelector('img');
-        const heading = clone.querySelector('.product-card-heading') || clone.querySelector('h1, h2, h3, h4, h5, h6');
-        const desc = clone.querySelector('.product-card-description') || clone.querySelector('p');
-        const priceSpan = clone.querySelector('.product-card-price span') || clone.querySelector('span');
-        const button = clone.querySelector('.product-card-button') || clone.querySelector('button');
-
-        //  3. Populate fields safely only if they exist in the template
-        //  Why if (img), if (heading), etc.? Only attempt to modify the element if it was actually found.
-        if (img) {
-            img.src = product.image;
-            img.alt = product.name;
-        }
-        if (heading) {
-            heading.textContent = product.name;
-        }
-        if (desc) {
-            desc.textContent = product.description;
-        }
-        if (priceSpan) {
-            priceSpan.textContent = product.price.toFixed(2);
-        }
-
-        //  4. Setup button click handler
-        if (button) {
-            button.textContent = "Add to basket";
-            //  When this particular button is clicked, execute this function.
-            //  The browser creates a click event when the user clicks the button.
-            //  So event is an object representing what happened. It contains information and methods relating to that particular click.
-            button.addEventListener('click', (event) => {
-                //  Prevents opening the details page modal/view
-                //  The code deliberately stops the propagation
-                //  Protection 1 — Button handler
-                event.stopPropagation();
-                //  This hands the product to the basket-state function.
-                //  1. renderProducts() wires the interaction.
-                //  2. addItemToCartState() handles the basket state.
-                addItemToCartState(product);
-            });
-        }
-
-        //  5. Setup card container click handler.
-        //  The card itself gets a click listener.
-        //  The intended behavior is: Click the product card → open that product's details page.
-        if (card) {
-            card.addEventListener('click', (event) => {
-                //  event.target - It tells us the element where the event originated.
-                //  If the click originated directly on the Add to Basket button, do not open the product details.
-                //  Protection 2 — Card handler
-                if (button && event.target === button) return;
-                openProductDetailsPage(product);
-            });
-        }
-
-        targetGrid.appendChild(clone);
+        //  Take this prepared clone and add it as a child of the target grid.
+        targetGrid.appendChild(card);
     });
 }
+//  The function currently both renders the card and attaches its behavior.
+
+function createProductCard(product, template) {
+    //  1. Clone the HTML template. Create a copy of the template's contents.
+    //  cloneNode(true) - Clone the node and all of its descendants. This is called a deep clone.
+    //  clone is a new DOM fragment containing the copied product-card structure.
+    //  If you put the cloning outside the loop, you would only create one copy.
+    const clone = template.content.cloneNode(true);
+
+    //  2. Fallback selection engine: Finds elements by generic tags if classes are missing. 
+    //  Try the first thing; if it is not available, use the second. (something || fallback)
+    const card = clone.querySelector('.product-card-item') || clone.firstElementChild;
+    const img = clone.querySelector('.product-card-img') || clone.querySelector('img');
+    const heading = clone.querySelector('.product-card-heading') || clone.querySelector('h1, h2, h3, h4, h5, h6');
+    const desc = clone.querySelector('.product-card-description') || clone.querySelector('p');
+    const priceSpan = clone.querySelector('.product-card-price span') || clone.querySelector('span');
+    const button = clone.querySelector('.product-card-button') || clone.querySelector('button');
+
+    //  3. Populate fields safely only if they exist in the template
+    //  Why if (img), if (heading), etc.? Only attempt to modify the element if it was actually found.
+    if (img) {
+        img.src = product.image;
+        img.alt = product.name;
+    }
+
+    if (heading) {
+        heading.textContent = product.name;
+    }
+
+    if (desc) {
+        desc.textContent = product.description;
+    }
+
+    if (priceSpan) {
+        priceSpan.textContent = product.price.toFixed(2);
+    }
+
+    attachProductCardEvents(card, product, button);
+    return card;
+};
+
+function attachProductCardEvents(card, product) {
+    const button = card.querySelector('.product-card-button');
+
+    //  4. Setup button click handler
+    if (button) {
+        button.textContent = "Add to basket";
+        //  When this particular button is clicked, execute this function.
+        //  The browser creates a click event when the user clicks the button.
+        //  So event is an object representing what happened. It contains information and methods relating to that particular click.
+        button.addEventListener('click', (event) => {
+            //  Prevents opening the details page modal/view
+            //  The code deliberately stops the propagation
+            //  Protection 1 — Button handler
+            event.stopPropagation();
+            //  This hands the product to the basket-state function.
+            //  1. renderProducts() wires the interaction.
+            //  2. addItemToCartState() handles the basket state.
+            addItemToCartState(product);
+        });
+    }
+
+    //  5. Setup card container click handler.
+    //  The card itself gets a click listener.
+    //  The intended behavior is: Click the product card → open that product's details page.
+    if (card) {
+        card.addEventListener('click', (event) => {
+            //  event.target - It tells us the element where the event originated.
+            //  If the click originated directly on the Add to Basket button, do not open the product details.
+            //  Protection 2 — Card handler
+            if (button && event.target === button) return;
+            openProductDetailsPage(product);
+        });
+    }
+};
 
 // Populates and shows the unique template details page
 function openProductDetailsPage(product) {
@@ -628,33 +644,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialSection = document.getElementById('all-products');
     renderPromoSlider(initialSection);
 
-    // 1. Cut out 11 items from each warehouse list
-    const grocerySlice = grocery.slice(0, 11);
-    const householdSlice = household.slice(0, 11);
-    const stationerySlice = stationery.slice(0, 11);
+    //  function sits outside the event listener and is invoked here
+    loadAllProductsSection();
 
-    // 2. Use .concat() to chain them together into a single master array of 33 items!
-    const landingPageProducts = grocerySlice.concat(householdSlice, stationerySlice);
-
-    // 3. Mix them up completely!
-    const shuffledLandingProducts = shuffleArray(landingPageProducts);
-
-    let currentSliceIndex = 0;
-
-    console.log("Starting landing-page rendering");             // 🚩🚩🚩 Temporary log
-    // Call 1: Run the recipe using '.flash-deals' as the target class
-    renderProducts('.flash-deals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 4));
-    
-    // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
-    renderProducts('.custom-solutions', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 5));
-    
-    // 🔴🔴🔴 These sections should be checked before moving to a new section
-    renderProducts('.just-for-you', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 8));
-    renderProducts('.essential-collection', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 2));
-    renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
-    renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
-
-    console.log("Landing-page rendering completed");            // 🚩🚩🚩 Temporary log
+    console.log("Landing-page rendering completed");            // 🚩🚩🚩 Temporary testing log
     // Sync visual counts with whatever was loaded out of local storage
     updateGlobalCartCounters();
 
@@ -671,12 +664,44 @@ document.addEventListener('DOMContentLoaded', () => {
         loadStoreSection(categoryName);
     }
 
-    console.log("savedRoute:", savedRoute);                     // 🚩🚩🚩 Temporary log
+    console.log("savedRoute:", savedRoute);                     // 🚩🚩🚩 Temporary testing log
     changeRouteView(savedRoute);
 
-    // 🚩🚩🚩 Temporary log -----------------------------------------------------------
+    // 🚩🚩🚩 Temporary testing log -------------------------------------------------------
     console.log("all-products hidden:", document.querySelector("#all-products").classList.contains("hidden"));
 });
+
+function loadAllProductsSection() {
+    // Build landing-page product collection
+    // Shuffle it
+    // Distribute it across the six landing-page grids
+
+    // 1. Cut out 11 items from each warehouse list
+    const grocerySlice = grocery.slice(0, 11);
+    const householdSlice = household.slice(0, 11);
+    const stationerySlice = stationery.slice(0, 11);
+
+    // 2. Use .concat() to chain them together into a single master array of 33 items!
+    const landingPageProducts = grocerySlice.concat(householdSlice, stationerySlice);
+
+    // 3. Mix them up completely!
+    const shuffledLandingProducts = shuffleArray(landingPageProducts);
+
+    let currentSliceIndex = 0;
+
+    console.log("Starting landing-page rendering");             // 🚩🚩🚩 Temporary testing log
+    // Call 1: Run the recipe using '.flash-deals' as the target class
+    renderProducts('.flash-deals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 4));
+    
+    // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
+    renderProducts('.custom-solutions', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 5));
+    
+    // 🔴🔴🔴 These sections should be checked before moving to a new section
+    renderProducts('.just-for-you', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 8));
+    renderProducts('.essential-collection', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 2));
+    renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
+    renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
+}
 
 //  A placeholder function designed to load specific store views when called.
 //  If later I will improve how products are rendered, I should not need to change loadStoreSection().
