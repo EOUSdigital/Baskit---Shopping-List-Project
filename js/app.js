@@ -672,6 +672,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadAllProductsSection() {
+    // Restore the normal All Products UI after a search
+    // Restore the normal heading
+    const mainHeading = document.getElementById('all-products-heading');
+
+    if (mainHeading) {
+        mainHeading.textContent = 'All Products';
+    }
+
+    // Restore all landing-page product grids
+    document.querySelectorAll('#all-products .product-grid').forEach(grid => {
+        grid.style.display = 'grid';
+    });
+
     // Build landing-page product collection
     // Shuffle it
     // Distribute it across the six landing-page grids
