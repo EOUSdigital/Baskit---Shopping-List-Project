@@ -420,6 +420,8 @@ function attachProductCardEvents(card, product) {
 
 // Populates and shows the unique template details page
 function openProductDetailsPage(product) {
+    //  The <section> is where the details are displayed. The <template> defines what those details should look like.
+    //  The line simply says: "Find the existing Product Details section in the DOM and give me a JavaScript reference to it."
     const detailSection = document.getElementById('product-details');
     const template = document.getElementById('product-details-template');
     if (!detailSection || !template) return;
@@ -496,13 +498,10 @@ So the function is doing persistence + calculation + UI updates.
 
 function calculateBasketTotal() {}
 
-//  🟧 
-
-
+//  🟧 Basket
 
 function loadBasket() {
     const savedBasket = localStorage.getItem('baskit_cart');
-
     return savedBasket ? JSON.parse(savedBasket) : [];
 }
 
@@ -510,7 +509,6 @@ function saveBasket() {
     // Save the updated basket state to Local Storage
     localStorage.setItem('baskit_cart', JSON.stringify(basket));
 }
-
 
 function updateBasketCounters() {}
 
