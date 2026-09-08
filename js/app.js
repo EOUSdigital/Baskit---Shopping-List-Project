@@ -423,19 +423,38 @@ function openProductDetailsPage(product) {
     //  The <section> is where the details are displayed. The <template> defines what those details should look like.
     //  The line simply says: "Find the existing Product Details section in the DOM and give me a JavaScript reference to it."
     const detailSection = document.getElementById('product-details');
+
+    //  JavaScript uses document.getElementById('product-details') because is the created section that will have included the document.getElementById('product-details-template') of the product details. 2. The template is not the destination, but the blueprint used to create the Product Details content.
+    //  After the execution of variable template contains the <template> DOM element, which contains the blueprint/HTML structure for a Product Details view.
     const template = document.getElementById('product-details-template');
     if (!detailSection || !template) return;
 
     detailSection.innerHTML = "";
+
+    //  We use cloneNode(true) rather than simply template.content because method of the Node interface returns a duplicate of the node on which this method was called. Its parameter controls if the subtree contained in the node is also cloned or not. By default, cloning a node copies all of its attributes and their values, including event listeners specified via attributes.
+    //  By setting the deep parameter, you can also copy the subtree contained in the node. It does not copy any other internal data, such as event listeners added using addEventListener() or onevent properties (e.g., node.onclick = someFunction), or the painted image for a <canvas> element.
     const clone = template.content.cloneNode(true);
 
+    //  The template provides the structure, while the product object provides the actual content.
+    //  When we assign a product to a template element, will be dynamically generate and insert content into the DOM.
+    //  Find the image inside the cloned Product Details blueprint and give it the selected product's image.
     clone.querySelector('.details-large-img').src = product.image;
+    //  The "alt" attribute sets or returns the value of the alt attribute of an image.
     clone.querySelector('.details-large-img').alt = product.name;
+    //  The line will insert the heading product name. The textContent property ignores all HTML tags and returns only the text. When we use the innerHTML property, it reads both the HTML markup and the text content of the element. If we are inserting content from user input or any untrusted source with innerHTML. Attackers can use the HTML <script> tag to insert and run malicious code in my app. The broader security point is absolutely correct: injecting untrusted content as HTML can create XSS vulnerabilities through malicious markup/attributes and should be avoided unless the content is properly trusted/sanitized.
     clone.querySelector('.details-title-heading').textContent = product.name;
+    //  The line will insert the product description. The textContent property ignores all HTML tags and returns only the text. This is what we need here.
     clone.querySelector('.details-full-description').textContent = product.description;
+    //  This searches inside the clone for a span that is a descendant of an element with the class .details-large-price.
+    //  Then, ".textContent =" sets the visible text of that span.
+    //  The "product.price.toFixed(2)" takes the numerical price and formats it to two decimal places. 
+    //  The "toFixed(2)" ensures that a numerical price is consistently presented with two decimal places, which is the conventional presentation for monetary values in the UI.
+    //  The "toFixed(2)" is formatting the value for presentation; it isn't changing the underlying product price stored in your product data.
     clone.querySelector('.details-large-price span').textContent = product.price.toFixed(2);
 
-    // Wire up template "Add to basket" button
+    //  Wire up template "Add to basket" button. The Product Details button belongs to the cloned details view.
+    //  The button is a DOM element, but at this point it is a DOM element inside the cloned fragment, not yet part of the live document.
+    //  And notice something we have already learned "product" is still available inside the event handler.
     clone.querySelector('.details-add-to-basket-btn').addEventListener('click', () => {
         addItemToCartState(product);
     });
