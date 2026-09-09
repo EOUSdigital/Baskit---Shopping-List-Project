@@ -429,6 +429,7 @@ function openProductDetailsPage(product) {
     const template = document.getElementById('product-details-template');
     if (!detailSection || !template) return;
 
+    //  We clear the detail section before cloning and inserting a new product to prevent old data from bleeding into the new product's display and to ensure a clean user interface state.
     detailSection.innerHTML = "";
 
     //  We use cloneNode(true) rather than simply template.content because method of the Node interface returns a duplicate of the node on which this method was called. Its parameter controls if the subtree contained in the node is also cloned or not. By default, cloning a node copies all of its attributes and their values, including event listeners specified via attributes.
@@ -460,8 +461,41 @@ function openProductDetailsPage(product) {
     });
 
     detailSection.appendChild(clone);
+    //  The Product Details section is now the section the user should be viewing.
     changeRouteView("#product-details");                    
 }
+
+/*
+Fully reviewed openProductDetailsPage().
+The complete responsibility chain is:
+
+openProductDetailsPage(product)
+│
+├── 1. Find the destination
+│      └── #product-details
+│
+├── 2. Find the blueprint
+│      └── #product-details-template
+│
+├── 3. Validate both exist
+│
+├── 4. Clear previous Product Details
+│
+├── 5. Deep-clone the template
+│
+├── 6. Populate the clone
+│      ├── image
+│      ├── alt text
+│      ├── title
+│      ├── description
+│      └── price
+│
+├── 7. Attach Add to Basket behavior
+│
+├── 8. Insert the completed clone
+│
+└── 9. Ask the router to display Product Details
+*/
 
 // Memory controller: adds a product or increments quantity
 function addItemToCartState(product) {
