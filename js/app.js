@@ -470,37 +470,43 @@ Fully reviewed openProductDetailsPage().
 The complete responsibility chain is:
 
 openProductDetailsPage(product)
-│
-├── 1. Find the destination
-│      └── #product-details
-│
-├── 2. Find the blueprint
-│      └── #product-details-template
-│
-├── 3. Validate both exist
-│
-├── 4. Clear previous Product Details
-│
-├── 5. Deep-clone the template
-│
-├── 6. Populate the clone
-│      ├── image
-│      ├── alt text
-│      ├── title
-│      ├── description
-│      └── price
-│
-├── 7. Attach Add to Basket behavior
-│
-├── 8. Insert the completed clone
-│
-└── 9. Ask the router to display Product Details
+    │
+    ├── 1. Find the destination
+    │      └── #product-details
+    │
+    ├── 2. Find the blueprint
+    │      └── #product-details-template
+    │
+    ├── 3. Validate both exist
+    │
+    ├── 4. Clear previous Product Details
+    │
+    ├── 5. Deep-clone the template
+    │
+    ├── 6. Populate the clone
+    │      ├── image
+    │      ├── alt text
+    │      ├── title
+    │      ├── description
+    │      └── price
+    │
+    ├── 7. Attach Add to Basket behavior
+    │
+    ├── 8. Insert the completed clone
+    │
+    └── 9. Ask the router to display Product Details
 */
 
-// Memory controller: adds a product or increments quantity
+//  Memory controller: adds a product or increments quantity
+//  Finds an existing basket entry by product id and category; if found, it increments quantity, otherwise it adds a new { product, quantity } object.
 function addItemToCartState(product) {
-    const existingEntry = basket.find(item => item.product.id === product.id && item.product.category === product.category);
-    
+    const existingEntry = basket.find(
+        item => 
+            //  a product is considered the same basket item only when both its ID and category match.
+            item.product.id === product.id && 
+            item.product.category === product.category
+    );
+
     if (existingEntry) {
         existingEntry.quantity += 1;
     } else {
@@ -509,24 +515,30 @@ function addItemToCartState(product) {
     updateGlobalCartCounters();
 }
 
-// 🚩🚩🚩 Recalculates total items and updates indicators. The following function will be split into more accessible functions. 
+//  🚩🚩🚩 Recalculates total items and updates indicators. The following function will be split into more accessible functions.
+//  It calculates the total quantity of physical items, updates the navigation badge to reflect the total current entries in the basket, and then calls saveBasket().
 function updateGlobalCartCounters() {
-    const totalCount = basket.reduce((total, item) => total + item.quantity, 0);
+    //  basket.reduce() it combines all the quantity values in the basket into one total (2 + 1 + 3 = 6 items).
+    //  reduce() does n0t change the basket. It simply reads the current basket state and calculates a value from it.
+    const totalQuantity = basket.reduce((total, item) => total + item.quantity, 0);
 
     // Updates the navigation bar badge indicator
-    const navCounter = document.getElementById('cart-total-items');
-    if (navCounter) navCounter.textContent = totalCount;
+    const cartCountElement = document.getElementById('cart-total-items');
+    //  If the element was successfully found, update its displayed text to the current basket quantity. Without the check, this would cause an error. Only attempt the update if the element actually exists.
+    if (cartCountElement) cartCountElement.textContent = totalQuantity;
 
     // Updates price/items labels inside the shopping basket view if visible
     const basketCountSpan = document.getElementById('total-items-count');
     const basketPriceSpan = document.getElementById('total-price-value');
     
-    if (basketCountSpan) basketCountSpan.textContent = totalCount;
+    if (basketCountSpan) basketCountSpan.textContent = totalQuantity;
     if (basketPriceSpan) {
         const totalPrice = basket.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
         basketPriceSpan.textContent = totalPrice.toFixed(2);
     }
 
+    //  This is where state management meets persistence.
+    //  saveBasket() persists the current JavaScript basket state to localStorage so that the basket can be restored after a page reload.
     saveBasket();
 }
 
@@ -534,18 +546,21 @@ function updateGlobalCartCounters() {
 The basket is currently mixing responsibilities updateGlobalCartCounters() currently does this:
 
 updateGlobalCartCounters()
-        │
-        ├── calculate total quantity
-        │
-        ├── SAVE basket to Local Storage
-        │
-        ├── update navigation badge
-        │
-        └── update basket totals
+    │
+    ├── Calculate total quantity (Read basket state)
+    │
+    ├── Update navigation badge (Calculate total quantity)
+    │
+    ├── Update basket item count (Update navigation UI)
+    │
+    ├── Calculate total price (Update basket UI)
+    │
+    ├── Update basket price (Calculate total price)
+    │
+    └── Save basket to localStorage (Persist basket state)
 
-So the function is doing persistence + calculation + UI updates.
+The function is doing persistence + calculation + UI updates.
 */
-
 
 // 🚩🚩🚩 Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
 
