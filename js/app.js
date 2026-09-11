@@ -582,12 +582,15 @@ function updateBasketCounters() {}
 
 // Clones the basket template and populates the cart list view
 function renderBasketView() {
+    //  It finds the actual DOM element where the rendered basket cards will eventually go.
     const container = document.getElementById('dynamic-basket-container');
+    //  
     const clearBtn = document.getElementById('clear-entire-basket-btn');
 
     // FIXED: Added missing template reference
     const template = document.getElementById('basket-template');
-    
+
+    //  If the basket container cannot be found, stop executing renderBasketView() immediately.
     if (!container) return;
 
     if (basket.length === 0) {
@@ -604,6 +607,7 @@ function renderBasketView() {
             const userConfirmed = confirm("Are you sure you want to clear your entire shopping basket?");
 
             if (userConfirmed) {
+                //  creates a new empty array and makes basket reference that new array.
                 basket = [];
                 updateGlobalCartCounters();
                 renderBasketView();
