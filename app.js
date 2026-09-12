@@ -113,7 +113,9 @@ navLinks.forEach(link => {
 
         //  link.dataset.category; The category determines which products are rendered.
         const selectedCategory = link.dataset.category;
-        if (selectedCategory) {
+        if (selectedCategory === 'all') {
+            loadAllProductsSection();
+        } else if (selectedCategory) {
             const targetArray = productDataMap[selectedCategory];
             const targetGridClass = `.${selectedCategory}-content`;
             renderProducts(targetGridClass, targetArray);
@@ -309,19 +311,23 @@ function initializeStopManageSlider(section) {
 // DYNAMIC RENDER & BASKET ENGINE
 // ==========================================
 
-function renderProducts(gridClassName, arrayToUse) {
+//  gridClassName - Where should the finished product cards go?
+//  arrayToUse - WHAT to copy for each card?
+function renderProducts(gridClassName /*WHERE?*/, arrayToUse/*WHAT?*/) {
     //  This is where JavaScript crosses from your data/application logic into the DOM.
     const targetGrid = document.querySelector(gridClassName);
     //  This finds your HTML <template> element.
-    //  The important thing about <template> is that its contents aren't immediately rendered as normal page content.
-    //  Instead, JavaScript can use it as a blueprint.
+    //  The important thing about <template> is that its contents are not immediately rendered as normal page content.
+    //  Instead, JavaScript can use it as a blueprint. The selector will search for the HTML element whose id is product-template.
     const template = document.getElementById('product-template');
 
     //  This means: If either the destination grid or product template does not exist, stop the function.
+    //  If could not find the destination OR could not find the template, stop. The || means "OR."
     if (!targetGrid || !template) return;
 
     //  Without this guard, would fail if targetGrid were null.
-    targetGrid.innerHTML = "";                                  // Before rendering this new collection of products, remove whatever product cards are currently inside this grid.
+    //  Before rendering this new collection of products, remove whatever product cards are currently inside this grid.
+    targetGrid.innerHTML = "";                                  
 
     //  This is where the rendering process becomes repetitive.
     arrayToUse.forEach((product) => {
@@ -330,81 +336,177 @@ function renderProducts(gridClassName, arrayToUse) {
         //  It exits the current forEach() callback. If a product missing a name, it will be skipped.
         if (!product.name) return;
 
-        // 1. Clone the HTML template
-        const clone = template.content.cloneNode(true);
-        
-        // 2. Fallback selection engine: Finds elements by generic tags if classes are missing
-        const card = clone.querySelector('.product-card-item') || clone.firstElementChild;
-        const img = clone.querySelector('.product-card-img') || clone.querySelector('img');
-        const heading = clone.querySelector('.product-card-heading') || clone.querySelector('h1, h2, h3, h4, h5, h6');
-        const desc = clone.querySelector('.product-card-description') || clone.querySelector('p');
-        const priceSpan = clone.querySelector('.product-card-price span') || clone.querySelector('span');
-        const button = clone.querySelector('.product-card-button') || clone.querySelector('button');
+        const card = createProductCard(product, template);
 
-        // 3. Populate fields safely only if they exist in the template
-        if (img) {
-            img.src = product.image;
-            img.alt = product.name;
-        }
-        if (heading) {
-            heading.textContent = product.name;
-        }
-        if (desc) {
-            desc.textContent = product.description;
-        }
-        if (priceSpan) {
-            priceSpan.textContent = product.price.toFixed(2);
-        }
-
-        // 4. Setup button click handler
-        if (button) {
-            button.textContent = "Add to basket";
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();                        // Prevents opening the details page modal/view
-                addItemToCartState(product);
-            });
-        }
-
-        // 5. Setup card container click handler
-        if (card) {
-            card.addEventListener('click', (event) => {
-                if (button && event.target === button) return;
-                openProductDetailsPage(product);
-            });
-        }
-
-        targetGrid.appendChild(clone);
+        //  Take this prepared clone and add it as a child of the target grid.
+        targetGrid.appendChild(card);
     });
 }
+//  The function currently both renders the card and attaches its behavior.
+
+function createProductCard(product, template) {
+    //  1. Clone the HTML template. Create a copy of the template's contents.
+    //  cloneNode(true) - Clone the node and all of its descendants. This is called a deep clone.
+    //  clone is a new DOM fragment containing the copied product-card structure.
+    //  If you put the cloning outside the loop, you would only create one copy.
+    const clone = template.content.cloneNode(true);
+
+    //  2. Fallback selection engine: Finds elements by generic tags if classes are missing. 
+    //  Try the first thing; if it is not available, use the second. (something || fallback)
+    const card = clone.querySelector('.product-card-item') || clone.firstElementChild;
+    const img = clone.querySelector('.product-card-img') || clone.querySelector('img');
+    const heading = clone.querySelector('.product-card-heading') || clone.querySelector('h1, h2, h3, h4, h5, h6');
+    const desc = clone.querySelector('.product-card-description') || clone.querySelector('p');
+    const priceSpan = clone.querySelector('.product-card-price span') || clone.querySelector('span');
+    const button = clone.querySelector('.product-card-button') || clone.querySelector('button');
+
+    //  3. Populate fields safely only if they exist in the template
+    //  Why if (img), if (heading), etc.? Only attempt to modify the element if it was actually found.
+    if (img) {
+        img.src = product.image;
+        img.alt = product.name;
+    }
+
+    if (heading) {
+        heading.textContent = product.name;
+    }
+
+    if (desc) {
+        desc.textContent = product.description;
+    }
+
+    if (priceSpan) {
+        priceSpan.textContent = product.price.toFixed(2);
+    }
+
+    attachProductCardEvents(card, product, button);
+    return card;
+};
+
+function attachProductCardEvents(card, product) {
+    const button = card.querySelector('.product-card-button');
+
+    //  4. Setup button click handler
+    if (button) {
+        button.textContent = "Add to basket";
+        //  When this particular button is clicked, execute this function.
+        //  The browser creates a click event when the user clicks the button.
+        //  So event is an object representing what happened. It contains information and methods relating to that particular click.
+        button.addEventListener('click', (event) => {
+            //  Prevents opening the details page modal/view
+            //  The code deliberately stops the propagation
+            //  Protection 1 — Button handler
+            event.stopPropagation();
+            //  This hands the product to the basket-state function.
+            //  1. renderProducts() wires the interaction.
+            //  2. addItemToCartState() handles the basket state.
+            addItemToCartState(product);
+        });
+    }
+
+    //  5. Setup card container click handler.
+    //  The card itself gets a click listener.
+    //  The intended behavior is: Click the product card → open that product's details page.
+    if (card) {
+        card.addEventListener('click', (event) => {
+            //  event.target - It tells us the element where the event originated.
+            //  If the click originated directly on the Add to Basket button, do not open the product details.
+            //  Protection 2 — Card handler
+            if (button && event.target === button) return;
+            openProductDetailsPage(product);
+        });
+    }
+};
 
 // Populates and shows the unique template details page
 function openProductDetailsPage(product) {
+    //  The <section> is where the details are displayed. The <template> defines what those details should look like.
+    //  The line simply says: "Find the existing Product Details section in the DOM and give me a JavaScript reference to it."
     const detailSection = document.getElementById('product-details');
+
+    //  JavaScript uses document.getElementById('product-details') because is the created section that will have included the document.getElementById('product-details-template') of the product details. 2. The template is not the destination, but the blueprint used to create the Product Details content.
+    //  After the execution of variable template contains the <template> DOM element, which contains the blueprint/HTML structure for a Product Details view.
     const template = document.getElementById('product-details-template');
     if (!detailSection || !template) return;
 
+    //  We clear the detail section before cloning and inserting a new product to prevent old data from bleeding into the new product's display and to ensure a clean user interface state.
     detailSection.innerHTML = "";
+
+    //  We use cloneNode(true) rather than simply template.content because method of the Node interface returns a duplicate of the node on which this method was called. Its parameter controls if the subtree contained in the node is also cloned or not. By default, cloning a node copies all of its attributes and their values, including event listeners specified via attributes.
+    //  By setting the deep parameter, you can also copy the subtree contained in the node. It does not copy any other internal data, such as event listeners added using addEventListener() or onevent properties (e.g., node.onclick = someFunction), or the painted image for a <canvas> element.
     const clone = template.content.cloneNode(true);
 
+    //  The template provides the structure, while the product object provides the actual content.
+    //  When we assign a product to a template element, will be dynamically generate and insert content into the DOM.
+    //  Find the image inside the cloned Product Details blueprint and give it the selected product's image.
     clone.querySelector('.details-large-img').src = product.image;
+    //  The "alt" attribute sets or returns the value of the alt attribute of an image.
     clone.querySelector('.details-large-img').alt = product.name;
+    //  The line will insert the heading product name. The textContent property ignores all HTML tags and returns only the text. When we use the innerHTML property, it reads both the HTML markup and the text content of the element. If we are inserting content from user input or any untrusted source with innerHTML. Attackers can use the HTML <script> tag to insert and run malicious code in my app. The broader security point is absolutely correct: injecting untrusted content as HTML can create XSS vulnerabilities through malicious markup/attributes and should be avoided unless the content is properly trusted/sanitized.
     clone.querySelector('.details-title-heading').textContent = product.name;
+    //  The line will insert the product description. The textContent property ignores all HTML tags and returns only the text. This is what we need here.
     clone.querySelector('.details-full-description').textContent = product.description;
+    //  This searches inside the clone for a span that is a descendant of an element with the class .details-large-price.
+    //  Then, ".textContent =" sets the visible text of that span.
+    //  The "product.price.toFixed(2)" takes the numerical price and formats it to two decimal places. 
+    //  The "toFixed(2)" ensures that a numerical price is consistently presented with two decimal places, which is the conventional presentation for monetary values in the UI.
+    //  The "toFixed(2)" is formatting the value for presentation; it isn't changing the underlying product price stored in your product data.
     clone.querySelector('.details-large-price span').textContent = product.price.toFixed(2);
 
-    // Wire up template "Add to basket" button
+    //  Wire up template "Add to basket" button. The Product Details button belongs to the cloned details view.
+    //  The button is a DOM element, but at this point it is a DOM element inside the cloned fragment, not yet part of the live document.
+    //  And notice something we have already learned "product" is still available inside the event handler.
     clone.querySelector('.details-add-to-basket-btn').addEventListener('click', () => {
         addItemToCartState(product);
     });
 
     detailSection.appendChild(clone);
+    //  The Product Details section is now the section the user should be viewing.
     changeRouteView("#product-details");                    
 }
 
-// Memory controller: adds a product or increments quantity
+/*
+Fully reviewed openProductDetailsPage().
+The complete responsibility chain is:
+
+openProductDetailsPage(product)
+    │
+    ├── 1. Find the destination
+    │      └── #product-details
+    │
+    ├── 2. Find the blueprint
+    │      └── #product-details-template
+    │
+    ├── 3. Validate both exist
+    │
+    ├── 4. Clear previous Product Details
+    │
+    ├── 5. Deep-clone the template
+    │
+    ├── 6. Populate the clone
+    │      ├── image
+    │      ├── alt text
+    │      ├── title
+    │      ├── description
+    │      └── price
+    │
+    ├── 7. Attach Add to Basket behavior
+    │
+    ├── 8. Insert the completed clone
+    │
+    └── 9. Ask the router to display Product Details
+*/
+
+//  Memory controller: adds a product or increments quantity
+//  Finds an existing basket entry by product id and category; if found, it increments quantity, otherwise it adds a new { product, quantity } object.
 function addItemToCartState(product) {
-    const existingEntry = basket.find(item => item.product.id === product.id && item.product.category === product.category);
-    
+    const existingEntry = basket.find(
+        item => 
+            //  a product is considered the same basket item only when both its ID and category match.
+            item.product.id === product.id && 
+            item.product.category === product.category
+    );
+
     if (existingEntry) {
         existingEntry.quantity += 1;
     } else {
@@ -413,24 +515,30 @@ function addItemToCartState(product) {
     updateGlobalCartCounters();
 }
 
-// 🚩🚩🚩 Recalculates total items and updates indicators. The following function will be split into more accessible functions. 
+//  🚩🚩🚩 Recalculates total items and updates indicators. The following function will be split into more accessible functions.
+//  It calculates the total quantity of physical items, updates the navigation badge to reflect the total current entries in the basket, and then calls saveBasket().
 function updateGlobalCartCounters() {
-    const totalCount = basket.reduce((total, item) => total + item.quantity, 0);
+    //  basket.reduce() it combines all the quantity values in the basket into one total (2 + 1 + 3 = 6 items).
+    //  reduce() does not change the basket. It simply reads the current basket state and calculates a value from it.
+    const totalQuantity = basket.reduce((total, item) => total + item.quantity, 0);
 
     // Updates the navigation bar badge indicator
-    const navCounter = document.getElementById('cart-total-items');
-    if (navCounter) navCounter.textContent = totalCount;
+    const cartCountElement = document.getElementById('cart-total-items');
+    //  If the element was successfully found, update its displayed text to the current basket quantity. Without the check, this would cause an error. Only attempt the update if the element actually exists.
+    if (cartCountElement) cartCountElement.textContent = totalQuantity;
 
     // Updates price/items labels inside the shopping basket view if visible
     const basketCountSpan = document.getElementById('total-items-count');
     const basketPriceSpan = document.getElementById('total-price-value');
     
-    if (basketCountSpan) basketCountSpan.textContent = totalCount;
+    if (basketCountSpan) basketCountSpan.textContent = totalQuantity;
     if (basketPriceSpan) {
         const totalPrice = basket.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
         basketPriceSpan.textContent = totalPrice.toFixed(2);
     }
 
+    //  This is where state management meets persistence.
+    //  saveBasket() persists the current JavaScript basket state to localStorage so that the basket can be restored after a page reload.
     saveBasket();
 }
 
@@ -438,30 +546,30 @@ function updateGlobalCartCounters() {
 The basket is currently mixing responsibilities updateGlobalCartCounters() currently does this:
 
 updateGlobalCartCounters()
-        │
-        ├── calculate total quantity
-        │
-        ├── SAVE basket to Local Storage
-        │
-        ├── update navigation badge
-        │
-        └── update basket totals
+    │
+    ├── Calculate total quantity (Read basket state)
+    │
+    ├── Update navigation badge (Calculate total quantity)
+    │
+    ├── Update basket item count (Update navigation UI)
+    │
+    ├── Calculate total price (Update basket UI)
+    │
+    ├── Update basket price (Calculate total price)
+    │
+    └── Save basket to localStorage (Persist basket state)
 
-So the function is doing persistence + calculation + UI updates.
+The function is doing persistence + calculation + UI updates.
 */
-
 
 // 🚩🚩🚩 Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
 
+//  🟧 Basket
+
 function calculateBasketTotal() {}
-
-//  🟧 
-
-
 
 function loadBasket() {
     const savedBasket = localStorage.getItem('baskit_cart');
-
     return savedBasket ? JSON.parse(savedBasket) : [];
 }
 
@@ -470,19 +578,22 @@ function saveBasket() {
     localStorage.setItem('baskit_cart', JSON.stringify(basket));
 }
 
-
 function updateBasketCounters() {}
 
 // Clones the basket template and populates the cart list view
 function renderBasketView() {
+    //  It finds the actual DOM element where the rendered basket cards will eventually go.
     const container = document.getElementById('dynamic-basket-container');
     const clearBtn = document.getElementById('clear-entire-basket-btn');
 
     // FIXED: Added missing template reference
     const template = document.getElementById('basket-template');
-    
+
+    //  If the basket container cannot be found, stop executing renderBasketView() immediately.
     if (!container) return;
 
+    //  Empties the existing basket array by setting its length to zero.
+    //  Changing JavaScript state does not automatically update the UI or localStorage.
     if (basket.length === 0) {
         container.innerHTML = `<p class="empty-cart-msg">The shopping basket is empty.</p>`;
         if (clearBtn) clearBtn.style.display = 'none'; // Clear UI State step met
@@ -490,15 +601,21 @@ function renderBasketView() {
         return;
     }
 
+    //  It is a defensive DOM check: if the clear-basket button exists, configure it.
+    //  Clear Entire Basket Handler
     if (clearBtn) {
-        clearBtn.style.display = 'block'; // Show control when items exist
+        //  Show the clear-basket control when the basket contains items.
+        clearBtn.style.display = 'block';
         clearBtn.onclick = () => {
             // 1. Ask the user for confirmation first
             const userConfirmed = confirm("Are you sure you want to clear your entire shopping basket?");
 
             if (userConfirmed) {
+                //  creates a new empty array and makes basket reference that new array.
                 basket = [];
                 updateGlobalCartCounters();
+                //  re-runs the basket rendering process against the now-empty basket array.
+                //  we do not manually remove individual DOM elements here. We change the state and then let the rendering function represent that state.
                 renderBasketView();
             }
             // If the user clicked "Cancel", execution stops here and the basket stays safe!
@@ -506,7 +623,8 @@ function renderBasketView() {
     }
 
     container.innerHTML = "";                           // Wipe older rendered list references
-    
+
+    //  Rendering individual basket items
     basket.forEach(item => {
         //  Basket card settings
         const clone = template.content.cloneNode(true);
@@ -558,7 +676,7 @@ function renderBasketView() {
 
         editBtn.addEventListener('click', () => {
             if (!isEditing) {
-                // --- PHASE 2: Enter Edit Mode ---
+                // --- 2: Enter Edit Mode ---
                 isEditing = true;
                 editBtn.textContent = 'Update';
 
@@ -572,7 +690,7 @@ function renderBasketView() {
                 qtySpan.style.display = 'none';
                 qtyInput.style.display = 'inline-block';
             } else {
-                // --- PHASE 3: Update & Save ---
+                // --- 3: Update & Save ---
                 const newQty = parseInt(qtyInput.value, 10);
 
                 // Validate that quantity is a valid number and at least 1
@@ -592,7 +710,6 @@ function renderBasketView() {
     updateGlobalCartCounters();
 };
 
-
 // ==========================================
 // 3.2 Next Action Step for Function Definition
 // ==========================================
@@ -603,33 +720,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialSection = document.getElementById('all-products');
     renderPromoSlider(initialSection);
 
-    // 1. Cut out 11 items from each warehouse list
-    const grocerySlice = grocery.slice(0, 11);
-    const householdSlice = household.slice(0, 11);
-    const stationerySlice = stationery.slice(0, 11);
+    //  function sits outside the event listener and is invoked here
+    loadAllProductsSection();
 
-    // 2. Use .concat() to chain them together into a single master array of 33 items!
-    const landingPageProducts = grocerySlice.concat(householdSlice, stationerySlice);
-
-    // 3. Mix them up completely!
-    const shuffledLandingProducts = shuffleArray(landingPageProducts);
-
-    let currentSliceIndex = 0;
-
-    console.log("Starting landing-page rendering");             // 🚩🚩🚩 Temporary log
-    // Call 1: Run the recipe using '.flash-deals' as the target class
-    renderProducts('.flash-deals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 4));
-    
-    // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
-    renderProducts('.custom-solutions', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 5));
-    
-    // 🔴🔴🔴 These sections should be checked before moving to a new section
-    renderProducts('.just-for-you', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 8));
-    renderProducts('.essential-collection', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 2));
-    renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
-    renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
-
-    console.log("Landing-page rendering completed");            // 🚩🚩🚩 Temporary log
+    console.log("Landing-page rendering completed");            // 🚩🚩🚩 Temporary testing log
     // Sync visual counts with whatever was loaded out of local storage
     updateGlobalCartCounters();
 
@@ -646,12 +740,57 @@ document.addEventListener('DOMContentLoaded', () => {
         loadStoreSection(categoryName);
     }
 
-    console.log("savedRoute:", savedRoute);                     // 🚩🚩🚩 Temporary log
+    console.log("savedRoute:", savedRoute);                     // 🚩🚩🚩 Temporary testing log
     changeRouteView(savedRoute);
 
-    // 🚩🚩🚩 Temporary log -----------------------------------------------------------
+    // 🚩🚩🚩 Temporary testing log -------------------------------------------------------
     console.log("all-products hidden:", document.querySelector("#all-products").classList.contains("hidden"));
 });
+
+function loadAllProductsSection() {
+    // Restore the normal All Products UI after a search
+    // Restore the normal heading
+    const mainHeading = document.getElementById('all-products-heading');
+
+    if (mainHeading) {
+        mainHeading.textContent = 'All Products';
+    }
+
+    // Restore all landing-page product grids
+    document.querySelectorAll('#all-products .product-grid').forEach(grid => {
+        grid.style.display = 'grid';
+    });
+
+    // Build landing-page product collection
+    // Shuffle it
+    // Distribute it across the six landing-page grids
+
+    // 1. Cut out 11 items from each warehouse list
+    const grocerySlice = grocery.slice(0, 11);
+    const householdSlice = household.slice(0, 11);
+    const stationerySlice = stationery.slice(0, 11);
+
+    // 2. Use .concat() to chain them together into a single master array of 33 items!
+    const landingPageProducts = grocerySlice.concat(householdSlice, stationerySlice);
+
+    // 3. Mix them up completely!
+    const shuffledLandingProducts = shuffleArray(landingPageProducts);
+
+    let currentSliceIndex = 0;
+
+    console.log("Starting landing-page rendering");             // 🚩🚩🚩 Temporary testing log
+    // Call 1: Run the recipe using '.flash-deals' as the target class
+    renderProducts('.flash-deals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 4));
+    
+    // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
+    renderProducts('.custom-solutions', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 5));
+    
+    // 🔴🔴🔴 These sections should be checked before moving to a new section
+    renderProducts('.just-for-you', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 8));
+    renderProducts('.essential-collection', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 2));
+    renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
+    renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
+}
 
 //  A placeholder function designed to load specific store views when called.
 //  If later I will improve how products are rendered, I should not need to change loadStoreSection().
