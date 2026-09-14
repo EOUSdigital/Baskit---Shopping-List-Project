@@ -519,7 +519,7 @@ function addItemToCartState(product) {
 //  It calculates the total quantity of physical items, updates the navigation badge to reflect the total current entries in the basket, and then calls saveBasket().
 function updateGlobalCartCounters() {
     //  basket.reduce() it combines all the quantity values in the basket into one total (2 + 1 + 3 = 6 items).
-    //  reduce() does n0t change the basket. It simply reads the current basket state and calculates a value from it.
+    //  reduce() does not change the basket. It simply reads the current basket state and calculates a value from it.
     const totalQuantity = basket.reduce((total, item) => total + item.quantity, 0);
 
     // Updates the navigation bar badge indicator
@@ -564,9 +564,9 @@ The function is doing persistence + calculation + UI updates.
 
 // 🚩🚩🚩 Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
 
-function calculateBasketTotal() {}
-
 //  🟧 Basket
+
+function calculateBasketTotal() {}
 
 function loadBasket() {
     const savedBasket = localStorage.getItem('baskit_cart');
@@ -584,7 +584,6 @@ function updateBasketCounters() {}
 function renderBasketView() {
     //  It finds the actual DOM element where the rendered basket cards will eventually go.
     const container = document.getElementById('dynamic-basket-container');
-    //  
     const clearBtn = document.getElementById('clear-entire-basket-btn');
 
     // FIXED: Added missing template reference
@@ -593,6 +592,8 @@ function renderBasketView() {
     //  If the basket container cannot be found, stop executing renderBasketView() immediately.
     if (!container) return;
 
+    //  Empties the existing basket array by setting its length to zero.
+    //  Changing JavaScript state does not automatically update the UI or localStorage.
     if (basket.length === 0) {
         container.innerHTML = `<p class="empty-cart-msg">The shopping basket is empty.</p>`;
         if (clearBtn) clearBtn.style.display = 'none'; // Clear UI State step met
@@ -600,26 +601,43 @@ function renderBasketView() {
         return;
     }
 
+    //  It is a defensive DOM check: if the clear-basket button exists, configure it.
+    //  Clear Entire Basket Handler
+    //  updateGlobalCartCounters() is also responsible for calling saveBasket(), so the new empty basket is persisted to localStorage at that point.
     if (clearBtn) {
-        clearBtn.style.display = 'block'; // Show control when items exist
+        //  Show the clear-basket control when the basket contains items.
+        clearBtn.style.display = 'block';
+
+        //  When the "Clear Basket" button is clicked, execute this function
         clearBtn.onclick = () => {
             // 1. Ask the user for confirmation first
             const userConfirmed = confirm("Are you sure you want to clear your entire shopping basket?");
 
+            //  The result is stored in userConfirmed
             if (userConfirmed) {
                 //  creates a new empty array and makes basket reference that new array.
                 basket = [];
                 updateGlobalCartCounters();
+                //  re-runs the basket rendering process against the now-empty basket array.
+                //  we do not manually remove individual DOM elements here. We change the state and then let the rendering function represent that state.
                 renderBasketView();
             }
             // If the user clicked "Cancel", execution stops here and the basket stays safe!
         };
     }
 
-    container.innerHTML = "";                           // Wipe older rendered list references
-    
+    //  Clear previous rendered basket, that was removed before render the current basket state again.
+    //  Completely erase older rendered list references. It clears the currently rendered DOM content inside the container.
+    //  If we remove the code the existing DOM cards remain in the container. Is not clearing the basket state. It is clearing the previous DOM representation of that state.
+    container.innerHTML = "";
+
+    //  For every basket entry, create and prepare one basket card.
+    //  Rendering individual basket items.
+    //  "item" represents one basket entry.
     basket.forEach(item => {
         //  Basket card settings
+        //  The template is the blueprint.
+        //  The true means deep clone. It copies the template's node and its descendants.
         const clone = template.content.cloneNode(true);
         
         clone.querySelector('.basket-card-img').src = item.product.image;
@@ -669,7 +687,7 @@ function renderBasketView() {
 
         editBtn.addEventListener('click', () => {
             if (!isEditing) {
-                // --- PHASE 2: Enter Edit Mode ---
+                // --- 2: Enter Edit Mode ---
                 isEditing = true;
                 editBtn.textContent = 'Update';
 
@@ -683,7 +701,7 @@ function renderBasketView() {
                 qtySpan.style.display = 'none';
                 qtyInput.style.display = 'inline-block';
             } else {
-                // --- PHASE 3: Update & Save ---
+                // --- 3: Update & Save ---
                 const newQty = parseInt(qtyInput.value, 10);
 
                 // Validate that quantity is a valid number and at least 1
@@ -702,7 +720,6 @@ function renderBasketView() {
     });
     updateGlobalCartCounters();
 };
-
 
 // ==========================================
 // 3.2 Next Action Step for Function Definition
