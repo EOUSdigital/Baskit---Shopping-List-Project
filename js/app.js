@@ -641,14 +641,24 @@ function renderBasketView() {
         const clone = template.content.cloneNode(true);
         
         clone.querySelector('.basket-card-img').src = item.product.image;
+        //  We set the image's alt value to item.product.name to describe the image in case it is not loading, and for accessibility.
         clone.querySelector('.basket-card-img').alt = item.product.name;
+        //  Using textContent instead of innerHTML is generally considered a better practice when dealing with text content in the context of the DOM. 
+        //  Using textContent helps in reducing the risk of security vulnerabilities such as Cross-Site Scripting (XSS). 
+        //  Manipulating textContent tends to be faster than manipulating innerHTML. 
+        //  When we use the textContent, it indicates that we are working with plain text content.
         clone.querySelector('.basket-card-heading').textContent = item.product.name;
+        //  Contains the description associated with that specific product, so we use it to populate the basket card with the product's details.
         clone.querySelector('.basket-card-description').textContent = item.product.description;
+        //  Calculates the subtotal for that particular basket entry, not the total price of the entire basket.
+        //  We use .toFixed(2) because prices are normally displayed with exactly two digits after the decimal point.
         clone.querySelector('.basket-card-price span').textContent = (item.product.price * item.quantity).toFixed(2);
+        //  Represents how many units of that particular product are currently in the basket entry.
         clone.querySelector('.basket-action-product-quantity').textContent = item.quantity;
 
         // Increase quantity (+) button
         clone.querySelector('.basket-action-increase').addEventListener('click', () => {
+            //  Take the quantity of this particular basket entry and increase it by 1.
             item.quantity += 1;
             updateGlobalCartCounters();
             renderBasketView();
