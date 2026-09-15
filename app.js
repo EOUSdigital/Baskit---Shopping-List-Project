@@ -603,13 +603,17 @@ function renderBasketView() {
 
     //  It is a defensive DOM check: if the clear-basket button exists, configure it.
     //  Clear Entire Basket Handler
+    //  updateGlobalCartCounters() is also responsible for calling saveBasket(), so the new empty basket is persisted to localStorage at that point.
     if (clearBtn) {
         //  Show the clear-basket control when the basket contains items.
         clearBtn.style.display = 'block';
+
+        //  When the "Clear Basket" button is clicked, execute this function
         clearBtn.onclick = () => {
             // 1. Ask the user for confirmation first
             const userConfirmed = confirm("Are you sure you want to clear your entire shopping basket?");
 
+            //  The result is stored in userConfirmed
             if (userConfirmed) {
                 //  creates a new empty array and makes basket reference that new array.
                 basket = [];
@@ -622,22 +626,39 @@ function renderBasketView() {
         };
     }
 
-    container.innerHTML = "";                           // Wipe older rendered list references
+    //  Clear previous rendered basket, that was removed before render the current basket state again.
+    //  Completely erase older rendered list references. It clears the currently rendered DOM content inside the container.
+    //  If we remove the code the existing DOM cards remain in the container. Is not clearing the basket state. It is clearing the previous DOM representation of that state.
+    container.innerHTML = "";
 
-    //  Rendering individual basket items
+    //  For every basket entry, create and prepare one basket card.
+    //  Rendering individual basket items.
+    //  "item" represents one basket entry.
     basket.forEach(item => {
         //  Basket card settings
+        //  The template is the blueprint.
+        //  The true means deep clone. It copies the template's node and its descendants.
         const clone = template.content.cloneNode(true);
         
         clone.querySelector('.basket-card-img').src = item.product.image;
+        //  We set the image's alt value to item.product.name to describe the image in case it is not loading, and for accessibility.
         clone.querySelector('.basket-card-img').alt = item.product.name;
+        //  Using textContent instead of innerHTML is generally considered a better practice when dealing with text content in the context of the DOM. 
+        //  Using textContent helps in reducing the risk of security vulnerabilities such as Cross-Site Scripting (XSS). 
+        //  Manipulating textContent tends to be faster than manipulating innerHTML. 
+        //  When we use the textContent, it indicates that we are working with plain text content.
         clone.querySelector('.basket-card-heading').textContent = item.product.name;
+        //  Contains the description associated with that specific product, so we use it to populate the basket card with the product's details.
         clone.querySelector('.basket-card-description').textContent = item.product.description;
+        //  Calculates the subtotal for that particular basket entry, not the total price of the entire basket.
+        //  We use .toFixed(2) because prices are normally displayed with exactly two digits after the decimal point.
         clone.querySelector('.basket-card-price span').textContent = (item.product.price * item.quantity).toFixed(2);
+        //  Represents how many units of that particular product are currently in the basket entry.
         clone.querySelector('.basket-action-product-quantity').textContent = item.quantity;
 
         // Increase quantity (+) button
         clone.querySelector('.basket-action-increase').addEventListener('click', () => {
+            //  Take the quantity of this particular basket entry and increase it by 1.
             item.quantity += 1;
             updateGlobalCartCounters();
             renderBasketView();
