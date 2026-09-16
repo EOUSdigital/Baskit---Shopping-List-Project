@@ -168,7 +168,7 @@ if (searchForm && searchInput && searchCategory) {
 
         if (!query) return;
 
-        // 1. Gather all searchable items. The collection of products that we are going to search.
+        // 1. Gather all searchable items. Search for a collection of products.
         let pool = [];
         
         if (category === 'all') {
@@ -200,7 +200,7 @@ if (searchForm && searchInput && searchCategory) {
         //  🚩🚩🚩 Hide other grids so search results take center stage
         //  1. This is functional, but I would put a small yellow flag beside it for now.
         //  2. Not because it's broken. Because the project already has a CSS class: hidden.
-        //  3. We need to understand how the existing CSS and search result layout work before deciding whether these should be unified.
+        //  3. Need to understand how the existing CSS and search result layout work before deciding whether these should be unified.
         document.querySelectorAll('#all-products .product-grid').forEach(grid => {
             grid.style.display = 'none';
         });
@@ -429,22 +429,22 @@ function openProductDetailsPage(product) {
     const template = document.getElementById('product-details-template');
     if (!detailSection || !template) return;
 
-    //  We clear the detail section before cloning and inserting a new product to prevent old data from bleeding into the new product's display and to ensure a clean user interface state.
+    //  Clear the detail section before cloning and inserting a new product to prevent old data from bleeding into the new product's display and to ensure a clean user interface state.
     detailSection.innerHTML = "";
 
-    //  We use cloneNode(true) rather than simply template.content because method of the Node interface returns a duplicate of the node on which this method was called. Its parameter controls if the subtree contained in the node is also cloned or not. By default, cloning a node copies all of its attributes and their values, including event listeners specified via attributes.
+    //  Use cloneNode(true) rather than simply template.content because method of the Node interface returns a duplicate of the node on which this method was called. Its parameter controls if the subtree contained in the node is also cloned or not. By default, cloning a node copies all of its attributes and their values, including event listeners specified via attributes.
     //  By setting the deep parameter, you can also copy the subtree contained in the node. It does not copy any other internal data, such as event listeners added using addEventListener() or onevent properties (e.g., node.onclick = someFunction), or the painted image for a <canvas> element.
     const clone = template.content.cloneNode(true);
 
     //  The template provides the structure, while the product object provides the actual content.
-    //  When we assign a product to a template element, will be dynamically generate and insert content into the DOM.
+    //  When is assign a product to a template element, will be dynamically generate and insert content into the DOM.
     //  Find the image inside the cloned Product Details blueprint and give it the selected product's image.
     clone.querySelector('.details-large-img').src = product.image;
     //  The "alt" attribute sets or returns the value of the alt attribute of an image.
     clone.querySelector('.details-large-img').alt = product.name;
-    //  The line will insert the heading product name. The textContent property ignores all HTML tags and returns only the text. When we use the innerHTML property, it reads both the HTML markup and the text content of the element. If we are inserting content from user input or any untrusted source with innerHTML. Attackers can use the HTML <script> tag to insert and run malicious code in my app. The broader security point is absolutely correct: injecting untrusted content as HTML can create XSS vulnerabilities through malicious markup/attributes and should be avoided unless the content is properly trusted/sanitized.
+    //  The line will insert the heading product name. The textContent property ignores all HTML tags and returns only the text. When is used the innerHTML property, it reads both the HTML markup and the text content of the element. If the content is inserted from user input or any untrusted source with innerHTML. Attackers can use the HTML <script> tag to insert and run malicious code in my app. The broader security point is absolutely correct: injecting untrusted content as HTML can create XSS vulnerabilities through malicious markup/attributes and should be avoided unless the content is properly trusted/sanitized.
     clone.querySelector('.details-title-heading').textContent = product.name;
-    //  The line will insert the product description. The textContent property ignores all HTML tags and returns only the text. This is what we need here.
+    //  The line will insert the product description. The textContent property ignores all HTML tags and returns only the text. This is what is need here.
     clone.querySelector('.details-full-description').textContent = product.description;
     //  This searches inside the clone for a span that is a descendant of an element with the class .details-large-price.
     //  Then, ".textContent =" sets the visible text of that span.
@@ -455,7 +455,7 @@ function openProductDetailsPage(product) {
 
     //  Wire up template "Add to basket" button. The Product Details button belongs to the cloned details view.
     //  The button is a DOM element, but at this point it is a DOM element inside the cloned fragment, not yet part of the live document.
-    //  And notice something we have already learned "product" is still available inside the event handler.
+    //  The "product" is still available inside the event handler.
     clone.querySelector('.details-add-to-basket-btn').addEventListener('click', () => {
         addItemToCartState(product);
     });
@@ -619,7 +619,7 @@ function renderBasketView() {
                 basket = [];
                 updateGlobalCartCounters();
                 //  re-runs the basket rendering process against the now-empty basket array.
-                //  we do not manually remove individual DOM elements here. We change the state and then let the rendering function represent that state.
+                //  Do not manually remove individual DOM elements here. Change the state and then let the rendering function represent that state.
                 renderBasketView();
             }
             // If the user clicked "Cancel", execution stops here and the basket stays safe!
@@ -628,7 +628,7 @@ function renderBasketView() {
 
     //  Clear previous rendered basket, that was removed before render the current basket state again.
     //  Completely erase older rendered list references. It clears the currently rendered DOM content inside the container.
-    //  If we remove the code the existing DOM cards remain in the container. Is not clearing the basket state. It is clearing the previous DOM representation of that state.
+    //  If the code is removed, the existing DOM cards remain in the container. Is not clearing the basket state. It is clearing the previous DOM representation of that state.
     container.innerHTML = "";
 
     //  For every basket entry, create and prepare one basket card.
@@ -641,17 +641,17 @@ function renderBasketView() {
         const clone = template.content.cloneNode(true);
         
         clone.querySelector('.basket-card-img').src = item.product.image;
-        //  We set the image's alt value to item.product.name to describe the image in case it is not loading, and for accessibility.
+        //  Setting the image's alt value to item.product.name to describe the image in case it is not loading, and for accessibility.
         clone.querySelector('.basket-card-img').alt = item.product.name;
         //  Using textContent instead of innerHTML is generally considered a better practice when dealing with text content in the context of the DOM. 
         //  Using textContent helps in reducing the risk of security vulnerabilities such as Cross-Site Scripting (XSS). 
         //  Manipulating textContent tends to be faster than manipulating innerHTML. 
-        //  When we use the textContent, it indicates that we are working with plain text content.
+        //  Use the textContent, it indicates that is working with plain text content.
         clone.querySelector('.basket-card-heading').textContent = item.product.name;
-        //  Contains the description associated with that specific product, so we use it to populate the basket card with the product's details.
+        //  Contains the description associated with that specific product, so is used to populate the basket card with the product's details.
         clone.querySelector('.basket-card-description').textContent = item.product.description;
         //  Calculates the subtotal for that particular basket entry, not the total price of the entire basket.
-        //  We use .toFixed(2) because prices are normally displayed with exactly two digits after the decimal point.
+        //  Use .toFixed(2) because prices are normally displayed with exactly two digits after the decimal point.
         clone.querySelector('.basket-card-price span').textContent = (item.product.price * item.quantity).toFixed(2);
         //  Represents how many units of that particular product are currently in the basket entry.
         clone.querySelector('.basket-action-product-quantity').textContent = item.quantity;
@@ -660,28 +660,48 @@ function renderBasketView() {
         clone.querySelector('.basket-action-increase').addEventListener('click', () => {
             //  Take the quantity of this particular basket entry and increase it by 1.
             item.quantity += 1;
+            //  1. It recalculates the total quantity in the basket.
+            //  2. It updates the visible basket/navigation counters and total price.
+            //  3. It calls saveBasket(), which saves the updated basket state to localStorage.
             updateGlobalCartCounters();
+            //  When the state changes, the UI needs to be updated so that it represents the new state.
             renderBasketView();
         });
 
         // Decrease quantity (-) button
         clone.querySelector('.basket-action-decrease').addEventListener('click', () => {
+            //  Protects the basket from reducing the quantity below 1
             if (item.quantity > 1) {
+                //  Reduces the quantity of the current basket entry by one.
                 item.quantity -= 1;
+                //  1. Recalculates total basket quantity.
+                //  2. Updates the visible counters and total price.
+                //  3. Saves the updated basket to localStorage.
                 updateGlobalCartCounters();
+                //  The state changes first, and renderBasketView() makes the UI represent that new state.
                 renderBasketView();
             }
         });
 
-        // Delete button
+        //  Delete button
+        // Selects the Delete button for this particular cloned basket card.
         clone.querySelector('.basket-action-delete').addEventListener('click', () => {
+            //  It checks if the result is different will be saved in a new array.
+            //  Checking whether the basket entry currently being examined is a different object from the entry associated with the Delete button.
+            //  bItem !== item means keep bItem if it is not the basket entry I want to delete.
+            //  Replace the current basket array with a new basket array that doesn't contain the selected entry.
             basket = basket.filter(bItem => bItem !== item);
+            //  The JavaScript basket state has changed. We need updateGlobalCartCounters() to make the application reflect that change, including calling saveBasket() so the updated basket is persisted to localStorage.
             updateGlobalCartCounters();
+            //  Need to render the basket again after deleting the entry.
             renderBasketView();
         });
 
-        // Share button
+        //  Share button
+        //  Access the name property of the product stored inside this particular basket entry.
         clone.querySelector('.basket-action-share').addEventListener('click', () => {
+            //  alert() opens the browser's built-in alert dialog.
+            //  The template literal ${item.product.name} allows us to combine fixed text with a value that can change.
             alert(`Sharing link copied for item: ${item.product.name}!`);
         });
 
