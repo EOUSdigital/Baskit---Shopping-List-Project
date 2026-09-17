@@ -713,32 +713,36 @@ function renderBasketView() {
         const qtyInput = clone.querySelector('.basket-action-quantity-input');
         const qtyError = clone.querySelector('.basket-quantity-error-msg');
 
-        let isEditing = false;                                  // Track edit mode state for this card
+        //  Track edit mode state for this card
+        let isEditing = false;
 
         editBtn.addEventListener('click', () => {
             if (!isEditing) {
-                // --- 2: Enter Edit Mode ---
+                //  --- 2: Enter Edit Mode ---
                 isEditing = true;
                 editBtn.textContent = 'Update';
 
-                if (qtyError) qtyError.style.display = 'none';  // Hide any previous error message!
+                //  Hide any previous error message!
+                if (qtyError) qtyError.style.display = 'none';
 
-                qtyInput.value = item.quantity;                 // Set input value to current item quantity
+                //  Set input value to current item quantity
+                qtyInput.value = item.quantity;
 
-                // Hide normal controls, show input field
+                //  Hide normal controls, show input field
                 decreaseBtn.style.display = 'none';
                 increaseBtn.style.display = 'none';
                 qtySpan.style.display = 'none';
                 qtyInput.style.display = 'inline-block';
             } else {
-                // --- 3: Update & Save ---
+                //  --- 3: Update & Save ---
                 const newQty = parseInt(qtyInput.value, 10);
 
-                // Validate that quantity is a valid number and at least 1
+                //  Validate that quantity is a valid number and at least 1
                 if (newQty && newQty >= 1) {
                     item.quantity = newQty;
                     updateGlobalCartCounters();
-                    renderBasketView();                         // Refresh UI to exit edit mode and update subtotals
+                    //  Refresh UI to exit edit mode and update subtotals
+                    renderBasketView();
                 } else {
                     if (qtyError) {
                         qtyError.style.display = 'block';
