@@ -716,6 +716,7 @@ function renderBasketView() {
         //  Track edit mode state for this card
         let isEditing = false;
 
+        //  User changes the quantity → the new value is validated → basket state changes → the UI is rendered from the new state.
         editBtn.addEventListener('click', () => {
             if (!isEditing) {
                 //  --- 2: Enter Edit Mode ---
@@ -750,6 +751,7 @@ function renderBasketView() {
                 };
             };
         });
+        //  Takes the already populated cloned basket card and inserts it into the basket container, making it part of the visible page.
         container.appendChild(clone);
     });
     updateGlobalCartCounters();
