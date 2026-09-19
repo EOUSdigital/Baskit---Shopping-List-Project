@@ -597,6 +597,7 @@ function renderBasketView() {
     if (basket.length === 0) {
         container.innerHTML = `<p class="empty-cart-msg">The shopping basket is empty.</p>`;
         if (clearBtn) clearBtn.style.display = 'none'; // Clear UI State step met
+        //  When the basket becomes empty, updateGlobalCartCounters() ensures the rest of the application reflects that empty state.
         updateGlobalCartCounters();
         return;
     }
@@ -739,6 +740,7 @@ function renderBasketView() {
                 const newQty = parseInt(qtyInput.value, 10);
 
                 //  Validate that quantity is a valid number and at least 1
+                //  The 0 case isn't actually a bug. The code correctly rejects it because our basket requires a quantity of at least 1.
                 if (newQty && newQty >= 1) {
                     item.quantity = newQty;
                     updateGlobalCartCounters();
@@ -746,6 +748,7 @@ function renderBasketView() {
                     renderBasketView();
                 } else {
                     if (qtyError) {
+                        //  It checks whether the parsed value is truthy and at least 1.
                         qtyError.style.display = 'block';
                     };
                 };
