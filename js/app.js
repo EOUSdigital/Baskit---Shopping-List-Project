@@ -131,8 +131,10 @@ const basketTrigger = document.querySelector('.basket-nav-trigger');
 if (basketTrigger) {
     basketTrigger.addEventListener('click', (event) => {
         event.preventDefault();
+        saveRoute("#shopping-basket");
         renderBasketView();                         // Build the shopping cart elements
         changeRouteView("#shopping-basket");        // Switch to basket page
+        
     });
 }
 
@@ -764,10 +766,12 @@ function renderBasketView() {
 // 3.2 Next Action Step for Function Definition
 // ==========================================
 
-// Fire slider engine once the landing page DOM nodes are loaded safely!
+//  Application startup work. DOMContentLoaded ensures the HTML has been parsed and the DOM tree has been created before our startup code tries to find and manipulate elements.
+//  Fire slider engine once the landing page DOM nodes are loaded safely!
 document.addEventListener('DOMContentLoaded', () => {
-    // Find our main landing page section container (#all-products)
+    //  Finds the DOM element with the ID all-products and stores a reference to it in initialSection.
     const initialSection = document.getElementById('all-products');
+    //  Passes that DOM element to renderPromoSlider(), which uses it as the section where the promo slider is rendered.
     renderPromoSlider(initialSection);
 
     //  function sits outside the event listener and is invoked here
@@ -777,20 +781,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync visual counts with whatever was loaded out of local storage
     updateGlobalCartCounters();
 
-    // RESTORE THE SAVED ROUTE ON REFRESH
-    // ➡️ This is already a natural place to eventually have:
-    const savedRoute = loadRoute()  || '#all-products';
-    
+    //  RESTORE THE SAVED ROUTE ON REFRESH
+    //  Restore the saved route when one exists; otherwise, start on All Products.
+    //  ➡️ This is already a natural place to eventually have:
+    const savedRoute = loadRoute() || '#all-products';
+
     if (savedRoute === '#shopping-basket') {
+        //  renderBasketView() builds the basket UI from the current basket state
         renderBasketView();
     }
 
+    //  Removes the # symbol from the savedRoute because the keys stored inside the productDataMap object are clean category strings that do not include hashes.
     const categoryName = savedRoute.replace('#', '');
+    //  Checks productDataMap[categoryName] first as a safety guard to prevent application crashes caused by invalid or unexpected URLs.
     if (productDataMap[categoryName]) {
         loadStoreSection(categoryName);
     }
 
     console.log("savedRoute:", savedRoute);                     // 🚩🚩🚩 Temporary testing log
+    //  The changeRouteView(savedRoute) is placed at the very end of the initialization sequence because changing the route triggers the visible rendering of the page, which cannot happen safely until all underlying data structures, configurations, and core DOM elements are fully built and ready.
     changeRouteView(savedRoute);
 
     // 🚩🚩🚩 Temporary testing log -------------------------------------------------------
@@ -826,6 +835,7 @@ function loadAllProductsSection() {
     // 3. Mix them up completely!
     const shuffledLandingProducts = shuffleArray(landingPageProducts);
 
+    //  It keeps track of where we currently are in the 33-product array while we take different-sized groups of products for each landing-page section.
     let currentSliceIndex = 0;
 
     console.log("Starting landing-page rendering");             // 🚩🚩🚩 Temporary testing log
