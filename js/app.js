@@ -615,7 +615,14 @@ function renderBasketView() {
         clearBtn.onclick = () => {
             // 1. Ask the user for confirmation first
             const userConfirmed = confirm("Are you sure you want to clear your entire shopping basket?");
-
+            if (userConfirmed) {
+                //  creates a new empty array and makes basket reference that new array.
+                basket = [];
+                updateGlobalCartCounters();
+                //  re-runs the basket rendering process against the now-empty basket array.
+                //  Do not manually remove individual DOM elements here. Change the state and then let the rendering function represent that state.
+                renderBasketView();
+            }
             // If the user clicked "Cancel", execution stops here and the basket stays safe!
         };
     }
@@ -684,24 +691,16 @@ function renderBasketView() {
             //  The result is stored in userConfirmed
             const userConfirmed = confirm("Are you sure you want to delete this product?");
             if (userConfirmed) {
-                //  creates a new empty array and makes basket reference that new array.
-                // basket = [];
-                basket = basket.filter(bItem => bItem !== item);
-                updateGlobalCartCounters();
-                //  re-runs the basket rendering process against the now-empty basket array.
-                //  Do not manually remove individual DOM elements here. Change the state and then let the rendering function represent that state.
-                renderBasketView();
-            }
-
             //  It checks if the result is different will be saved in a new array.
             //  Checking whether the basket entry currently being examined is a different object from the entry associated with the Delete button.
             //  bItem !== item means keep bItem if it is not the basket entry I want to delete.
             //  Replace the current basket array with a new basket array that doesn't contain the selected entry.
-            // basket = basket.filter(bItem => bItem !== item);
+            basket = basket.filter(bItem => bItem !== item);
             //  The JavaScript basket state has changed. We need updateGlobalCartCounters() to make the application reflect that change, including calling saveBasket() so the updated basket is persisted to localStorage.
             updateGlobalCartCounters();
             //  Need to render the basket again after deleting the entry.
             renderBasketView();
+            }
         });
 
         //  Share button
