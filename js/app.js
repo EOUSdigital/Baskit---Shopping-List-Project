@@ -78,6 +78,16 @@ function loadRoute() {
     return localStorage.getItem('baskit_active_route');
 }
 
+function saveProductDetails(product) {
+    localStorage.setItem('baskit_active_product', JSON.stringify(product));
+}
+
+function loadProductDetails() {
+    const savedProduct = localStorage.getItem('baskit_active_product');
+    
+    return savedProduct ? JSON.parse(savedProduct) : null;
+}
+
 //  ➡️ Navigation UI + Accessibility
 //  Dynamically Synchronize the active navigation link and aria-current with the current route.
 //  Does accessibility metadata determine which section is visible? No.
@@ -462,9 +472,16 @@ function openProductDetailsPage(product) {
         addItemToCartState(product);
     });
 
+    //  Change what the user sees
     detailSection.appendChild(clone);
     //  The Product Details section is now the section the user should be viewing.
-    changeRouteView("#product-details");                    
+    //  Persist that route so a refresh knows where the user was.
+    changeRouteView("#product-details");
+
+    //  Persist which product was being viewed.
+    saveRoute("#product-details");
+
+    saveProductDetails(product);
 }
 
 /*
@@ -808,6 +825,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 🚩🚩🚩 Temporary testing log -------------------------------------------------------
     console.log("all-products hidden:", document.querySelector("#all-products").classList.contains("hidden"));
+
+    if (savedRoute === '#product-details') {
+        const savedProduct = loadProductDetails();
+        
+        if (savedProduct) {
+            openProductDetailsPage(savedProduct);
+        }
+    }
 });
 
 function loadAllProductsSection() {
