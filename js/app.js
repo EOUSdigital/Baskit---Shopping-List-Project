@@ -67,6 +67,18 @@ function changeRouteView(targetSectionId) {
 
     // Slider lifecycle
     initializeStopManageSlider(targetSection);
+
+    //  window.scrollTo(horizontal, vertical);
+    //                      ↑          ↑
+    //                      x          y
+    //  window.scrollTo( 0, 0 ); means: horizontal position (x) = 0; vertical position (y) = 0. So the browser moves to the top-left of the page.
+    //  Essentially saying: move the page vertically to the top immediately.
+    window.scrollTo({
+        left: 0,
+        //  top: 0 means: Set the vertical scroll position to 0 or in short description, vertical position (y) = 0.
+        top: 0,
+        behavior: "auto"
+    });
 }
 
 // ➡️ RoutePersistence → save/load route the active route.
