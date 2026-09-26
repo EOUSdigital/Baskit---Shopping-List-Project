@@ -1,87 +1,47 @@
-"use strict";           // Activates Strict Mode for the JavaScript code in its scope. Strict Mode changes some of JavaScript's otherwise permissive behaviour so that certain mistakes become errors instead of silently producing potentially unexpected results.
-
-//  Refactoring is - Separate responsibilities where the separation improves understanding, reuse, testing, or maintenance.
-
-// ==========================================
-// GLOBAL Application
-// ==========================================
+"use strict";           
 
 let basket = loadBasket();
 
 function initializeApplication() {
     loadRoute();
-    // saveRoute();
-    // loadSavedRoute();
-    // initializeNavigation();
-    // initializeSlider();
 }
 
 initializeApplication();
 
-// ==========================================
-// GLOBAL STATE APP REGISTRY
-// ==========================================
-
-// Stores cart items tracking: { product, quantity }
-// Checks for existing storage data first; defaults to empty array if none found
 let previouslyActiveSectionId = "#all-products";
 
-//  Grabs all HTML elements with the class 'nav-links-item' (the menu buttons)
 const navLinks = document.querySelectorAll('.nav-links-item');
-//  Grabs all <section> elements living inside the <main> container
 const sections = document.querySelectorAll('main section');
 
-// 🟧 UNIFIED ROUTER UTILITY to handle clean page swapping. The changeRouteView() receives a requested route and makes the corresponding section the active visible view.
 function changeRouteView(targetSectionId) {
-    // 🚩🚩🚩 The first four operations clearly belong together:
-    // 1. Receive the requested route. Save the current route to local storage. Persistence → save/load route
-    //  Does saving to Local Storage make the section visible? No.
-
-    // 2. Find the corresponding section
     const targetSection = document.querySelector(targetSectionId);
 
-    // 3. Handle a missing section. If it does not exist: report an error and stop safely.
     if (!targetSection) {
         console.error(`Route not found: ${targetSectionId}`);
         return;
     }
 
-    // 4. Hide the inactive sections. 
-    // slider timer management
     sections.forEach(section => {
-        // section visibility
         section.classList.add('hidden');
     });
 
-    // 5. Show the requested section.
     targetSection.classList.remove('hidden');
 
-    //  Navigation state → remember previous browsing section
-    //  Temporary views should not overwrite the last browsing/category section.
     if (targetSectionId !== "#product-details" && targetSectionId !== "#shopping-basket") {
         previouslyActiveSectionId = targetSectionId;
     }
 
-    //  Is calling Navigation UI + Accessibility function
     navigationUI(targetSectionId);
 
-    // Slider lifecycle
     initializeStopManageSlider(targetSection);
 
-    //  window.scrollTo(horizontal, vertical);
-    //                      ↑          ↑
-    //                      x          y
-    //  window.scrollTo( 0, 0 ); means: horizontal position (x) = 0; vertical position (y) = 0. So the browser moves to the top-left of the page.
-    //  Essentially saying: move the page vertically to the top immediately.
     window.scrollTo({
         left: 0,
-        //  top: 0 means: Set the vertical scroll position to 0 or in short description, vertical position (y) = 0.
         top: 0,
         behavior: "auto"
     });
 }
 
-// ➡️ RoutePersistence → save/load route the active route.
 function saveRoute(targetSectionId) {
     localStorage.setItem('baskit_active_route', targetSectionId);
 }
@@ -100,40 +60,26 @@ function loadProductDetails() {
     return savedProduct ? JSON.parse(savedProduct) : null;
 }
 
-//  ➡️ Navigation UI + Accessibility
-//  Dynamically Synchronize the active navigation link and aria-current with the current route.
-//  Does accessibility metadata determine which section is visible? No.
 function navigationUI(targetSectionId) {
 
     navLinks.forEach(link => {
 
         if (link.getAttribute('href') === targetSectionId) {
-            //  Navigation UI → active navigation link
             link.classList.add('active');
-            //  Accessibility → aria-current
             link.setAttribute('aria-current', 'page');
         } else {
-            //  Navigation UI → active navigation link
             link.classList.remove('active');
-            //  Accessibility → aria-current
             link.removeAttribute('aria-current');
         }
     });
 }
 
-// ==========================================
-// 1.1 HEADER NAVIGATION SYSTEM & ROUTING ENGINE
-// ==========================================
-
-//  Loops through every navigation link button one by one. Handle department menu link clicks.
 navLinks.forEach(link => {
     link.addEventListener('click', (event) => {
         event.preventDefault();
 
-        // link.getAttribute('href'); The href determines which section becomes visible.
         const targetSectionId = link.getAttribute('href');
 
-        //  link.dataset.category; The category determines which products are rendered.
         const selectedCategory = link.dataset.category;
         if (selectedCategory === 'all') {
             loadAllProductsSection();
@@ -143,24 +89,23 @@ navLinks.forEach(link => {
             renderProducts(targetGridClass, targetArray);
         }
 
+        searchInput.value = '';
+
         saveRoute(targetSectionId);
         changeRouteView(targetSectionId);
     });
 });
 
-// Handle clicking the "Basket Icon" in the navigation bar.
 const basketTrigger = document.querySelector('.basket-nav-trigger');
 if (basketTrigger) {
     basketTrigger.addEventListener('click', (event) => {
         event.preventDefault();
         saveRoute("#shopping-basket");
-        renderBasketView();                         // Build the shopping cart elements
-        changeRouteView("#shopping-basket");        // Switch to basket page
-        
+        renderBasketView();
+        changeRouteView("#shopping-basket");
     });
 }
 
-// Handle clicking the Logo to go back home
 const brandLink = document.querySelector('.brand-link');
 if (brandLink) {
     brandLink.addEventListener('click', (event) => {
@@ -169,30 +114,19 @@ if (brandLink) {
     });
 }
 
-// ==========================================
-// 1.2 SEARCH FORM SYSTEM
-// ==========================================
-
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 const searchCategory = document.getElementById('search-category');
 
-//  Your function is not: "Bad because it is long."
-//  It is: A candidate for decomposition because it coordinates data processing, UI manipulation, and routing.
-//  That is much more precise.
 if (searchForm && searchInput && searchCategory) {
     searchForm.addEventListener('submit', (event) => {
-        // Stop standard form submissions & page reloads
         event.preventDefault();
 
-        // 🔰 SEARCH LOGIC - obtain input, determine search pool, filter data
         const query = searchInput.value.trim().toLowerCase();
-        // 'all', 'grocery', 'household', 'stationery'
         const category = searchCategory.value;
 
         if (!query) return;
 
-        // 1. Gather all searchable items. Search for a collection of products.
         let pool = [];
         
         if (category === 'all') {
@@ -201,82 +135,52 @@ if (searchForm && searchInput && searchCategory) {
                 pool = productDataMap[category] || [];
             }
 
-        // 2. Filter products based on name or description matching.
         const results = pool.filter(product => 
             product.name.toLowerCase().includes(query) || 
             product.description.toLowerCase().includes(query)
         );
 
-        //* 🔰 UI LOGIC - update heading, manipulate grids, render results
-        //  3. Clear and display search results on the main page dynamically!
-        //  Changes All Products heading because search results are being displayed inside All Products
         const mainHeading = document.getElementById('all-products-heading');
         if (mainHeading) {
             mainHeading.textContent = `Search Results for "${searchInput.value}" (${results.length} found)`;
         }
 
-        //  TODO: The following code will be refactored and included in the slider system.
-        // Temporarily hide the slider and replace Flash Deals grid with results.
-        const sliderPlaceholder = document.querySelector('#all-products .slider-placeholder');
-        // Hide slider
-        if (sliderPlaceholder) sliderPlaceholder.innerHTML = '';
-
-        //  🚩🚩🚩 Hide other grids so search results take center stage
-        //  1. This is functional, but I would put a small yellow flag beside it for now.
-        //  2. Not because it's broken. Because the project already has a CSS class: hidden.
-        //  3. Need to understand how the existing CSS and search result layout work before deciding whether these should be unified.
         document.querySelectorAll('#all-products .product-grid').forEach(grid => {
             grid.style.display = 'none';
         });
 
-        //* 🔰 ROUTING - route to all-products
-        // Show results in the "Flash Deals" container as a grid
         const resultsGrid = document.querySelector('#all-products .flash-deals');
         if (resultsGrid) {
             resultsGrid.style.display = 'grid';
             renderProducts('#all-products .flash-deals', results);
         }
 
-        //  🔰 This is where Search communicates with the router.
-        //  The results belong in All Products. Please make All Products visible."
-        //  That's actually a good example of the router acting as an orchestrator.
         changeRouteView('#all-products');
     });
 }
 
-// ==========================================
-// 2. ANIMATED SLIDER ENGINE
-// ==========================================
-
 function renderPromoSlider(sectionElement) {
-    // Safety check: If no section element was provided to the function, exit out early.
     if (!sectionElement) return;
 
-    // Target the slider placeholder element specifically, NOT the product grid.
     const placeholder = sectionElement.querySelector('.slider-placeholder');
     const template = document.getElementById('animated-slider-template');
 
-    // Structural guard safety check: if either container or template is missing, stop running completely.
     if (!placeholder || !template) return;
 
-    // 1. Always clear any existing interval on this section to prevent memory leaks
     if (sectionElement.activeTimerId) {
         clearInterval(sectionElement.activeTimerId);
         sectionElement.activeTimerId = null;
     }
 
-    // Select target slide items inside this specific placeholder canvas.
     let slides = placeholder.querySelectorAll('.slide');
     let current = 0;
 
-    // 2. Only clone and inject the template if it has not been rendered yet
     if (slides.length === 0) {
         placeholder.innerHTML = '';
         const templateClone = template.content.cloneNode(true);
         placeholder.appendChild(templateClone);
         slides = placeholder.querySelectorAll('.slide');
     } else {
-        // If already rendered, reset to show the first slide visually
         slides.forEach((slide, idx) => {
             if (idx === 0) {
                 slide.classList.add('active');
@@ -288,37 +192,28 @@ function renderPromoSlider(sectionElement) {
 
     if (slides.length === 0) return;
 
-    // Focused nested function for internal navigation logic engine. Takes an index number and activates that specific slide image.
     function showSlide(index) {
-        // Removes the 'active' visibility class from all slides
         slides.forEach((slide) => {
             slide.classList.remove('active');
         });
 
-        // Grabs the specific slide matching our current index number.
         const currentSlide = slides[index];
         if (!currentSlide) {
             return;
         } else {
-            // Makes the single active slide visible. The modern CSS rules handle nested captions automatically!
             currentSlide.classList.add('active');
         }
     }
 
-    // Focused nested function that calculates the next slide number, wrapping back around to 0 at the end.
     function nextSlide() {
         current = (current + 1) % slides.length;
         showSlide(current);
     }
 
-    // 3. Restart the interval timer safely. Rotates smoothly every 7 seconds safely.
     sectionElement.activeTimerId = setInterval(nextSlide, 7000);
 }
 
 function initializeStopManageSlider(section) {
-    // TODO: Integrate this into the final slider lifecycle design.
-    // Slider lifecycle — temporary extraction.
-    // Stops the active timer for the supplied section.
     if (section.activeTimerId) {
         clearInterval(section.activeTimerId);
         section.activeTimerId = null;
@@ -327,56 +222,21 @@ function initializeStopManageSlider(section) {
     renderPromoSlider(section);
 }
 
-// ==========================================
-// 3.1 CORE INITIALIZATION & APP ROUTING
-// ==========================================
-
-// ==========================================
-// DYNAMIC RENDER & BASKET ENGINE
-// ==========================================
-
-//  gridClassName - Where should the finished product cards go?
-//  arrayToUse - WHAT to copy for each card?
 function renderProducts(gridClassName /*WHERE?*/, arrayToUse/*WHAT?*/) {
-    //  This is where JavaScript crosses from your data/application logic into the DOM.
     const targetGrid = document.querySelector(gridClassName);
-    //  This finds your HTML <template> element.
-    //  The important thing about <template> is that its contents are not immediately rendered as normal page content.
-    //  Instead, JavaScript can use it as a blueprint. The selector will search for the HTML element whose id is product-template.
     const template = document.getElementById('product-template');
-
-    //  This means: If either the destination grid or product template does not exist, stop the function.
-    //  If could not find the destination OR could not find the template, stop. The || means "OR."
     if (!targetGrid || !template) return;
-
-    //  Without this guard, would fail if targetGrid were null.
-    //  Before rendering this new collection of products, remove whatever product cards are currently inside this grid.
     targetGrid.innerHTML = "";                                  
 
-    //  This is where the rendering process becomes repetitive.
     arrayToUse.forEach((product) => {
-        //  This says: If this product does nt have a name, do not render it.
-        //  Does not exit renderProducts().
-        //  It exits the current forEach() callback. If a product missing a name, it will be skipped.
         if (!product.name) return;
-
         const card = createProductCard(product, template);
-
-        //  Take this prepared clone and add it as a child of the target grid.
         targetGrid.appendChild(card);
     });
 }
-//  The function currently both renders the card and attaches its behavior.
 
 function createProductCard(product, template) {
-    //  1. Clone the HTML template. Create a copy of the template's contents.
-    //  cloneNode(true) - Clone the node and all of its descendants. This is called a deep clone.
-    //  clone is a new DOM fragment containing the copied product-card structure.
-    //  If you put the cloning outside the loop, you would only create one copy.
     const clone = template.content.cloneNode(true);
-
-    //  2. Fallback selection engine: Finds elements by generic tags if classes are missing. 
-    //  Try the first thing; if it is not available, use the second. (something || fallback)
     const card = clone.querySelector('.product-card-item') || clone.firstElementChild;
     const img = clone.querySelector('.product-card-img') || clone.querySelector('img');
     const heading = clone.querySelector('.product-card-heading') || clone.querySelector('h1, h2, h3, h4, h5, h6');
@@ -384,8 +244,6 @@ function createProductCard(product, template) {
     const priceSpan = clone.querySelector('.product-card-price span') || clone.querySelector('span');
     const button = clone.querySelector('.product-card-button') || clone.querySelector('button');
 
-    //  3. Populate fields safely only if they exist in the template
-    //  Why if (img), if (heading), etc.? Only attempt to modify the element if it was actually found.
     if (img) {
         img.src = product.image;
         img.alt = product.name;
@@ -409,132 +267,49 @@ function createProductCard(product, template) {
 
 function attachProductCardEvents(card, product) {
     const button = card.querySelector('.product-card-button');
-
-    //  4. Setup button click handler
     if (button) {
         button.textContent = "Add to basket";
-        //  When this particular button is clicked, execute this function.
-        //  The browser creates a click event when the user clicks the button.
-        //  So event is an object representing what happened. It contains information and methods relating to that particular click.
         button.addEventListener('click', (event) => {
-            //  Prevents opening the details page modal/view
-            //  The code deliberately stops the propagation
-            //  Protection 1 — Button handler
             event.stopPropagation();
-            //  This hands the product to the basket-state function.
-            //  1. renderProducts() wires the interaction.
-            //  2. addItemToCartState() handles the basket state.
             addItemToCartState(product);
         });
     }
 
-    //  5. Setup card container click handler.
-    //  The card itself gets a click listener.
-    //  The intended behavior is: Click the product card → open that product's details page.
     if (card) {
         card.addEventListener('click', (event) => {
-            //  event.target - It tells us the element where the event originated.
-            //  If the click originated directly on the Add to Basket button, do not open the product details.
-            //  Protection 2 — Card handler
             if (button && event.target === button) return;
             openProductDetailsPage(product);
         });
     }
 };
 
-// Populates and shows the unique template details page
 function openProductDetailsPage(product) {
-    //  The <section> is where the details are displayed. The <template> defines what those details should look like.
-    //  The line simply says: "Find the existing Product Details section in the DOM and give me a JavaScript reference to it."
     const detailSection = document.getElementById('product-details');
-
-    //  JavaScript uses document.getElementById('product-details') because is the created section that will have included the document.getElementById('product-details-template') of the product details. 2. The template is not the destination, but the blueprint used to create the Product Details content.
-    //  After the execution of variable template contains the <template> DOM element, which contains the blueprint/HTML structure for a Product Details view.
     const template = document.getElementById('product-details-template');
     if (!detailSection || !template) return;
-
-    //  Clear the detail section before cloning and inserting a new product to prevent old data from bleeding into the new product's display and to ensure a clean user interface state.
     detailSection.innerHTML = "";
 
-    //  Use cloneNode(true) rather than simply template.content because method of the Node interface returns a duplicate of the node on which this method was called. Its parameter controls if the subtree contained in the node is also cloned or not. By default, cloning a node copies all of its attributes and their values, including event listeners specified via attributes.
-    //  By setting the deep parameter, you can also copy the subtree contained in the node. It does not copy any other internal data, such as event listeners added using addEventListener() or onevent properties (e.g., node.onclick = someFunction), or the painted image for a <canvas> element.
     const clone = template.content.cloneNode(true);
-
-    //  The template provides the structure, while the product object provides the actual content.
-    //  When is assign a product to a template element, will be dynamically generate and insert content into the DOM.
-    //  Find the image inside the cloned Product Details blueprint and give it the selected product's image.
     clone.querySelector('.details-large-img').src = product.image;
-    //  The "alt" attribute sets or returns the value of the alt attribute of an image.
     clone.querySelector('.details-large-img').alt = product.name;
-    //  The line will insert the heading product name. The textContent property ignores all HTML tags and returns only the text. When is used the innerHTML property, it reads both the HTML markup and the text content of the element. If the content is inserted from user input or any untrusted source with innerHTML. Attackers can use the HTML <script> tag to insert and run malicious code in my app. The broader security point is absolutely correct: injecting untrusted content as HTML can create XSS vulnerabilities through malicious markup/attributes and should be avoided unless the content is properly trusted/sanitized.
     clone.querySelector('.details-title-heading').textContent = product.name;
-    //  The line will insert the product description. The textContent property ignores all HTML tags and returns only the text. This is what is need here.
     clone.querySelector('.details-full-description').textContent = product.description;
-    //  This searches inside the clone for a span that is a descendant of an element with the class .details-large-price.
-    //  Then, ".textContent =" sets the visible text of that span.
-    //  The "product.price.toFixed(2)" takes the numerical price and formats it to two decimal places. 
-    //  The "toFixed(2)" ensures that a numerical price is consistently presented with two decimal places, which is the conventional presentation for monetary values in the UI.
-    //  The "toFixed(2)" is formatting the value for presentation; it isn't changing the underlying product price stored in your product data.
     clone.querySelector('.details-large-price span').textContent = product.price.toFixed(2);
-
-    //  Wire up template "Add to basket" button. The Product Details button belongs to the cloned details view.
-    //  The button is a DOM element, but at this point it is a DOM element inside the cloned fragment, not yet part of the live document.
-    //  The "product" is still available inside the event handler.
     clone.querySelector('.details-add-to-basket-btn').addEventListener('click', () => {
         addItemToCartState(product);
     });
 
-    //  Change what the user sees
     detailSection.appendChild(clone);
-    //  The Product Details section is now the section the user should be viewing.
-    //  Persist that route so a refresh knows where the user was.
     changeRouteView("#product-details");
 
-    //  Persist which product was being viewed.
     saveRoute("#product-details");
 
     saveProductDetails(product);
 }
 
-/*
-Fully reviewed openProductDetailsPage().
-The complete responsibility chain is:
-
-openProductDetailsPage(product)
-    │
-    ├── 1. Find the destination
-    │      └── #product-details
-    │
-    ├── 2. Find the blueprint
-    │      └── #product-details-template
-    │
-    ├── 3. Validate both exist
-    │
-    ├── 4. Clear previous Product Details
-    │
-    ├── 5. Deep-clone the template
-    │
-    ├── 6. Populate the clone
-    │      ├── image
-    │      ├── alt text
-    │      ├── title
-    │      ├── description
-    │      └── price
-    │
-    ├── 7. Attach Add to Basket behavior
-    │
-    ├── 8. Insert the completed clone
-    │
-    └── 9. Ask the router to display Product Details
-*/
-
-//  Memory controller: adds a product or increments quantity
-//  Finds an existing basket entry by product id and category; if found, it increments quantity, otherwise it adds a new { product, quantity } object.
 function addItemToCartState(product) {
     const existingEntry = basket.find(
-        item => 
-            //  a product is considered the same basket item only when both its ID and category match.
-            item.product.id === product.id && 
+        item => item.product.id === product.id && 
             item.product.category === product.category
     );
 
@@ -546,58 +321,20 @@ function addItemToCartState(product) {
     updateGlobalCartCounters();
 }
 
-//  🚩🚩🚩 Recalculates total items and updates indicators. The following function will be split into more accessible functions.
-//  It calculates the total quantity of physical items, updates the navigation badge to reflect the total current entries in the basket, and then calls saveBasket().
 function updateGlobalCartCounters() {
-    //  basket.reduce() it combines all the quantity values in the basket into one total (2 + 1 + 3 = 6 items).
-    //  reduce() does not change the basket. It simply reads the current basket state and calculates a value from it.
     const totalQuantity = basket.reduce((total, item) => total + item.quantity, 0);
-
-    // Updates the navigation bar badge indicator
     const cartCountElement = document.getElementById('cart-total-items');
-    //  If the element was successfully found, update its displayed text to the current basket quantity. Without the check, this would cause an error. Only attempt the update if the element actually exists.
     if (cartCountElement) cartCountElement.textContent = totalQuantity;
 
-    // Updates price/items labels inside the shopping basket view if visible
     const basketCountSpan = document.getElementById('total-items-count');
     const basketPriceSpan = document.getElementById('total-price-value');
-    
     if (basketCountSpan) basketCountSpan.textContent = totalQuantity;
     if (basketPriceSpan) {
         const totalPrice = basket.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
         basketPriceSpan.textContent = totalPrice.toFixed(2);
     }
-
-    //  This is where state management meets persistence.
-    //  saveBasket() persists the current JavaScript basket state to localStorage so that the basket can be restored after a page reload.
     saveBasket();
 }
-
-/*
-The basket is currently mixing responsibilities updateGlobalCartCounters() currently does this:
-
-updateGlobalCartCounters()
-    │
-    ├── Calculate total quantity (Read basket state)
-    │
-    ├── Update navigation badge (Calculate total quantity)
-    │
-    ├── Update basket item count (Update navigation UI)
-    │
-    ├── Calculate total price (Update basket UI)
-    │
-    ├── Update basket price (Calculate total price)
-    │
-    └── Save basket to localStorage (Persist basket state)
-
-The function is doing persistence + calculation + UI updates.
-*/
-
-// 🚩🚩🚩 Do not split a function merely because someone says "functions should be small." Split it when its responsibilities become independently understandable, testable, or changeable.
-
-//  🟧 Basket
-
-function calculateBasketTotal() {}
 
 function loadBasket() {
     const savedBasket = localStorage.getItem('baskit_cart');
@@ -605,142 +342,75 @@ function loadBasket() {
 }
 
 function saveBasket() {
-    // Save the updated basket state to Local Storage
     localStorage.setItem('baskit_cart', JSON.stringify(basket));
 }
 
-function updateBasketCounters() {}
-
-// Clones the basket template and populates the cart list view
 function renderBasketView() {
-    //  It finds the actual DOM element where the rendered basket cards will eventually go.
     const container = document.getElementById('dynamic-basket-container');
     const clearBtn = document.getElementById('clear-entire-basket-btn');
 
-    // FIXED: Added missing template reference
     const template = document.getElementById('basket-template');
 
-    //  If the basket container cannot be found, stop executing renderBasketView() immediately.
     if (!container) return;
 
-    //  Empties the existing basket array by setting its length to zero.
-    //  Changing JavaScript state does not automatically update the UI or localStorage.
     if (basket.length === 0) {
         container.innerHTML = `<p class="empty-cart-msg">The shopping basket is empty.</p>`;
         if (clearBtn) clearBtn.style.display = 'none'; // Clear UI State step met
-        //  When the basket becomes empty, updateGlobalCartCounters() ensures the rest of the application reflects that empty state.
         updateGlobalCartCounters();
         return;
     }
 
-    //  It is a defensive DOM check: if the clear-basket button exists, configure it.
-    //  Clear Entire Basket Handler
-    //  updateGlobalCartCounters() is also responsible for calling saveBasket(), so the new empty basket is persisted to localStorage at that point.
     if (clearBtn) {
-        //  Show the clear-basket control when the basket contains items.
         clearBtn.style.display = 'block';
 
-        //  When the "Clear Basket" button is clicked, execute this function
         clearBtn.onclick = () => {
-            // 1. Ask the user for confirmation first
             const userConfirmed = confirm("Are you sure you want to clear your entire shopping basket?");
             if (userConfirmed) {
-                //  creates a new empty array and makes basket reference that new array.
                 basket = [];
                 updateGlobalCartCounters();
-                //  re-runs the basket rendering process against the now-empty basket array.
-                //  Do not manually remove individual DOM elements here. Change the state and then let the rendering function represent that state.
                 renderBasketView();
             }
-            // If the user clicked "Cancel", execution stops here and the basket stays safe!
         };
     }
 
-    //  Clear previous rendered basket, that was removed before render the current basket state again.
-    //  Completely erase older rendered list references. It clears the currently rendered DOM content inside the container.
-    //  If the code is removed, the existing DOM cards remain in the container. Is not clearing the basket state. It is clearing the previous DOM representation of that state.
     container.innerHTML = "";
 
-    //  For every basket entry, create and prepare one basket card.
-    //  Rendering individual basket items.
-    //  "item" represents one basket entry.
     basket.forEach(item => {
-        //  Basket card settings
-        //  The template is the blueprint.
-        //  The true means deep clone. It copies the template's node and its descendants.
         const clone = template.content.cloneNode(true);
-        
         clone.querySelector('.basket-card-img').src = item.product.image;
-        //  Setting the image's alt value to item.product.name to describe the image in case it is not loading, and for accessibility.
         clone.querySelector('.basket-card-img').alt = item.product.name;
-        //  Using textContent instead of innerHTML is generally considered a better practice when dealing with text content in the context of the DOM. 
-        //  Using textContent helps in reducing the risk of security vulnerabilities such as Cross-Site Scripting (XSS). 
-        //  Manipulating textContent tends to be faster than manipulating innerHTML. 
-        //  Use the textContent, it indicates that is working with plain text content.
         clone.querySelector('.basket-card-heading').textContent = item.product.name;
-        //  Contains the description associated with that specific product, so is used to populate the basket card with the product's details.
         clone.querySelector('.basket-card-description').textContent = item.product.description;
-        //  Calculates the subtotal for that particular basket entry, not the total price of the entire basket.
-        //  Use .toFixed(2) because prices are normally displayed with exactly two digits after the decimal point.
         clone.querySelector('.basket-card-price span').textContent = (item.product.price * item.quantity).toFixed(2);
-        //  Represents how many units of that particular product are currently in the basket entry.
         clone.querySelector('.basket-action-product-quantity').textContent = item.quantity;
-
-        // Increase quantity (+) button
         clone.querySelector('.basket-action-increase').addEventListener('click', () => {
-            //  Take the quantity of this particular basket entry and increase it by 1.
             item.quantity += 1;
-            //  1. It recalculates the total quantity in the basket.
-            //  2. It updates the visible basket/navigation counters and total price.
-            //  3. It calls saveBasket(), which saves the updated basket state to localStorage.
             updateGlobalCartCounters();
-            //  When the state changes, the UI needs to be updated so that it represents the new state.
             renderBasketView();
         });
 
-        // Decrease quantity (-) button
         clone.querySelector('.basket-action-decrease').addEventListener('click', () => {
-            //  Protects the basket from reducing the quantity below 1
             if (item.quantity > 1) {
-                //  Reduces the quantity of the current basket entry by one.
                 item.quantity -= 1;
-                //  1. Recalculates total basket quantity.
-                //  2. Updates the visible counters and total price.
-                //  3. Saves the updated basket to localStorage.
                 updateGlobalCartCounters();
-                //  The state changes first, and renderBasketView() makes the UI represent that new state.
                 renderBasketView();
             }
         });
 
-        //  Delete button
-        // Selects the Delete button for this particular cloned basket card.
         clone.querySelector('.basket-action-delete').addEventListener('click', () => {
 
-            //  The result is stored in userConfirmed
             const userConfirmed = confirm("Are you sure you want to delete this product?");
             if (userConfirmed) {
-            //  It checks if the result is different will be saved in a new array.
-            //  Checking whether the basket entry currently being examined is a different object from the entry associated with the Delete button.
-            //  bItem !== item means keep bItem if it is not the basket entry I want to delete.
-            //  Replace the current basket array with a new basket array that doesn't contain the selected entry.
             basket = basket.filter(bItem => bItem !== item);
-            //  The JavaScript basket state has changed. We need updateGlobalCartCounters() to make the application reflect that change, including calling saveBasket() so the updated basket is persisted to localStorage.
             updateGlobalCartCounters();
-            //  Need to render the basket again after deleting the entry.
             renderBasketView();
             }
         });
 
-        //  Share button
-        //  Access the name property of the product stored inside this particular basket entry.
         clone.querySelector('.basket-action-share').addEventListener('click', () => {
-            //  alert() opens the browser's built-in alert dialog.
-            //  The template literal ${item.product.name} allows us to combine fixed text with a value that can change.
             alert(`Sharing link copied for item: ${item.product.name}!`);
         });
 
-        // Reference the elements for this card
         const editBtn = clone.querySelector('.basket-action-edit');
         const decreaseBtn = clone.querySelector('.basket-action-decrease');
         const increaseBtn = clone.querySelector('.basket-action-increase');
@@ -748,99 +418,57 @@ function renderBasketView() {
         const qtyInput = clone.querySelector('.basket-action-quantity-input');
         const qtyError = clone.querySelector('.basket-quantity-error-msg');
 
-        //  Track edit mode state for this card
         let isEditing = false;
 
-        //  User changes the quantity → the new value is validated → basket state changes → the UI is rendered from the new state.
         editBtn.addEventListener('click', () => {
             if (!isEditing) {
-                //  --- 2: Enter Edit Mode ---
                 isEditing = true;
                 editBtn.textContent = 'Update';
-
-                //  Hide any previous error message!
                 if (qtyError) qtyError.style.display = 'none';
-
-                //  Set input value to current item quantity
                 qtyInput.value = item.quantity;
 
-                //  Hide normal controls, show input field
                 decreaseBtn.style.display = 'none';
                 increaseBtn.style.display = 'none';
                 qtySpan.style.display = 'none';
                 qtyInput.style.display = 'inline-block';
             } else {
-                //  --- 3: Update & Save ---
                 const newQty = parseInt(qtyInput.value, 10);
 
-                //  Validate that quantity is a valid number and at least 1
-                //  The 0 case isn't actually a bug. The code correctly rejects it because our basket requires a quantity of at least 1.
                 if (newQty && newQty >= 1) {
                     item.quantity = newQty;
                     updateGlobalCartCounters();
-                    //  Refresh UI to exit edit mode and update subtotals
                     renderBasketView();
                 } else {
                     if (qtyError) {
-                        //  It checks whether the parsed value is truthy and at least 1.
                         qtyError.style.display = 'block';
                     };
                 };
             };
         });
-        //  Takes the already populated cloned basket card and inserts it into the basket container, making it part of the visible page.
         container.appendChild(clone);
     });
     updateGlobalCartCounters();
 };
 
-// ==========================================
-// 3.2 Next Action Step for Function Definition
-// ==========================================
-
-//  Application startup work. DOMContentLoaded ensures the HTML has been parsed and the DOM tree has been created before our startup code tries to find and manipulate elements.
-//  Fire slider engine once the landing page DOM nodes are loaded safely!
 document.addEventListener('DOMContentLoaded', () => {
-    //  Finds the DOM element with the ID all-products and stores a reference to it in initialSection.
     const initialSection = document.getElementById('all-products');
-    //  Passes that DOM element to renderPromoSlider(), which uses it as the section where the promo slider is rendered.
     renderPromoSlider(initialSection);
-
-    //  function sits outside the event listener and is invoked here
     loadAllProductsSection();
-
-    console.log("Landing-page rendering completed");            // 🚩🚩🚩 Temporary testing log
-    // Sync visual counts with whatever was loaded out of local storage
     updateGlobalCartCounters();
 
-    //  RESTORE THE SAVED ROUTE ON REFRESH
-    //  Restore the saved route when one exists; otherwise, start on All Products.
-    //  ➡️ This is already a natural place to eventually have:
     const savedRoute = loadRoute() || '#all-products';
-
     if (savedRoute === '#shopping-basket') {
-        //  renderBasketView() builds the basket UI from the current basket state
         renderBasketView();
     }
 
-    //  Removes the # symbol from the savedRoute because the keys stored inside the productDataMap object are clean category strings that do not include hashes.
     const categoryName = savedRoute.replace('#', '');
-    //  Checks productDataMap[categoryName] first as a safety guard to prevent application crashes caused by invalid or unexpected URLs.
-    //  Map acts as a simple lookup/translation layer between a category name and its corresponding product array.
     if (productDataMap[categoryName]) {
         loadStoreSection(categoryName);
     }
-
-    console.log("savedRoute:", savedRoute);                     // 🚩🚩🚩 Temporary testing log
-    //  The changeRouteView(savedRoute) is placed at the very end of the initialization sequence because changing the route triggers the visible rendering of the page, which cannot happen safely until all underlying data structures, configurations, and core DOM elements are fully built and ready.
     changeRouteView(savedRoute);
-
-    // 🚩🚩🚩 Temporary testing log -------------------------------------------------------
-    console.log("all-products hidden:", document.querySelector("#all-products").classList.contains("hidden"));
 
     if (savedRoute === '#product-details') {
         const savedProduct = loadProductDetails();
-        
         if (savedProduct) {
             openProductDetailsPage(savedProduct);
         }
@@ -848,86 +476,51 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadAllProductsSection() {
-    // Restore the normal All Products UI after a search
-    // Restore the normal heading
     const mainHeading = document.getElementById('all-products-heading');
 
     if (mainHeading) {
         mainHeading.textContent = 'All Products';
     }
 
-    // Restore all landing-page product grids
     document.querySelectorAll('#all-products .product-grid').forEach(grid => {
         grid.style.display = 'grid';
     });
 
-    // Build landing-page product collection
-    // Shuffle it
-    // Distribute it across the six landing-page grids
-
-    // 1. Cut out 11 items from each warehouse list
     const grocerySlice = grocery.slice(0, 11);
     const householdSlice = household.slice(0, 11);
     const stationerySlice = stationery.slice(0, 11);
-
-    // 2. Use .concat() to chain them together into a single master array of 33 items!
     const landingPageProducts = grocerySlice.concat(householdSlice, stationerySlice);
-
-    // 3. Mix them up completely!
     const shuffledLandingProducts = shuffleArray(landingPageProducts);
 
-    //  It keeps track of where we currently are in the 33-product array while we take different-sized groups of products for each landing-page section.
     let currentSliceIndex = 0;
 
-    console.log("Starting landing-page rendering");             // 🚩🚩🚩 Temporary testing log
-    // Call 1: Run the recipe using '.flash-deals' as the target class
     renderProducts('.flash-deals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 4));
-    
-    // Call 2: Run the exact same recipe, but target '.custom-solutions' this time!
     renderProducts('.custom-solutions', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 5));
-    
-    // 🔴🔴🔴 These sections should be checked before moving to a new section
     renderProducts('.just-for-you', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 8));
     renderProducts('.essential-collection', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 2));
     renderProducts('.new-arrivals', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 11));
     renderProducts('.seasonal-content', shuffledLandingProducts.slice(currentSliceIndex, currentSliceIndex += 3));
 }
 
-//  A placeholder function designed to load specific store views when called.
-//  If later I will improve how products are rendered, I should not need to change loadStoreSection().
-//  🟦 Function responsibility - Load the product data and UI required for a specific store category.
 function loadStoreSection(categoryName) {
     
-    // 🚩🚩🚩 Temporary log -----------------------------------------------------------
     console.log("loadStoreSection called with:", categoryName);
 
-    //  🟧 Render slider
     const currentSection = document.getElementById(categoryName);
     renderPromoSlider(currentSection);
 
-    //  🟧 Render category products
     renderProducts(`.${categoryName}-content`, productDataMap[categoryName]);
 }
 
-// ==========================================
-// 3.3 Shuffling All 33 Items Cleanly - Fisher-Yates (Knuth) Shuffle algorithm
-// ==========================================
-
-// To randomize an array in JavaScript, developers use an algorithm to mix up the item positions. For a beginner, one of the easiest ways to shuffle a copy of an array is using a random number generator (Math.random()).
-// A reusable utility function that takes ANY array and returns it mixed up.
 function shuffleArray(array) {
-    // Clone the array to keep the original data pure and immutable
     const shuffled = [...array]; 
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];    // Modern ES6 destructuring swap
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
 };
 
-// ==========================================
-// 4.1 Array of objects containing product information
-// ==========================================
 
 const grocery = [
     { id: 1, name: "Fresh Organic Apples", price: 2.99, image: "./images/Grocery/Fresh-Organic-Apples-1627321463.png", "description": "Crisp, nutrient-dense fruits grown strictly adhering to natural farming methods.", category: "grocery" },
@@ -1037,33 +630,17 @@ const stationery = [
     { id: 32, name: "Dragon Touch Calendar", price: 160.98, image: "./images/Stationery/Dragon_Touch_Calendar_71MRGrqf3+L._AC_SL1500_.jpg", "description": "15.6 Digital Calendar Family Wall Planner, 1080P Full HD Interactive Touchscreen, Smart Chore Chart and Home Organization, Gift for Busy Families Scheduling-Black", category: "stationery" },
 ]
 
-// ==========================================
-// 4.2 Setting up the Dictionary in JavaScript - the "translator map" object
-// ==========================================
-
 const productDataMap = {
     grocery: grocery,
     household: household,
     stationery: stationery
 };
 
-//  allProducts is application product data, not search-specific data.
 const allProducts = grocery.concat(household, stationery);
 
-// ==========================================
-// 5. FOOTER COMPONENT
-// ==========================================
-
-// Finds the <span> with ID 'year' in the footer and sets it to the current calendar year.
-// Code wrapped in an IIFE (Immediately Invoked Function Expression) to safely use 'return'
 (function() {
-    // 1. Find the element. Finds the actual <span> or other element in your HTML whose id is "year" and stores a reference to it in yearElement.
     const yearElement = document.getElementById("year");
-
-    // 2. Safe check: if it does not exist, exit this function safely
     if (!yearElement) return;
-
-    // 3. Update the year. The browser calculates the current year whenever the code runs.
     yearElement.textContent = new Date().getFullYear();
 })();
 
