@@ -1,0 +1,156 @@
+EOUSdigital Source-Available Non-Commercial License (SANCL) v1.0
+
+Copyright (c) 2021–2026 EOUSdigital
+
+# IMPORTANT NOTICE
+
+This is a source-available licence. It is not an OSI-approved Open Source licence and does not grant permission for commercial use.
+
+## 1. DEFINITIONS
+
+For the purposes of this licence:
+* "Software" means the software, source code, object code, documentation, configuration files, assets, and other materials identified by the copyright holder as being distributed under this licence.
+* "Derivative Work" means a work based upon, incorporating, modifying, adapting, translating, or otherwise materially changing the Software.
+* "Commercial Use" means any use of the Software or a Derivative Work:
+    - (a) for the purpose of selling, licensing, sublicensing, renting, leasing, or otherwise monetising the Software or a Derivative Work;
+    - (b) as part of a product, service, application, platform, website, system, or other offering that is sold, licensed, monetised, or otherwise provided for commercial advantage;
+    - (c) for internal business, operational, administrative, development, production, or other purposes by, on behalf of, or for the benefit of a for-profit organisation; or
+    - (d) for any other purpose primarily intended to obtain commercial advantage or monetary compensation.
+* "Non-Commercial Use" means use that is not Commercial Use, including personal use, private study, educational use, and non-commercial research, provided that such use does not otherwise violate this licence.
+* "Licensee" means any person or organisation exercising rights granted under this licence.
+* "Copyright Holder" means EOUSdigital and any other copyright owner identified in the applicable Software distribution.
+
+## 2. LICENCE GRANT
+
+Subject to the terms and conditions of this licence, the Copyright Holder grants the Licensee a worldwide, non-exclusive, royalty-free, non-transferable licence to:
+- (a) access and inspect the source code;
+- (b) use the Software for Non-Commercial Use;
+- (c) copy the Software for Non-Commercial Use;
+- (d) modify the Software for Non-Commercial Use;
+- (e) create Derivative Works for Non-Commercial Use; and
+- (f) distribute the unmodified Software and Derivative Works solely for Non-Commercial Use, provided that the requirements of Section 4 are satisfied.
+
+No rights are granted beyond those expressly stated in this licence.
+
+## 3. COMMERCIAL USE
+
+Commercial Use is not permitted under this licence.
+
+A person or organisation wishing to make Commercial Use of the Software or a Derivative Work must obtain a separate written commercial licence from the Copyright Holder before making such use.
+
+A separate commercial licence may contain different terms, conditions, fees, restrictions, or permissions as agreed in writing by the Copyright Holder.
+
+## 4. REDISTRIBUTION AND DERIVATIVE WORKS
+
+The Licensee may redistribute the Software or a Derivative Work for Non-Commercial Use only if all of the following conditions are satisfied:
+- (a) the original copyright notice is retained;
+- (b) the name of the Copyright Holder is retained;
+- (c) a copy of this licence is included with the redistribution;
+- (d) reasonable attribution to EOUSdigital is provided;
+- (e) the Licensee does not represent that the redistributed work is an official EOUSdigital product unless expressly authorised in writing;
+- (f) any Derivative Work is clearly identified as modified or derived from the original Software; and
+- (g) the redistribution does not constitute Commercial Use.
+
+Derivative Works distributed under this licence must remain subject to the Non-Commercial restrictions of this licence.
+
+The Licensee may not remove, obscure, or alter copyright, licence, or attribution notices included in the original Software.
+
+## 5. NO COMMERCIAL SUBLICENSING
+
+The Licensee may not sell, sublicense, lease, rent, monetise, or otherwise grant commercial rights to the Software or a Derivative Work under this licence.
+
+Nothing in this licence prevents the Copyright Holder from granting separate commercial licences to other persons or organisations.
+
+## 6. THIRD-PARTY MATERIALS
+
+This licence applies only to material for which the Copyright Holder has the right to grant the permissions stated in this licence.
+
+The Software may include third-party software, libraries, frameworks, fonts, images, icons, data, documentation, or other materials that are subject to separate licences.
+
+Third-party materials are not automatically covered by this licence.
+
+The Licensee is responsible for complying with the applicable licence terms for third-party materials.
+
+Where applicable, the Software distribution should identify relevant third-party licences and notices.
+
+## 7. TRADEMARKS AND BRANDING
+
+This licence does not grant permission to use the trademarks, service marks, logos, trade names, or other branding of EOUSdigital or the Copyright Holder, except as reasonably necessary to provide the attribution required by this licence.
+
+Use of EOUSdigital branding in a manner that suggests endorsement, sponsorship, affiliation, or official status is not permitted without prior written permission.
+
+## 8. COPYRIGHT AND OWNERSHIP
+
+The Software is licensed, not sold.
+
+The Copyright Holder retains all copyright and other intellectual property rights in the Software except for the rights expressly granted under this licence.
+
+Nothing in this licence transfers ownership of the Software or any intellectual property rights to the Licensee.
+
+## 9. PATENT RIGHTS
+
+No patent licence or other patent rights are granted under this licence, whether expressly, by implication, or otherwise.
+
+## 10. TERMINATION
+
+This licence automatically terminates if the Licensee materially breaches its terms.
+
+Upon termination, the Licensee must cease the use, copying, modification, and distribution of the Software and any Derivative Work to the extent such activities are no longer authorised by another valid licence or written permission from the Copyright Holder.
+
+Termination does not affect any rights or obligations that arose before termination.
+
+The Copyright Holder may, at its discretion and in writing, reinstate the licence following a breach.
+
+## 11. DISCLAIMER OF WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW.
+
+THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF MERCHANTABILITY, SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, ACCURACY, RELIABILITY, AND AVAILABILITY.
+
+THE COPYRIGHT HOLDER DOES NOT WARRANT THAT THE SOFTWARE WILL OPERATE WITHOUT INTERRUPTION, ERROR, OR DEFECT, OR THAT IT WILL MEET THE LICENSEE'S REQUIREMENTS.
+
+## 12. LIMITATION OF LIABILITY
+
+#### TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE COPYRIGHT HOLDER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, BUSINESS, DATA, GOODWILL, OR OTHER ECONOMIC LOSS ARISING OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THIS LICENCE.
+
+#### TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE TOTAL LIABILITY OF THE COPYRIGHT HOLDER ARISING OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THIS LICENCE SHALL NOT EXCEED THE AMOUNT, IF ANY, PAID BY THE LICENSEE TO THE COPYRIGHT HOLDER SPECIFICALLY FOR THE SOFTWARE OR THE RELEVANT LICENCE DURING THE TWELVE MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM.
+
+#### NOTHING IN THIS LICENCE EXCLUDES OR LIMITS LIABILITY THAT CANNOT LAWFULLY BE EXCLUDED OR LIMITED UNDER APPLICABLE LAW.
+
+## 13. NO SUPPORT OR MAINTENANCE
+
+Unless separately agreed in writing, the Copyright Holder has no obligation to provide support, maintenance, updates, security fixes, documentation, hosting, or other services relating to the Software.
+
+# 14. GOVERNING LAW AND JURISDICTION
+
+This licence and any dispute or claim arising out of or in connection with it shall be governed by the laws of England and Wales.
+
+Subject to any mandatory rights or remedies that cannot lawfully be excluded, the courts of England and Wales shall have exclusive jurisdiction over disputes arising out of or in connection with this licence.
+
+# 15. ENTIRE LICENCE
+
+This licence constitutes the complete licence governing the permissions granted for the Software, except for any separate written agreement expressly relating to the Software.
+
+If a separate written commercial licence has been agreed between the Copyright Holder and a Licensee, the terms of that commercial licence govern the Commercial Use authorised by that agreement.
+
+# 16. SEVERABILITY
+
+If any provision of this licence is found to be invalid, unlawful, or unenforceable, that provision shall be interpreted or modified to the minimum extent necessary to make it enforceable, where legally possible.
+
+The remaining provisions shall continue in full force and effect.
+
+# 17. NO WAIVER
+
+Failure by the Copyright Holder to enforce any provision of this licence shall not constitute a waiver of that provision or of the right to enforce it later.
+
+# 18. LICENCE VERSION
+
+This licence is EOUSdigital Source-Available Non-Commercial License (SANCL) v1.0.
+
+The Copyright Holder may publish later versions of SANCL. Unless expressly stated otherwise, Software released under SANCL v1.0 remains governed by v1.0.
+
+# 19. COPYRIGHT NOTICE
+
+Copyright (c) 2021–2026 EOUSdigital
+
+EOUSdigital Source-Available Non-Commercial License (SANCL) v1.0
