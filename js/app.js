@@ -196,7 +196,7 @@ if (searchForm && searchInput && searchCategory) {
         let pool = [];
         
         if (category === 'all') {
-                pool = grocery.concat(household, stationery);
+                pool = allProducts;
             } else {
                 pool = productDataMap[category] || [];
             }
@@ -1046,6 +1046,9 @@ const productDataMap = {
     household: household,
     stationery: stationery
 };
+
+//  allProducts is application product data, not search-specific data.
+const allProducts = grocery.concat(household, stationery);
 
 // ==========================================
 // 5. FOOTER COMPONENT
